@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
-import Foo from './Foo';
-import Bar from './Bar';
+import Foo from './Components/Explore.jsx';
+import Bar from './Components/Home';
 
 const App = ()=> {
   return (
