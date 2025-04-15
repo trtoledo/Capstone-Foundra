@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAuth } from "../Context/AuthContext";
 
 const Register = () => {
+  const { token, setToken } = useAuth();
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
