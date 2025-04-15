@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Candidate {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  videos    Video[]
+  feedbacks Feedback[]
+  reports   Report[]
+  messages  Message[]
+}
+
+model Company {
+  id         Int       @id @default(autoincrement())
+  name       String
+  industry   Industry? @relation(fields: [industryId], references: [id])
+  industryId Int?
+  videos     Video[]
+  feedbacks  Feedback[]
+  reports    Report[]
+}
+
+model Industry {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  companies Company[]
+}
+
+model Video {
+  id         Int       @id @default(autoincrement())
+  url        String
+  candidate  Candidate @relation(fields: [candidateId], references: [id])
+  candidateId Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  companyId  Int
+  topCandidate TopCandidate?
+}
+
+model TopCandidate {
+  id        Int     @id @default(autoincrement())
+  video     Video   @relation(fields: [videoId], references: [id])
+  videoId   Int     @unique
+  reason    String
+}
+
+model Feedback {
+  id         Int       @id @default(autoincrement())
+  message    String
+  candidate  Candidate @relation(fields: [candidateId], references: [id])
+  candidateId Int
+  company    Company   @relation(fields: [companyId], references: [id])
+  companyId  Int
+}
+
+model Report {
+  id          Int       @id @default(autoincrement())
+  description String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  candidateId Int
+  company     Company   @relation(fields: [companyId], references: [id])
+  companyId   Int
+}
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  content     String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  candidateId Int
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
