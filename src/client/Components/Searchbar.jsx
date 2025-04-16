@@ -14,7 +14,6 @@ const Searchbar = () => {
     //   });
   };
   return (
-    // <h1>Searchbar</h1>
     <div>
       <div className="search-bar">
         <input
