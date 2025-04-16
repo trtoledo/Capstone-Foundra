@@ -1,8 +1,5 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
 const ViteExpress = require("vite-express");
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 
 const app = require('./app');
 const { syncAndSeed, client } = require('./db');

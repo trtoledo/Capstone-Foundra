@@ -1,6 +1,6 @@
 # Setup
 
-- create database uni_fullstack_template_db
+- create database foundra_db
 - npm install
 - npm run dev
 
