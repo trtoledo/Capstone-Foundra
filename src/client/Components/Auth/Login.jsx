@@ -13,7 +13,7 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!username && !password) {
-      setError("This field is required.");
+      setError("This is a required field.");
       console.error(error);
     }
     try {
