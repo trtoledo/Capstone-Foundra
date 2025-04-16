@@ -3,7 +3,7 @@
     color: #333;
   }
   
-  /* Navbar */
+
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -34,7 +34,7 @@
     cursor: pointer;
   }
   
-  /* Hero Section */
+  
   .hero-section {
     text-align: center;
     padding: 60px 20px;
@@ -50,7 +50,7 @@
     margin-bottom: 40px;
   }
   
-  /* Search Bar */
+  
   .search-bar {
     display: flex;
     flex-direction: column;
