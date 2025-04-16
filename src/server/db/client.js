@@ -1,4 +1,8 @@
-const { Client } = require('pg');
-const client = new Client(process.env.DATABASE_URL || 'postgres://localhost/uni_fullstack_template_db');
+//import prisma client class from @prisma/clien package
+const { PrismaClient } = require('@prisma/client');
 
-module.exports = client;
+//create instance of prisma client for connecting to database
+const prisma = new PrismaClient();
+
+//export prisma client --> other files can import and use it
+module.exports = prisma;

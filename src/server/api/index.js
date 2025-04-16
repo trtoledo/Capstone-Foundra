@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-module.exports = router;
-
-router.get('/test', async(req, res, next)=> {
-  res.send('sample api route');
+//test route
+router.get('/test', (req, res) => {
+  res.send('Sample API route working!');
 });
+
+//mount routes (auth, videos, reviews)
+router.use('/auth', require('../routes/auth'));
+router.use('/videos', require('../routes/videos'));
+router.use('/reviews', require('../routes/reviews')); 
+
+module.exports = router;
