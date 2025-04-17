@@ -20,9 +20,11 @@ export async function addFeedback(userId, content) {
   try {
     const response = await fetch(API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       body: JSON.stringify({ userId, content }),
-    });
+  }});
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -40,7 +42,10 @@ export async function deleteFeedback(feedbackId) {
   try {
     const response = await fetch(`${API}/${feedbackId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) {
