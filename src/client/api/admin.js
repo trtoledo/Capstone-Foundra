@@ -1,8 +1,8 @@
-const API = "http://localhost:3000/api/users";
+const API = "http://localhost:3000/api/admins";
 
 export async function fetchAdmins() {
     try {
-      const res = await fetch(`${API_BASE_URL}/`);
+      const res = await fetch(API);
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
@@ -12,5 +12,3 @@ export async function fetchAdmins() {
       throw err;
     }
   };
-
-  
