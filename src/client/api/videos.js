@@ -47,30 +47,26 @@ export async function createVideo(title, url, companyId) {
   }
 }
 
-//PUT update video —> onlu video owner or admin
-router.put("/:id", isLoggedIn, async (req, res) => {
+export async function updateVideo(id, title, url) {
   try {
-    const video = await prisma.video.findUnique({
-      where: { id: req.params.id },
+    const response = await fetch(`${API}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title, url }),
     });
-    if (!video) return res.status(404).json({ error: "Video not found" });
-
-    //only video uploader or admin can update
-    if (req.user.role !== "ADMIN" && req.user.userId !== video.userId) {
-      return res.status(403).json({ error: "Access denied" });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP ${response.status}`);
     }
 
-    const { title, url } = req.body;
-    const updated = await prisma.video.update({
-      where: { id: req.params.id },
-      data: { title, url },
-    });
-
-    res.json(updated);
+    return await response.json();
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Could not update video", err);
   }
-});
+}
 
 export async function deleteVideo(id) {
   try {
@@ -81,6 +77,12 @@ export async function deleteVideo(id) {
         Authorization: `Bearer ${token}`,
       },
     });
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+  
+      return await response.json();
   } catch (err) {
     console.error("Could not delete video");
     throw err;
