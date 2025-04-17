@@ -6,7 +6,8 @@
     "seed": "node prisma/seed.js"
   },
   "scripts": {
-    "dev": "SYNC=TRUE nodemon src/server/index.js -w src/server",
+    "dev": " vite",
+    "server": "SYNC=TRUE nodemon src/server/index.js -w src/server",
     "start": "NODE_ENV=production node src/server/index.js",
     "build": "vite build",
     "seed": "node prisma/seed.js"

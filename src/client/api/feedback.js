@@ -14,7 +14,7 @@ export async function fetchFeedback() {
     console.error("Could not fetch feedback:", err.message);
     throw err;
   }
-}
+};
 
 export async function addFeedback(userId, content) {
   try {
@@ -36,7 +36,7 @@ export async function addFeedback(userId, content) {
     console.error("Could not add feedback:", err.message);
     throw err;
   }
-}
+};
 
 export async function deleteFeedback(feedbackId) {
   try {
