@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
+import foundralogo from "../assets/foundralogo.png";
+import foundralogoDM from "../assets/foundralogoDM.png";
 
 const Navbar = () => {
-    const { token, setToken } = useAuth();
+  const { token, setToken } = useAuth();
 
   return (
     <nav className="navbar">
+      <div>
+        <img src={foundralogo} alt="logo" style={{ height: "40px" }} />
+      </div>
       <ul>
         <li>
           <Link to="/">Home</Link>
