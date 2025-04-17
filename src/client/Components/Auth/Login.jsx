@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
-const Login = ({ setToken }) => {
+const Login = () => {
+  const { token, setToken, refresh, setRefresh } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
@@ -21,12 +23,12 @@ const Login = ({ setToken }) => {
         body: JSON.stringify({ username, password }),
       });
       const result = await response.json();
-      setToken(result);
       localStorage.setItem("token", result);
       setSuccessMessage(`${result.message} Welcome ${result.username}`);
       setUsername("");
       setPassword("");
       navigate("/");
+      setRefresh(!refresh);
     } catch (error) {
       setError(error.message);
     }

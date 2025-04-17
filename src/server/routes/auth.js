@@ -2,38 +2,53 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-//prisma connection added shortly when tomas is ready
+const { PrismaClient, Role } = require("@prisma/client");
 
-//tempo data storage
-const dummyUsers = []; 
+const prisma = new PrismaClient();
 
-//register route
+//register new user
 router.post("/register", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    
-    const newUser = { id: dummyUsers.length + 1, email, password: hashedPassword };
-    dummyUsers.push(newUser);
+    const { name, email, password, role = "CANDIDATE" } = req.body;
 
-    res.status(201).json(newUser);
+    const allowedRoles = ["CANDIDATE", "HIRING_MANAGER", "ADMIN"];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ error: "Invalid role provided." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: Role[role],
+      },
+    });
+
+    res.status(201).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-//oogin route
+//login user
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = dummyUsers.find(u => u.email === email);
 
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ error: "Invalid credentials" });
+    }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Invalid credentials" });
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
 
-    const token = jwt.sign({ userId: user.id }, "supersecret", { expiresIn: "1h" });
     res.json({ token });
   } catch (err) {
     res.status(500).json({ error: err.message });
