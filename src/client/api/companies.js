@@ -20,8 +20,11 @@ export async function addCompany(name, industryId) {
     const response = await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       body: JSON.stringify({ name, industryId }),
-    });
+  }});
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -39,9 +42,11 @@ export async function updateCompany(name, industryId, companyId) {
   try {
     const response = await fetch(`${API}/${companyId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       body: JSON.stringify({ name, industryId }),
-    });
+    }});
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -59,8 +64,10 @@ export async function deleteCompany(companyId) {
   try {
     const response = await fetch(`${API}/${companyId}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    });
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+    }});
 
     if (!response.ok) {
       const errorData = await response.json();
