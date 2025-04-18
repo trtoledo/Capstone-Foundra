@@ -34,7 +34,7 @@ const Companies = () => {
             </label>
           </div>
           <div className="allBooks">
-            {companiesToDisplay.map((idx) => {
+            {(companies || []).map((idx) => {
               return (
                 <div key={idx.id} className="book">
                   <h4>{idx.name}</h4>
