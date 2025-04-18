@@ -10,40 +10,36 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div>
-        <Link to="/" className="logo">
-          <img
-            src={foundralogo}
-            className="logo"
-            alt="logo"
-          />
-        </Link>
+      <div className="logo">
+        <a href="/">
+          <img src={foundralogo} alt="logo" />
+        </a>
       </div>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <a href="/">Home</a>
         </li>
 
         <li>
-          <Link to="/explore">Explore</Link>
+          <a href="/explore">Explore</a>
         </li>
 
         <li>
-          <Link to="/get-found">Get Found</Link>
+          <a href="/get-found">Get Found</a>
         </li>
 
         <li>
-          <Link to="/register">Register</Link>
+          <a href="/register">Register</a>
         </li>
 
         <li>
-          <Link to="/login">Login</Link>
+          <a href="/login">Login</a>
         </li>
 
         <li>
-          <Link to="/" onClick={() => setToken(false)}>
+          <a href="/" onClick={() => setToken(false)}>
             Logout
-          </Link>
+          </a>
         </li>
       </ul>
     </nav>
