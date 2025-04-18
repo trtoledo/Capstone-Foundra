@@ -1,80 +1,93 @@
 import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
+import { registerUser } from '../../api/auth.js';
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const { token, setToken } = useAuth();
+  const { setToken, setUser, setRole, setRefresh } = useAuth();
   const [error, setError] = useState(null);
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [role, setSelectedRole] = useState("CANDIDATE");
 
-  async function handleSubmit(e) {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
     try {
-      const response = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, firstName, lastName }),
+      const result = await registerUser({
+        name,
+        email,
+        password,
+        role,
       });
-      const result = await response.json();
-      setToken(result.token);
+
       localStorage.setItem("token", result.token);
-      setUsername("");
+      setToken(result.token);
+      setRefresh((prev) => !prev); 
+      setName("");
+      setEmail("");
       setPassword("");
-      setFirstName("");
-      setLastName("");
-    } catch (error) {
-      setError(error.message);
+      setSelectedRole("CANDIDATE");
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
     }
-  }
+  };
 
   return (
     <div>
       <h2>Sign Up</h2>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="firstName">First Name</label>
+          <label htmlFor="name">Full Name</label>
           <input
-            id="firstName"
-            value={firstName}
-            placeholder="Enter Your First Name"
-            onChange={(e) => setFirstName(e.target.value)}
+            id="name"
+            value={name}
+            placeholder="Enter your full name"
+            onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div>
-          <label htmlFor="lastName">Last Name</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="lastName"
-            value={lastName}
-            placeholder="Enter Your Last Name"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            value={username}
-            placeholder="Enter Your Username"
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
             required
           />
         </div>
         <div>
           <label htmlFor="password">Password</label>
           <input
-            type="password"
             id="password"
-            placeholder="Enter Your Password"
             value={password}
+            placeholder="Enter your password"
             onChange={(e) => setPassword(e.target.value)}
-            minLength="8"
+            type="password"
             required
+            minLength="8"
           />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setSelectedRole(e.target.value)}
+          >
+            <option value="CANDIDATE">Candidate</option>
+            <option value="HIRING_MANAGER">Hiring Manager</option>
+          </select>
+        </div>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
