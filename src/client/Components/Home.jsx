@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <header className="navbar">
+      {/* <header className="navbar">
         <div className="logo">🏢 Foundra</div>
         <nav className="nav-links">
           <Link to="/">Home</Link>
@@ -29,7 +29,7 @@ const Home = () => {
           <Link to="/search">Search</Link>
         </nav>
         <Link to="/login" className="login-btn">Log in</Link>
-      </header>
+      </header> */}
 
       <main className="hero-section">
         <h1 className="headline">Foundra: Eliminating Employee Turnover</h1>
