@@ -33,10 +33,10 @@ const Companies = () => {
               />
             </label>
           </div>
-          <div className="allBooks">
+          <div className="allCompanies">
             {(companies || []).map((idx) => {
               return (
-                <div key={idx.id} className="book">
+                <div key={idx.id} className="company">
                   <h4>{idx.name}</h4>
                   <h5>{idx.industry}</h5>
                   <h6>{idx.videos}</h6>
