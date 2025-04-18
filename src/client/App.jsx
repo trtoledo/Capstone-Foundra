@@ -9,6 +9,8 @@ import Dashboard from './Components/Dashboard.jsx';
 import SingleIndustryPage from './Components/SingleIndustryPage.jsx';
 import TopCandidates from './Components/TopCandidates.jsx';
 import Videos from './Components/Videos.jsx';
+import Login from './Components/Auth/Login.jsx';
+import Register from './Components/Auth/Register.jsx';
 
 const App = ()=> {
   return (
