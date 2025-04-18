@@ -12,6 +12,7 @@ export async function fetchCompanies() {
         return await response.json();
     } catch (err) {
         console.error("Could not fetch companies", err);
+        return [];
     }
 };
 
