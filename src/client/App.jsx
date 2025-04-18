@@ -23,6 +23,8 @@ const App = ()=> {
         <Route path='/industry/:id' element={ <SingleIndustryPage /> } />
         <Route path='/candidates/top' element={ <TopCandidates /> } />
         <Route path='/videos' element={ <Videos /> } />
+        <Route path='/login' element={ <Login /> } />
+        <Route path='/register' element={ <Register /> } />
       </Routes>
     </div>
   );
