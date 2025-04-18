@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchCompanies } from "../api/companies";
 import { fetchIndustries } from "../api/industries";
