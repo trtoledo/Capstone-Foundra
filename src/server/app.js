@@ -5,9 +5,6 @@ app.use(express.json());
 
 app.use('/api', require('./api'));
 
-const cors = require("cors");
-app.use(cors({ origin: ["http://localhost:5173"] }));
-
 app.use((err, req, res, next)=> {
   console.log(err);
   res.status(err.status || 500).send({ error: err.message });
