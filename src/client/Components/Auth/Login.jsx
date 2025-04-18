@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { loginUser } from "../api/auth";
+import { loginUser } from '../../api/auth.js';
 
 const Login = () => {
   const { setUser, setToken, setRole, setRefresh } = useAuth();
