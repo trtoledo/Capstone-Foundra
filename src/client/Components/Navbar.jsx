@@ -11,7 +11,13 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div>
-        <img src={foundralogo} alt="logo" style={{ height: "40px" }} />
+        <Link to="/" className="logo">
+          <img
+            src={foundralogo}
+            className="logo"
+            alt="logo"
+          />
+        </Link>
       </div>
       <ul>
         <li>

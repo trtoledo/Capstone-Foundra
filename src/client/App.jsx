@@ -8,7 +8,6 @@ const App = ()=> {
   return (
     <div>
       <Navbar/>
-      <h1>UNI Fullstack Template</h1>
       <Routes>
         <Route path='/' element={ <Home /> } />
         <Route path='/explore' element={ <Explore /> } />
