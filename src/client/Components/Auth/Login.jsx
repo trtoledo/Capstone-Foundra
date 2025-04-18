@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
+import { loginUser } from "../api/auth";
 
 const Login = () => {
-  const { token, setToken, refresh, setRefresh } = useAuth();
+  const { setUser, setToken, setRole, setRefresh } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
@@ -12,31 +13,28 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!username && !password) {
-      setError("This is a required field.");
-      console.error(error);
+    if (!email || !password) {
+      return setError("All fields are required.");
     }
+
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      const result = await response.json();
-      localStorage.setItem("token", result);
-      setSuccessMessage(`${result.message} Welcome ${result.username}`);
-      setUsername("");
-      setPassword("");
-      navigate("/");
-      setRefresh(!refresh);
-    } catch (error) {
-      setError(error.message);
+      const result = await loginUser({ email, password });
+
+      localStorage.setItem("token", result.token);
+      setToken(result.token);
+      setUser(result.user);
+      setRole(result.role);
+      setRefresh(prev => !prev);
+
+      setSuccessMessage(`Welcome back, ${result.user.name || "user"}!`);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
     }
   }
 
   return (
     <div>
-      <h2>Sign In</h2>
       {error && <p>{error}</p>}
       {successMessage && <p>{successMessage}</p>}
       <form onSubmit={handleSubmit}>
