@@ -1,6 +1,6 @@
 const API = "http://localhost:3000/api/auth";
 
-export async function registerUser({ name, email, password, role = "CANDIDATE" }) {
+export async function registerUser({ name, email, password, role }) {
     try {
       const res = await fetch(`${API}/register`, {
         method: "POST",
