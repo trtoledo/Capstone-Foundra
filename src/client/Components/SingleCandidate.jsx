@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from './Context/AuthContext';
 import { fetchMessages, sendMessage } from "../api/messages";
+import { fetchSingleUser } from "../api/users";
+import { fetchAllVideos, fetchSingleVideo } from "../api/videos";
+
 const SingleCandidate = () => {
     const { token, setRefresh, refresh } = useAuth();
     const [candidate, setCandidate] = useState(null);
     const [videos, setVideos] = useState(null);
     const [message, setMessage] = useState('');
+    const [userMessages, setUserMessages] = useState('');
     const [allMessages, setAllMessages] = useState('');
     const [showUpdate, setShowUpdate] = useState(false);
     const [newMessage, setNewMessage] = useState('');
@@ -16,25 +20,31 @@ const SingleCandidate = () => {
 
     useEffect(() => {
         async function getCandidate() {
-            const response = await getSingleCandidate(id);
+            const response = await fetchSingleUser(id);
             return response;
         }
         async function getCandidateVideos() {
-            const response = await getVideos(id);
+            const response = await fetchAllVideos();
             return response;
         }
-        async function getMessages() {
+        async function getAllMessages() {
             const response = await fetchMessages(token);
             return response;
         }
+        async function getMessages() {
+          const response = await fetchSingleVideo(id, token);
+          return response;
+        }
 
         async function getCandidateInfo() {
-            const responseCand = await getSingleCandidate(id);
-            const responseVids = await getVideos(id);
-            const responseMsg = await fetchMessages(token);
+            const responseCand = await getCandidate(id);
+            const responseVids = await getCandidateVideos(id);
+            const responseAllMsg = await getAllMessages(token);
+            const responseMsg = await getMessages(id, token);
             setCandidate(responseCand);
             setVideos(responseVids);
-            setAllMessages(responseMsg);
+            setAllMessages(responseAllMsg);
+            setUserMessages(responseMsg);
         }
 
         getCandidateInfo();
