@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import { useAuth } from "./Context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import foundralogo from "../assets/foundralogo.png";
 import foundralogoDM from "../assets/foundralogoDM.png";
 

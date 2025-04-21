@@ -1,0 +1,16 @@
+.video-interview-wrapper {
+    text-align: center;
+    padding: 2rem;
+    max-width: 700px;
+    margin: auto;
+  }
+  
+  .recorder-container {
+    margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  
+
+  

@@ -1,57 +1,57 @@
-import { useAuth } from './Context/AuthContext.jsx';
+import { useAuth } from '../Context/AuthContext.jsx';
 import './Dashboard.css';
-import {fetchAdmins} from '.././api/admin.js'
-import { fetchIndustries} from'.././api/industries.js';
-import {updateComment} from '.././api/comments.js';
+import {fetchAdmins} from '../../api/admin.js'
+import { fetchIndustries} from'../../api/industries.js';
+import {updateComment} from '../../api/comments.js';
 import {
     fetchAllUsers,
     deleteUser,
     updateUser,
     fetchSingleUser
-  } from '.././api/users.js';
+  } from '../../api/users.js';
 
   
   import {
     fetchCompanies,
     addCompany,
     deleteCompany,
-  } from '.././api/companies.js';
+  } from '../../api/companies.js';
   
   import {
     fetchFeedback,
     deleteFeedback,
     addFeedback
-  } from '.././api/feedback.js';
+  } from '../../api/feedback.js';
   
   import {
     fetchReports,
     deleteReport,
     submitReport
-  } from '.././api/reports.js';
+  } from '../../api/reports.js';
   
   import {
     fetchAllVideos
-  } from '.././api/videos.js';
+  } from '../../api/videos.js';
   
   import {
     createTopCandidate,
     deleteTopCandidate,
     fetchTopCandidates
-  } from '.././api/topCandidates.js';
+  } from '../../api/topCandidates.js';
   
   import {
     createReview,
     fetchAllReviews
-  } from '.././api/reviews.js';
+  } from '../../api/reviews.js';
   
   import {
     fetchComments
-  } from '.././api/comments.js';
+  } from '../../api/comments.js';
   
   import {
     fetchMessages,
     sendMessage
-  } from '.././api/messages.js';
+  } from '../../api/messages.js';
 
 const Dashboard = () => {
   const { user } = useAuth();
