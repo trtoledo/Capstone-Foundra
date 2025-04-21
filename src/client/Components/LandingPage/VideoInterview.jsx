@@ -59,7 +59,7 @@ export default function VideoInterview() {
           ziggeo-theme-color="#DAFFED"
           ziggeo-title="Tell us about yourself!"
           ziggeo-allowrecord="true"
-          ziggeo-allowupload="false"
+          ziggeo-allowupload="true"
           ziggeo-allowselect="false"
           ziggeo-responsive
         />
