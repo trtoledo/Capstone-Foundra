@@ -1,0 +1,117 @@
+.aboutus-section {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #DAFFED;
+  }
+  
+  .aboutus-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .aboutus-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem; 
+    padding: 1rem;
+  }
+  
+  
+  .flip-card {
+    background: transparent;
+    width: 240px;
+    aspect-ratio: 3 / 4;
+    perspective: 1000px;
+    margin: 1rem;
+    position: relative;
+    z-index: 1; 
+  }
+  
+  
+  .flip-card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease;
+    position: relative;
+  }
+  
+  
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  backface-visibility: hidden;
+  border-radius: 12px;
+}
+  
+  .flip-card-front {
+    z-index: 2;
+  }
+  
+  .flip-card-back {
+    transform: rotateY(180deg);
+    background-color: #262626;
+  }
+  
+  .skills {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #99f6e4;
+  }
+  .team-photo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid #DAFFED;
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+    background-color: #000;
+    color: #DAFFED;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    padding: 0.5rem;
+  }
+  
+  
+  .profile-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 2px solid #DAFFED;
+  }
+
+  .linkedin-badge img {
+    width: 32px;
+    height: 32px;
+    margin-top: 1rem;
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+  }
+  
+  .linkedin-badge img:hover {
+    transform: scale(1.1);
+  }
+  
+  
+  
