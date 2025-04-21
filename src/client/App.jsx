@@ -12,6 +12,7 @@ import TopCandidates from './Components/Candidate/TopCandidates.jsx';
 import Videos from './Components/Video/Videos.jsx';
 import Login from './Components/Auth/Login.jsx';
 import Register from './Components/Auth/Register.jsx';
+import Homepage from './Components/LandingPage/HomePage.jsx';
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
       <Navbar />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/candidates" element={<Candidates />} />
           <Route path="/companies" element={<Companies />} />

@@ -6,9 +6,6 @@ import HiringNewsCarousel from './HiringNewsCarousel';
 import AboutUs from './AboutUs';
 import VideoInterview from './VideoInterview';
 
-
-
-
 const Homepage = () => {
   const fullText = 'Find Passion. Get Hired.';
   const [typedText, setTypedText] = useState('');
@@ -55,11 +52,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
-
-
-
-
-
-
-
-
