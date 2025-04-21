@@ -47,3 +47,22 @@ export async function sendMessage(userId, content) {
     throw err;
   }
 };
+
+export async function fetchMessageById(id, token) {
+  try {
+    const response = await fetch(`/api/messages/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to fetch message");
+    }
+
+    return await response.json();
+  } catch (err) {
+    throw err;
+  }
+};
