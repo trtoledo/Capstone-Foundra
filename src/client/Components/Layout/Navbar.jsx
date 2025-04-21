@@ -10,11 +10,11 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="logo">
+      {/* <div className="logo">
         <a href="/">
           <img src={foundralogo} alt="logo" />
         </a>
-      </div>
+      </div> */}
       <ul>
         <li>
           <a href="/">Home</a>
