@@ -25,6 +25,12 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- 👇 Add this line for Vite dev server support -->
+    <script type="module" src="/@vite/client"></script>
+
+    <!-- 👇 Load your React app entry point -->
+    <script type="module" src="/src/client/main.jsx"></script>
   </body>
 </html>
+
