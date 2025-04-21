@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Homepage.css';
-import foundraLogo from '../assets/foundra-logo.png';
+import foundraLogo from '../../assets/foundra-logo.png';
 import FeatureOverview from './FeatureOverview';
 import HiringNewsCarousel from './HiringNewsCarousel';
 import AboutUs from './AboutUs';
 import VideoInterview from './VideoInterview';
-
-
-
 
 const Homepage = () => {
   const fullText = 'Find Passion. Get Hired.';
@@ -55,11 +52,3 @@ const Homepage = () => {
 };
 
 export default Homepage;
-
-
-
-
-
-
-
-
