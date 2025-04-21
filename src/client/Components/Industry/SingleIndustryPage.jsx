@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchIndustries } from "../api/industries";
-import { addCompany } from "../api/companies";
-import { useAuth } from "./Context/AuthContext";
+import { fetchIndustries } from "../../api/industries";
+import { addCompany } from "../../api/companies";
+import { useAuth } from "../Context/AuthContext";
 import "./SingleIndustryPage.css";
 
 const SingleIndustryPage = () => {
