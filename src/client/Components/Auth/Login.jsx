@@ -5,7 +5,7 @@ import { loginUser } from '../../api/auth.js';
 
 const Login = () => {
   const { setUser, setToken, setRole, setRefresh } = useAuth();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState(null);
   const [error, setError] = useState(null);
@@ -16,16 +16,13 @@ const Login = () => {
     if (!email || !password) {
       return setError("All fields are required.");
     }
-
     try {
       const result = await loginUser({ email, password });
-
       localStorage.setItem("token", result.token);
       setToken(result.token);
       setUser(result.user);
       setRole(result.role);
       setRefresh(prev => !prev);
-
       setSuccessMessage(`Welcome back, ${result.user.name || "user"}!`);
       navigate("/dashboard");
     } catch (err) {
@@ -39,12 +36,12 @@ const Login = () => {
       {successMessage && <p>{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Email</label>
           <input
-            id="username"
-            value={username}
+            id="email"
+            value={email}
             placeholder="Enter Your Username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
