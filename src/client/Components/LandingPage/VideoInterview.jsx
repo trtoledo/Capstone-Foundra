@@ -1,27 +1,53 @@
-// src/components/VideoInterview.jsx
-import React, { useEffect } from "react";
+// src/client/Components/LandingPage/VideoInterview.jsx
+import React from "react";
 import "./VideoInterview.css";
 
 export default function VideoInterview() {
-  useEffect(() => {
-    // Initialize Ziggeo once
-    if (!window.ziggeoApp) {
-      window.ziggeoApp = new ZiggeoApi.V2.Application({
-        token: "840570ba56dbe57af25a85cdc55d18ca", // ✅ your token
-        webrtc_streaming_if_necessary: true,
-        webrtc_on_mobile: true,
-        debug: false,
-      });
-    }
+  return (
+    <div className="video-interview" style={styles.container}>
+      <h2 style={styles.heading}>Record or Upload Your Introduction</h2>
 
-    const recorder = document.querySelector("ziggeorecorder");
+      <ziggeorecorder
+        ziggeo-theme="modern"
+        ziggeo-width="640"
+        ziggeo-height="480"
+        ziggeo-responsive="true"
+        ziggeo-allowupload="true"
+        ziggeo-allowrecord="true"
+        ziggeo-allowselect="true"
+        ziggeo-timelimit="60"
+        ziggeo-theme-color="#DAFFED"
+        ziggeo-title="Upload or Record your intro!"
+        style={styles.recorder}
+      ></ziggeorecorder>
+    </div>
+  );
+}
 
-    const handleVerified = (e) => {
-      const token = e.detail.video.token;
-      const videoURL = `https://video-cdn.ziggeo.com/${token}/video.mp4`;
-      console.log("🎬 New Video Recorded:", videoURL);
+const styles = {
+  container: {
+    padding: "2rem",
+    maxWidth: "700px",
+    margin: "0 auto",
+    textAlign: "center",
+  },
+  heading: {
+    marginBottom: "1rem",
+    fontSize: "1.75rem",
+    color: "#DAFFED",
+  },
+  recorder: {
+    borderRadius: "8px",
+    overflow: "hidden",
+    boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+  },
+};
 
-      // ===========================
+
+
+
+
+ // ===========================
       // 💾 PSEUDOCODE for PERN:
       // fetch("/api/videos", {
       //   method: "POST",
@@ -35,38 +61,6 @@ export default function VideoInterview() {
       //   })
       // });
       // ===========================
-    };
-
-    if (recorder && !recorder.dataset.listenerAttached) {
-      recorder.addEventListener("verified", handleVerified);
-      recorder.dataset.listenerAttached = "true";
-    }
-
-    return () => {
-      if (recorder) recorder.removeEventListener("verified", handleVerified);
-    };
-  }, []);
-
-  return (
-    <div className="video-interview-wrapper">
-      <h2>🎤 Record Your Intro</h2>
-      <div className="recorder-box">
-        <ziggeorecorder
-          ziggeo-theme="modern"
-          ziggeo-width="480"
-          ziggeo-height="360"
-          ziggeo-timelimit="60"
-          ziggeo-theme-color="#DAFFED"
-          ziggeo-title="Tell us about yourself!"
-          ziggeo-allowrecord="true"
-          ziggeo-allowupload="true"
-          ziggeo-allowselect="false"
-          ziggeo-responsive
-        />
-      </div>
-    </div>
-  );
-}
 
 
 // POST /api/videos
