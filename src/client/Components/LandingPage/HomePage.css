@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #DAFFED;
+  background-color: #000;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.homepage-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding: 100px 0;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../assets/lego-foundra-bg.png') no-repeat center center;
+  background-size: cover;
+}
+
+
+.header {
+  width: 100%;
+  height: 80px;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+  position: relative;
+}
+
+
+.centerpiece {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  margin-bottom: 6rem;
+}
+
+.main-logo {
+  height: 350px;
+  margin-bottom: 1px;
+}
+
+.headline {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: #DAFFED;
+  margin: 0 0 15px;
+  min-height: 3.2rem;
+}
+
+
+.typing-text::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 5px;
+  animation: blink 1s infinite;
+  color: #DAFFED;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.subtext {
+  font-size: 1.15rem;
+  color: #DAFFED;
+  margin-bottom: 30px;
+  max-width: 700px;
+}
+
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primary-cta,
+.outline-cta {
+  font-size: 1rem;
+  padding: 14px 26px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primary-cta {
+  background-color: #DAFFED;
+  color: #000;
+  border: none;
+}
+
+.primary-cta:hover {
+  background-color: #b8ecf3;
+}
+
+.outline-cta {
+  background: transparent;
+  color: #DAFFED;
+  border: 2px solid #DAFFED;
+}
+
+.outline-cta:hover {
+  background: rgba(100, 211, 227, 0.1);
+}
+
+
+
+
+
+
+
+
+
