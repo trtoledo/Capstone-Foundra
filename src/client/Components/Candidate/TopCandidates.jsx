@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import {fetchTopCandidates, createTopCandidate, deleteTopCandidate,} from "../api/topCandidates";
+import {fetchTopCandidates, createTopCandidate, deleteTopCandidate,} from "../../api/topCandidates";
 
 const TopCandidates = () => {
   const [topCandidates, setTopCandidates] = useState([]);

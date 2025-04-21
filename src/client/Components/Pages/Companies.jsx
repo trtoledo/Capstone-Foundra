@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchCompanies, addCompany, updateCompany, deleteCompany } from "../api/companies";
+import { fetchCompanies, addCompany, updateCompany, deleteCompany } from "../../api/companies";
 
 const Companies = () => {
     const [companies, setCompanies] = useState([]);
