@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { fetchAllUsers, updateUser, deleteUser } from "../api/users";
+import { fetchAllUsers, updateUser, deleteUser } from "../../api/users";
 
 const Candidates = () => {
   const [candidates, setCandidates] = useState([]);

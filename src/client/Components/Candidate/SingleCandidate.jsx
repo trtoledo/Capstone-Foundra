@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useAuth } from './Context/AuthContext';
-import { fetchMessages, sendMessage } from "../api/messages";
+import { useAuth } from '../Context/AuthContext';
+import { fetchMessages, sendMessage } from "../../api/messages";
 const SingleCandidate = () => {
     const { token, setRefresh, refresh } = useAuth();
     const [candidate, setCandidate] = useState(null);
