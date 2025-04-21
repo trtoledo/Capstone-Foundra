@@ -81,3 +81,18 @@ export async function deleteCompany(companyId) {
     throw err;
   }
 };
+
+export async function fetchCompanyById(id) {
+  try {
+    const response = await fetch(`/api/companies/${id}`);
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to fetch company");
+    }
+
+    return await response.json();
+  } catch (err) {
+    throw err;
+  }
+};

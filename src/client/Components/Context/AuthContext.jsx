@@ -8,11 +8,10 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [refresh, setRefresh] = useState(false);
-  const [user, setUser] = useState(null); // Store user info
+  const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState("");
   
-
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
