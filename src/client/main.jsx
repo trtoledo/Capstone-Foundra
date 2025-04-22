@@ -11,9 +11,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <div suppressCustomElementsWarning={true}>
           <App />
-        </div>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

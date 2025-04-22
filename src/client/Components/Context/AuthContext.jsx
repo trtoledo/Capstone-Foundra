@@ -51,4 +51,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+//< suppressCustomElementsWarning={true}>
+
 export default AuthContext;

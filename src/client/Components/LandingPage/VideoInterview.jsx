@@ -1,38 +1,70 @@
-import { useEffect } from "react";
-import { useAuth } from '../Context/AuthContext';
+import { useEffect, useState, useRef } from "react";
+import { useAuth } from "../Context/AuthContext";
 import "./VideoInterview.css";
 
 export default function VideoInterview() {
   const { user } = useAuth();
+  const [isZiggeoReady, setIsZiggeoReady] = useState(false);
+  const recorderRef = useRef(null);
 
   useEffect(() => {
-    if (!window.ziggeoApp) {
+    const scriptId = "ziggeo-sdk";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.src = "https://assets.ziggeo.com/v2-stable/ziggeo.js";
+      script.async = true;
+      script.id = scriptId;
+      script.onload = () => {
+        console.log("Ziggeo SDK loaded successfully.");
+        setIsZiggeoReady(true);  // Ziggeo is ready to use
+      };
+      script.onerror = () => {
+        console.error("Error loading Ziggeo SDK.");
+      };
+      document.body.appendChild(script);
+    } else {
+      setIsZiggeoReady(true); // SDK is already loaded
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isZiggeoReady && window.ZiggeoApi) {
+      console.log("Ziggeo SDK is ready, initializing recorder...");
       window.ziggeoApp = new ZiggeoApi.V2.Application({
         token: "840570ba56dbe57af25a85cdc55d18ca",
         webrtc_streaming_if_necessary: true,
         webrtc_on_mobile: true,
-        debug: true
+        debug: true,
       });
+
+      if (recorderRef.current) {
+        ZiggeoApi.V2.Recorder.findByElement(recorderRef.current);
+      }
+
+      window.handleUploadSuccess = handleUploadSuccess;
+      window.handleRecorded = handleRecorded;
+    } else {
+      console.error("ZiggeoApi not available.");
     }
-  }, []);
+  }, [isZiggeoReady]);
 
   const handleUploadSuccess = (data) => {
     console.log("Video uploaded successfully:", data);
     const videoToken = data.video.token;
-    localStorage.setItem('uploadedVideoToken', videoToken);
+    localStorage.setItem("uploadedVideoToken", videoToken);
     alert(`Video uploaded with token: ${videoToken}. You can now submit it.`);
   };
 
   const handleRecorded = (data) => {
     console.log("Video recorded:", data);
     const videoToken = data.video.token;
-    localStorage.setItem('recordedVideoToken', videoToken);
+    localStorage.setItem("recordedVideoToken", videoToken);
     alert(`Video recorded with token: ${videoToken}. You can now submit it.`);
   };
 
   const handleSubmitVideo = () => {
-    const uploadedToken = localStorage.getItem('uploadedVideoToken');
-    const recordedToken = localStorage.getItem('recordedVideoToken');
+    const uploadedToken = localStorage.getItem("uploadedVideoToken");
+    const recordedToken = localStorage.getItem("recordedVideoToken");
     const videoToken = uploadedToken || recordedToken;
 
     if (!videoToken) {
@@ -40,35 +72,24 @@ export default function VideoInterview() {
       return;
     }
 
-    const userId = user.id;
-
     fetch("/api/videos", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: videoToken,
-        user_id: userId,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: videoToken, user_id: user.id }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((data) => {
-            throw new Error(data.error || "Failed to submit video.");
-          });
-        }
-        return response.json();
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to submit video.");
+        return res.json();
       })
       .then((data) => {
-        console.log("Video information saved on the server:", data);
         alert("Video submitted successfully!");
-        localStorage.removeItem('uploadedVideoToken');
-        localStorage.removeItem('recordedVideoToken');
+        console.log("Video saved:", data);
+        localStorage.removeItem("uploadedVideoToken");
+        localStorage.removeItem("recordedVideoToken");
       })
-      .catch((error) => {
-        console.error("Error submitting video:", error);
-        alert(error.message);
+      .catch((err) => {
+        console.error("Error submitting video:", err);
+        alert(err.message);
       });
   };
 
@@ -76,22 +97,24 @@ export default function VideoInterview() {
     <div className="video-interview" style={styles.container}>
       <h2 style={styles.heading}>Record or Upload Your Introduction</h2>
 
-      <ziggeorecorder
-        ziggeo-theme="modern"
-        ziggeo-width="640"
-        ziggeo-height="480"
-        ziggeo-responsive="true"
-        ziggeo-allowupload="true"
-        ziggeo-allowrecord="true"
-        ziggeo-allowselect="true"
-        ziggeo-timelimit="60"
-        ziggeo-theme-color="#DAFFED"
-        ziggeo-title="Upload or Record your intro!"
+      <div
+        ref={recorderRef}
+        className="ziggeo-recorder"
+        data-theme="modern"
+        data-width="640"
+        data-height="480"
+        data-responsive="true"
+        data-allowupload="true"
+        data-allowrecord="true"
+        data-allowselect="true"
+        data-timelimit="60"
+        data-theme-color="#DAFFED"
+        data-title="Upload or Record your intro!"
+        data-app="840570ba56dbe57af25a85cdc55d18ca"
+        data-onuploadsuccess="handleUploadSuccess"
+        data-onrecorded="handleRecorded"
         style={styles.recorder}
-        onuploadsuccess={handleUploadSuccess} // Using lowercase event names
-        onrecorded={handleRecorded}         // Using lowercase event names
-        ziggeo-app="840570ba56dbe57af25a85cdc55d18ca" // Added ziggeo-app attribute
-      ></ziggeorecorder>
+      ></div>
 
       <button style={styles.submitButton} onClick={handleSubmitVideo}>
         Submit Video
@@ -127,62 +150,5 @@ const styles = {
     borderRadius: "5px",
     cursor: "pointer",
     transition: "background-color 0.3s ease",
-    '&:hover': {
-      backgroundColor: "#4cae4c",
-    },
   },
 };
-
-
-
-
-
- // ===========================
-      // 💾 PSEUDOCODE for PERN:
-      // fetch("/api/videos", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify({
-      //     token,
-      //     url: videoURL,
-      //     user_id: currentUser.id // or however you're managing users
-      //   })
-      // });
-      // ===========================
-
-
-// POST /api/videos
-// router.post("/videos", async (req, res) => {
-//     const { token, url } = req.body;
-//     try {
-//       await pool.query(
-//         "INSERT INTO videos (ziggeo_token, video_url) VALUES ($1, $2)",
-//         [token, url]
-//       );
-//       res.status(201).json({ message: "Video saved" });
-//     } catch (err) {
-//       console.error(err);
-//       res.status(500).json({ error: "Database error" });
-//     }
-//   });
-
-// CREATE TABLE videos (
-//     id SERIAL PRIMARY KEY,
-//     ziggeo_token TEXT NOT NULL,
-//     video_url TEXT NOT NULL,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-//   );
-
-
-
-
-
-
-
-
-
-
-
-
