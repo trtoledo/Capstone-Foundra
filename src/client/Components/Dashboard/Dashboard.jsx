@@ -53,10 +53,13 @@ import {
     sendMessage
   } from '../../api/messages.js';
 
-const Dashboard = () => {
+const Dashboard = async () => {
   const { user, role } = useAuth();
   console.log(user);
   console.log(role);
+  const devices = await navigator.mediaDevices.enumerateDevices();
+  console.log(devices);
+  
   
 
   // Handlers for Admin
@@ -177,7 +180,6 @@ const Dashboard = () => {
       <Card title="🏆 Top Candidates" description="Highlight exceptional candidates" onClick={handleTopCandidates} />
       <Card title="📝 Reviews & Comments" description="Leave feedback or comments" onClick={handleReviewsComments} />
       <Card title="📬 Messages" description="Message candidates" onClick={handleManagerMessages} />
-      <Card title="📢 Post a Job" description="(Placeholder) Post new job openings" onClick={handleJobPost} />
     </>
   );
 
