@@ -3,9 +3,12 @@ import { Model, Recognizer } from 'vosk-browser';
 
 const VideoTranscriber = () => {
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const [transcript, setTranscript] = useState('');
   const recognizerRef = useRef(null);
   const audioContextRef = useRef(null);
+  const analyserRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
   useEffect(() => {
     const initRecognizer = async () => {
@@ -16,6 +19,43 @@ const VideoTranscriber = () => {
     initRecognizer();
   }, []);
 
+  const drawWaveform = () => {
+    const canvas = canvasRef.current;
+    const canvasCtx = canvas.getContext('2d');
+    const analyser = analyserRef.current;
+    const bufferLength = analyser.fftSize;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const draw = () => {
+      animationFrameRef.current = requestAnimationFrame(draw);
+      analyser.getByteTimeDomainData(dataArray);
+
+      canvasCtx.fillStyle = '#111';
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+      canvasCtx.lineWidth = 2;
+      canvasCtx.strokeStyle = '#0ff';
+
+      canvasCtx.beginPath();
+
+      const sliceWidth = canvas.width / bufferLength;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const v = dataArray[i] / 128.0;
+        const y = (v * canvas.height) / 2;
+
+        i === 0 ? canvasCtx.moveTo(x, y) : canvasCtx.lineTo(x, y);
+        x += sliceWidth;
+      }
+
+      canvasCtx.lineTo(canvas.width, canvas.height / 2);
+      canvasCtx.stroke();
+    };
+
+    draw();
+  };
+
   const transcribeVideo = async () => {
     const video = videoRef.current;
     const stream = video.captureStream();
@@ -24,12 +64,12 @@ const VideoTranscriber = () => {
 
     const source = audioContext.createMediaStreamSource(stream);
 
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 2048;
+    analyserRef.current = analyser;
+
     const workletUrl = URL.createObjectURL(new Blob([`
       class TranscribeProcessor extends AudioWorkletProcessor {
-        constructor() {
-          super();
-        }
-
         process(inputs) {
           const input = inputs[0];
           if (input.length > 0) {
@@ -55,14 +95,18 @@ const VideoTranscriber = () => {
       }
     };
 
-    source.connect(workletNode).connect(audioContext.destination);
+    source.connect(analyser);
+    analyser.connect(workletNode).connect(audioContext.destination);
+
     video.play();
+    drawWaveform();
   };
 
   return (
-    <div>
-      <video ref={videoRef} controls src="your-video.mp4"></video>
-      <button onClick={transcribeVideo}>Transcribe Video</button>
+    <div style={{ background: '#000', color: '#fff', padding: '1rem' }}>
+      <video ref={videoRef} controls src="your-video.mp4" style={{ width: '100%' }} />
+      <button onClick={transcribeVideo} style={{ marginTop: '1rem' }}>Transcribe Video</button>
+      <canvas ref={canvasRef} width="800" height="200" style={{ display: 'block', margin: '1rem 0', background: '#111' }} />
       <h3>Transcript:</h3>
       <div>{transcript}</div>
     </div>
