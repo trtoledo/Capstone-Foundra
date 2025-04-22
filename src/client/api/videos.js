@@ -33,7 +33,10 @@ export async function createVideo(title, url, companyId) {
   try {
     const response = await fetch(API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ title, url, companyId }),
     });
     if (!response.ok) {

@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { useAuth } from '../Context/AuthContext';
 import "./VideoInterview.css";
 
 export default function VideoInterview() {
+  const { user } = useAuth();
+
   useEffect(() => {
     if (!window.ziggeoApp) {
       window.ziggeoApp = new ZiggeoApi.V2.Application({
@@ -37,7 +40,7 @@ export default function VideoInterview() {
       return;
     }
 
-    const userId = 'user123'; // Replace with your actual user identification logic
+    const userId = user.id;
 
     fetch("/api/videos", {
       method: "POST",
