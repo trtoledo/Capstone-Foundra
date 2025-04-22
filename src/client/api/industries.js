@@ -40,3 +40,18 @@ export async function addIndustry(name) {
     throw err;
   }
 };
+
+export async function fetchIndustryById(id) {
+  try {
+    const response = await fetch(`/api/industries/${id}`);
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || "Failed to fetch industry");
+    }
+
+    return await response.json();
+  } catch (err) {
+    throw err;
+  }
+};

@@ -69,4 +69,23 @@ export async function deleteUser(id) {
     } catch (error) {
         console.error("Could not delete user", err)
     }
-}
+};
+
+export async function fetchCandidateById(id, token) {
+    try {
+      const response = await fetch(`/api/candidates/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to fetch candidate");
+      }
+  
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  };

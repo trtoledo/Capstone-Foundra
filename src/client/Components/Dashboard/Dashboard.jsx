@@ -54,7 +54,10 @@ import {
   } from '../../api/messages.js';
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
+  console.log(user);
+  console.log(role);
+  
 
   // Handlers for Admin
   const handleManageUsers = () => {
@@ -188,11 +191,17 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1 className="dashboard-title">Welcome {user?.name}!</h1>
+      <h1 className="dashboard-title">Welcome!</h1>
       <div className="card-grid">
-        {user?.role === 'admin' && renderAdminTiles()}
-        {user?.role === 'hiringManager' && renderHiringManagerTiles()}
-        {user?.role === 'candidate' && renderCandidateTiles()}
+        {
+          role === 'ADMIN'
+            ? renderAdminTiles()
+            : role === 'HIRING_MANAGER'
+            ? renderHiringManagerTiles()
+            : role === 'CANDIDATE'
+            ? renderCandidateTiles()
+            : null
+        }
         {renderSharedTiles()}
       </div>
     </div>

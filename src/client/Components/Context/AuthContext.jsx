@@ -8,11 +8,10 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [refresh, setRefresh] = useState(false);
-  const [user, setUser] = useState(null); // Store user info
+  const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState("");
   
-
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -20,6 +19,8 @@ export const AuthProvider = ({ children }) => {
       try {
         const decoded = jwtDecode(storedToken);
         setUser({ id: decoded.userId });
+        console.log(decoded.role);
+        
         setRole(decoded.role);
       } catch (err) {
         console.error("Failed to decode token:", err);

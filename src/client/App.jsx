@@ -13,6 +13,7 @@ import Videos from './Components/Video/Videos.jsx';
 import Login from './Components/Auth/Login.jsx';
 import Register from './Components/Auth/Register.jsx';
 import Homepage from './Components/LandingPage/HomePage.jsx';
+import Messenger from './Components/Messages/Messenger.jsx';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/industry/:id" element={<SingleIndustryPage />} />
           <Route path="/candidates/top" element={<TopCandidates />} />
           <Route path="/videos" element={<Videos />} />
+          <Route path='/inbox' element={<Messenger />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
