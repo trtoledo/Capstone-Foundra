@@ -179,8 +179,8 @@
 
   .feature-nav-right {
     position: absolute;
-    bottom: 8rem;
-    right: 19rem;
+    bottom: 7rem;
+    right: 28rem;
     display: flex;
     gap: 1rem;
   }
