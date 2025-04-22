@@ -5,32 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foundra</title>
 
-    <!-- Ziggeo Embed Scripts -->
     <link rel="stylesheet" href="https://assets.ziggeo.com/v2-stable/ziggeo.css" />
     <script src="https://assets.ziggeo.com/v2-stable/ziggeo.js"></script>
-
-    <!-- Init Ziggeo when page loads -->
-    <script>
-      window.onload = function () {
-        if (!window.ziggeoApp) {
-          window.ziggeoApp = new ZiggeoApi.V2.Application({
-            token: "840570ba56dbe57af25a85cdc55d18ca",
-            webrtc_streaming_if_necessary: true,
-            webrtc_on_mobile: true,
-            debug: true
-          });
-        }
-      };
-    </script>
   </head>
   <body>
     <div id="root"></div>
 
-    <!-- 👇 Add this line for Vite dev server support -->
     <script type="module" src="/@vite/client"></script>
 
-    <!-- 👇 Load your React app entry point -->
     <script type="module" src="/src/client/main.jsx"></script>
   </body>
 </html>
-
