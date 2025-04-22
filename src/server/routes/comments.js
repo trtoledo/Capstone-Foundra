@@ -6,7 +6,19 @@ const { isLoggedIn } = require("../middleware/auth");
 //GET /api/comments -> everyone incl guests
 router.get("/", async (req, res) => {
   try {
-    const comments = await prisma.comment.findMany();
+    const comments = await prisma.comment.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
     res.json(comments);
   } catch (err) {
     res.status(500).json({ error: err.message });
