@@ -1,0 +1,94 @@
+.topnav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background-color: black;
+  color: #DAFFED;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 1000;
+  transition: height 0.3s ease;
+}
+
+.topnav.collapsed {
+  height: 40px;
+}
+
+.topnav-left {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #DAFFED;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Nav Links */
+.nav-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: #DAFFED;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #C200FB;
+}
+
+.nav-label {
+  margin-left: 0.5rem;
+}
+
+/* Footer / Right Side */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+}
+
+.user-name {
+  margin-left: 0.5rem;
+}
+.nav-logo {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  margin-left: 0.5rem;
+  
+  
+}
+

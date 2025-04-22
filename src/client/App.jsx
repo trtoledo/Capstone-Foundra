@@ -3,7 +3,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Explore from './Components/Pages/Explore.jsx';
 import Home from './Components/Pages/Home.jsx';
-import Navbar from './Components/Layout/Navbar.jsx';
+import TopNav from './Components/LandingPage/TopNav.jsx';
 import Candidates from './Components/Pages/Candidates.jsx';
 import Companies from './Components/Pages/Companies.jsx';
 import Dashboard from './Components/Dashboard/Dashboard.jsx';
@@ -19,7 +19,7 @@ import Messenger from './Components/Messages/Messenger.jsx';
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <TopNav />
       <div className="main-content">
         <Routes>
           <Route path="/" element={<Homepage />} />

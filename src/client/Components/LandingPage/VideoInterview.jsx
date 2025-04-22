@@ -1,8 +1,77 @@
-// src/client/Components/LandingPage/VideoInterview.jsx
-import React from "react";
+import { useEffect } from "react";
+import { useAuth } from '../Context/AuthContext';
 import "./VideoInterview.css";
 
 export default function VideoInterview() {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!window.ziggeoApp) {
+      window.ziggeoApp = new ZiggeoApi.V2.Application({
+        token: "840570ba56dbe57af25a85cdc55d18ca",
+        webrtc_streaming_if_necessary: true,
+        webrtc_on_mobile: true,
+        debug: true
+      });
+    }
+  }, []);
+
+  const handleUploadSuccess = (data) => {
+    console.log("Video uploaded successfully:", data);
+    const videoToken = data.video.token;
+    localStorage.setItem('uploadedVideoToken', videoToken);
+    alert(`Video uploaded with token: ${videoToken}. You can now submit it.`);
+  };
+
+  const handleRecorded = (data) => {
+    console.log("Video recorded:", data);
+    const videoToken = data.video.token;
+    localStorage.setItem('recordedVideoToken', videoToken);
+    alert(`Video recorded with token: ${videoToken}. You can now submit it.`);
+  };
+
+  const handleSubmitVideo = () => {
+    const uploadedToken = localStorage.getItem('uploadedVideoToken');
+    const recordedToken = localStorage.getItem('recordedVideoToken');
+    const videoToken = uploadedToken || recordedToken;
+
+    if (!videoToken) {
+      alert("No video has been recorded or uploaded yet.");
+      return;
+    }
+
+    const userId = user.id;
+
+    fetch("/api/videos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: videoToken,
+        user_id: userId,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.json().then((data) => {
+            throw new Error(data.error || "Failed to submit video.");
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Video information saved on the server:", data);
+        alert("Video submitted successfully!");
+        localStorage.removeItem('uploadedVideoToken');
+        localStorage.removeItem('recordedVideoToken');
+      })
+      .catch((error) => {
+        console.error("Error submitting video:", error);
+        alert(error.message);
+      });
+  };
+
   return (
     <div className="video-interview" style={styles.container}>
       <h2 style={styles.heading}>Record or Upload Your Introduction</h2>
@@ -19,7 +88,14 @@ export default function VideoInterview() {
         ziggeo-theme-color="#DAFFED"
         ziggeo-title="Upload or Record your intro!"
         style={styles.recorder}
+        onuploadsuccess={handleUploadSuccess} // Using lowercase event names
+        onrecorded={handleRecorded}         // Using lowercase event names
+        ziggeo-app="840570ba56dbe57af25a85cdc55d18ca" // Added ziggeo-app attribute
       ></ziggeorecorder>
+
+      <button style={styles.submitButton} onClick={handleSubmitVideo}>
+        Submit Video
+      </button>
     </div>
   );
 }
@@ -40,6 +116,20 @@ const styles = {
     borderRadius: "8px",
     overflow: "hidden",
     boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+    marginBottom: "1rem",
+  },
+  submitButton: {
+    padding: "0.75rem 1.5rem",
+    fontSize: "1rem",
+    backgroundColor: "#5cb85c",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+    '&:hover': {
+      backgroundColor: "#4cae4c",
+    },
   },
 };
 
