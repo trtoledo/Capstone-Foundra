@@ -10,10 +10,15 @@ import Dashboard from './Components/Dashboard/Dashboard.jsx';
 import SingleIndustryPage from './Components/Industry/SingleIndustryPage.jsx';
 import TopCandidates from './Components/Candidate/TopCandidates.jsx';
 import Videos from './Components/Video/Videos.jsx';
+import Comments from './Components/Video/Comments.jsx';
 import Login from './Components/Auth/Login.jsx';
 import Register from './Components/Auth/Register.jsx';
 import Homepage from './Components/LandingPage/HomePage.jsx';
 import Messenger from './Components/Messages/Messenger.jsx';
+import LostHiring from './Components/LandingPage/LostHiring.jsx';
+import WaitlistPage from './Components/Pages/WaitListPage.jsx';
+
+
 
 const App = () => {
   return (
@@ -32,6 +37,10 @@ const App = () => {
           <Route path='/inbox' element={<Messenger />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/comments" element={<Comments />} />
+          <Route path="/lost-hiring" element={<LostHiring />} />
+          <Route path="/waitlist" element={<WaitlistPage />} />
+          <Route path="/comments" element={<Comments />} />
         </Routes>
       </div>
     </div>
