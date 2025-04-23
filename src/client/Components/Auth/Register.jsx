@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { registerUser } from '../../api/auth.js';
 import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 const Register = () => {
   const { setToken, setUser, setRole, setRefresh } = useAuth();
@@ -41,7 +42,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Sign Up</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
