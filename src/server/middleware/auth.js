@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
-const prisma = require("../db/client");
 
 //middleware: anyone who is logged in
-const isLoggedIn = async (req, res, next) => {
+const isLoggedIn = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) return res.status(401).json({ error: "Unauthorized" });
@@ -33,7 +32,6 @@ const isHiringManager = (req, res, next) => {
 };
 
 //middleware: owner or admin
-//for routes where users are only allowed to access or modify their own data unless they are an admin
 const isOwnerOrAdmin = (req, res, next) => {
   if (req.user.role === "ADMIN" || req.user.userId === req.params.id) {
     return next();
@@ -41,6 +39,7 @@ const isOwnerOrAdmin = (req, res, next) => {
   return res.status(403).json({ error: "Access denied" });
 };
 
+//makes middleware fcts available to rest of app
 module.exports = {
   isLoggedIn,
   isAdmin,
