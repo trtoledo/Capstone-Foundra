@@ -3,101 +3,38 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-  const industries = ['Tech', 'Finance', 'Health', 'Education', 'Retail', 'Media', 'Manufacturing', 'Energy', 'Transport', 'Hospitality'];
+  //industry
+  const industry = await prisma.industry.upsert({
+    where: { name: 'Tech' },
+    update: {},
+    create: { name: 'Tech' },
+  });
 
-  const createdIndustries = [];
-  for (const name of industries) {
-    const industry = await prisma.industry.upsert({
-      where: { name },
-      update: {},
-      create: { name },
-    });
-    createdIndustries.push(industry);
-  }
+  //company
+  const company = await prisma.company.create({
+    data: {
+      name: 'OpenAI',
+      industryId: industry.id,
+    },
+  });
 
-  const createdCompanies = [];
-  for (let i = 0; i < 10; i++) {
-    const company = await prisma.company.create({
-      data: {
-        name: `Company ${i + 1}`,
-        industryId: createdIndustries[i % industries.length].id,
-      },
-    });
-    createdCompanies.push(company);
-  }
+  //candidate
+  const hashedUserPassword = await bcrypt.hash('password123', 10);
+  const user = await prisma.user.upsert({
+    where: { email: 'john@example.com' },
+    update: {},
+    create: {
+      email: 'john@example.com',
+      name: 'John Doe',
+      password: hashedUserPassword,
+      companyId: company.id,
+      role: 'CANDIDATE',
+    },
+  });
 
-  const users = [];
-  for (let i = 0; i < 10; i++) {
-    const hashedPassword = await bcrypt.hash('password123', 10);
-    const user = await prisma.user.create({
-      data: {
-        name: `User ${i + 1}`,
-        email: `user${i + 1}@example.com`,
-        password: hashedPassword,
-        role: 'CANDIDATE',
-        companyId: createdCompanies[i % createdCompanies.length].id,
-      },
-    });
-    users.push(user);
-
-    const video = await prisma.video.create({
-      data: {
-        title: `Video ${i + 1}`,
-        url: `https://example.com/video${i + 1}.mp4`,
-        companyId: createdCompanies[i % createdCompanies.length].id,
-        userId: user.id,
-      },
-    });
-
-    await prisma.topCandidate.create({
-      data: {
-        name: user.name,
-        companyId: createdCompanies[i % createdCompanies.length].id,
-        videoUrl: video.url,
-      },
-    });
-
-    await prisma.feedback.create({
-      data: {
-        userId: user.id,
-        content: `Feedback for ${user.name}`,
-      },
-    });
-
-    await prisma.report.create({
-      data: {
-        reason: 'Flagged for review',
-        userId: user.id,
-        companyId: createdCompanies[i % createdCompanies.length].id,
-      },
-    });
-
-    await prisma.message.create({
-      data: {
-        userId: user.id,
-        content: `Welcome, ${user.name}!`,
-      },
-    });
-
-    await prisma.comment.create({
-      data: {
-        userId: user.id,
-        content: `Comment by ${user.name}`,
-      },
-    });
-
-    // Review
-    await prisma.review.create({
-      data: {
-        userId: user.id,
-        content: `Review by ${user.name}`,
-        videoId: video.id,
-      },
-    });
-  }
-
+  //admin
   const hashedAdminPassword = await bcrypt.hash('adminpassword', 10);
-  await prisma.user.upsert({
+  const admin = await prisma.user.upsert({
     where: { email: 'admin@example.com' },
     update: {},
     create: {
@@ -108,7 +45,59 @@ async function main() {
     },
   });
 
-  console.log('Database seeded with 10 users, companies, industries and related data');
+  //video (with userid)
+  const video = await prisma.video.create({
+    data: {
+      url: 'https://example.com/video.mp4',
+      title: 'Intro Video',
+      companyId: company.id,
+      userId: user.id,
+    },
+  });
+
+  //top candidate
+  await prisma.topCandidate.create({
+    data: {
+      name: 'John Doe',
+      companyId: company.id,
+      videoUrl: 'https://example.com/video.mp4',
+    },
+  });
+
+  //feedback
+  await prisma.feedback.create({
+    data: {
+      userId: user.id,
+      content: 'Great candidate!',
+    },
+  });
+
+  //report
+  await prisma.report.create({
+    data: {
+      reason: 'Inappropriate content',
+      companyId: company.id,
+    },
+  });
+
+  //message from admin to candidate
+  await prisma.message.create({
+    data: {
+      senderId: admin.id,
+      recipientId: user.id,
+      content: 'Welcome to the platform!',
+    },
+  });
+
+  //comment
+  await prisma.comment.create({
+    data: {
+      userId: user.id,
+      content: 'This is a test comment',
+    },
+  });
+
+  console.log('Database seeded');
 }
 
 main()
@@ -119,3 +108,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
