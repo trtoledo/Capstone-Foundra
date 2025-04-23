@@ -82,14 +82,18 @@
 
 .carousel-wrapper {
   background-color: #210124;
+background-blend-mode: normal;
+mix-blend-mode: normal;
+opacity: 1;
   padding: 4rem 2rem;
   margin-top: 4rem;
   border-radius: 12px;
   overflow-x: hidden;
-  /* border: 1px solid #DAFFED; */
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
 }
 
-
+.carousel-wrapper {
+  position: relative;
+  z-index: 2;
+}
 
 

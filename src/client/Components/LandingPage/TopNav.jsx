@@ -30,12 +30,15 @@ export default function TopNav() {
           <FaBars />
         </button>
         {!collapsed && (
-          <img
-            src="/foundra-logo.png"
-            alt="Foundra Logo"
-            className="nav-logo"
-          />
-        )}
+  <Link to="/" className="nav-logo-link">
+    <img
+      src="/foundra-logo.png"
+      alt="Foundra Logo"
+      className="nav-logo"
+    />
+  </Link>
+)}
+
       </div>
 
       <ul className="nav-list">
