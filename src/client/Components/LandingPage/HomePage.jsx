@@ -4,7 +4,7 @@ import foundraLogo from '../../assets/foundra-logo.png';
 import FeatureOverview from './FeatureOverview';
 import HiringNewsCarousel from './HiringNewsCarousel';
 import AboutUs from './AboutUs';
-import VideoInterview from './VideoInterview';
+import VideoInterview from '../Video/VideoInterview';
 import TopNav from "./TopNav";
 
 
