@@ -24,14 +24,16 @@ const Register = () => {
         password,
         role,
       });
-
+      console.log(result);
+      
       localStorage.setItem("token", result.token);
-      setToken(result.token);
-      setRefresh((prev) => !prev); 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setSelectedRole("CANDIDATE");
+      localStorage.setItem("id", result.user.id);
+      localStorage.setItem("role", result.user.role);
+      setToken(result.token); 
+      setName(result.user.name);
+      setEmail(result.user.email);
+      setSelectedRole(result.user.role);
+      setRefresh(prev=>!prev);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);

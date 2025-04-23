@@ -19,11 +19,11 @@ const Login = () => {
     try {
       const result = await loginUser({ email, password });
       localStorage.setItem("token", result.token);
+      localStorage.setItem("id", result.user.id);
+      localStorage.setItem("role", result.user.role);
       setToken(result.token);
       setUser(result.user);
       setRole(result.role);
-      setRefresh(prev => !prev);
-      setSuccessMessage(`Welcome back, ${result.user.name || "user"}!`);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -33,7 +33,6 @@ const Login = () => {
   return (
     <div>
       {error && <p>{error}</p>}
-      {successMessage && <p>{successMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>

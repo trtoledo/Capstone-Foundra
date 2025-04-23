@@ -29,8 +29,11 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-icons": "^5.5.0",
+    "react-refresh": "^0.17.0",
     "vite-express": "*",
-    "vosk-browser": "^0.0.8"
+    "vosk-browser": "^0.0.8",
+    "ziggeo": "^0.1.30",
+    "ziggeo-client-sdk": "^2.43.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
