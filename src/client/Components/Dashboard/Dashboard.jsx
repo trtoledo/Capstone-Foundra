@@ -53,14 +53,8 @@ import {
     sendMessage
   } from '../../api/messages.js';
 
-const Dashboard = async () => {
+const Dashboard = () => {
   const { user, role } = useAuth();
-  console.log(user);
-  console.log(role);
-  const devices = await navigator.mediaDevices.enumerateDevices();
-  console.log(devices);
-  
-  
 
   // Handlers for Admin
   const handleManageUsers = () => {
