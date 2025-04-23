@@ -18,7 +18,7 @@ async function main() {
     },
   });
 
-  //candidate user
+  //candidate
   const hashedUserPassword = await bcrypt.hash('password123', 10);
   const user = await prisma.user.upsert({
     where: { email: 'john@example.com' },
@@ -32,7 +32,20 @@ async function main() {
     },
   });
 
-  //video (with userId now)
+  //admin
+  const hashedAdminPassword = await bcrypt.hash('adminpassword', 10);
+  const admin = await prisma.user.upsert({
+    where: { email: 'admin@example.com' },
+    update: {},
+    create: {
+      name: 'Super Admin',
+      email: 'admin@example.com',
+      password: hashedAdminPassword,
+      role: 'ADMIN',
+    },
+  });
+
+  //video (with userid)
   const video = await prisma.video.create({
     data: {
       url: 'https://example.com/video.mp4',
@@ -67,10 +80,11 @@ async function main() {
     },
   });
 
-  //message
+  //message from admin to candidate
   await prisma.message.create({
     data: {
-      userId: user.id,
+      senderId: admin.id,
+      recipientId: user.id,
       content: 'Welcome to the platform!',
     },
   });
@@ -80,19 +94,6 @@ async function main() {
     data: {
       userId: user.id,
       content: 'This is a test comment',
-    },
-  });
-
-  //admin user
-  const hashedAdminPassword = await bcrypt.hash('adminpassword', 10);
-  await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: {},
-    create: {
-      name: 'Super Admin',
-      email: 'admin@example.com',
-      password: hashedAdminPassword,
-      role: 'ADMIN',
     },
   });
 
@@ -107,3 +108,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+

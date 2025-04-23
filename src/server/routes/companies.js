@@ -13,6 +13,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+//newly added: GET /api/companies/:id -> everyone incl guests
+router.get("/:id", async (req, res) => {
+  try {
+    const company = await prisma.company.findUnique({
+      where: { id: req.params.id },
+    });
+    if (!company) return res.status(404).json({ error: "Company not found" });
+    res.json(company);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 //POST /api/companies -> only admins
 router.post("/", isLoggedIn, isAdmin, async (req, res) => {
   const { name, industryId } = req.body;
