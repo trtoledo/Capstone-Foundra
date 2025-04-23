@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
       },
     });
 
-    res.status(201).json(user);
+    res.status(201).json({user, token: jwt.sign({id: user.id, role: user.role}, process.env.JWT_SECRET)});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
       { expiresIn: "3h" }
     );
 
-    res.json({ token });
+    res.json({ token, role: user.role, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
