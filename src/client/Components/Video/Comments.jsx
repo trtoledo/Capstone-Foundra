@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Comments.css";
 import { useAuth } from "../Context/AuthContext";
 import { fetchComments, createComment, updateComment, deleteComment} from "../../api/comments";
 
@@ -33,7 +34,7 @@ export default function Comments() {
     }
   }
 
-  async function handleUpdate() {
+  async function handleUpdate(id) {
     try {
       await updateComment(id, editingContent);
       setEditingId(null);
@@ -44,7 +45,7 @@ export default function Comments() {
     }
   }
 
-  async function handleDelete() {
+  async function handleDelete(id) {
     try {
       await deleteComment(id);
       loadComments();
@@ -84,7 +85,7 @@ export default function Comments() {
         {comments.map((comment) => (
           <li key={comment.id} className="comment-card">
             <div className="comment-header">
-              <span className="comment-author">{comment.user.username}</span>
+              <span className="comment-author">{comment.user.email}</span>
               {isAuthorOrAdmin(comment.user.id) && (
                 <div className="comment-actions">
                   <button
