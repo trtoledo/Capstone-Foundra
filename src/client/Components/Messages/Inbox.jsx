@@ -3,7 +3,7 @@ const Inbox = ({ threads, selectedUser, onSelectThread }) => {
     <div>
       <div className="inbox-header">Inbox</div>
       {threads
-        .filter(({ user }) => user && user.id) // ✅ Guard against undefined/null user
+        .filter(({ user }) => user && user.id)
         .map(({ user, lastMessage, timestamp }) => (
           <div
             key={user.id}
