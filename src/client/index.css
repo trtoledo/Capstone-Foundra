@@ -7,6 +7,34 @@ body {
   height: 100vh;
 }
 
-.main-content {
+/* .main-content {
   padding-top: 120px;
+} */
+
+:root {
+  --mint: #DAFFED;
+  --mint-muted: #B8EDE3; 
+  --text-light: #DAFFED;
+  --text-dark: #000000;
+  --black: #210124;
+  --purple: #C200FB;
+  --pink: #EC0868;
+  --lime: #C8E9A0;
+}
+
+body, html {
+  color: var(--text-light);
+  background-color: var(--black);
+  font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* match your actual background */
+  font-family: 'Inter', sans-serif;
+}
+
+.App {
+  background-color: #000;
 }

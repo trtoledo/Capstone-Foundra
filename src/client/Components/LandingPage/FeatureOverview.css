@@ -8,8 +8,11 @@
     gap: 5rem;
     flex-wrap: wrap;
     justify-content: space-between;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-    background-color: #210124;
+    /* box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); */
+    /* background-color: #210124 !important; */
+    background-blend-mode: normal;
+    mix-blend-mode: normal;
+    opacity: 1;
     border-radius: 12px;
 
   }
@@ -177,15 +180,27 @@
     color: #210124;
   }
 
-  .feature-nav-right {
-    position: absolute;
-    bottom: 7rem;
-    right: 28rem;
-    display: flex;
-    gap: 1rem;
-  }
   
+
+.feature-overview-container {
+  position: relative;
+  z-index: 2;
+}
+
+.feature-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.feature-nav-right {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 2;
+}
+
   
-  
-  
-  
+

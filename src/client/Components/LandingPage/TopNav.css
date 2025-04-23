@@ -4,7 +4,8 @@
   left: 0;
   right: 0;
   height: 100px;
-  background-color: black;
+  
+  background-color: rgba(0, 0, 0, 0.5);
   color: #DAFFED;
   display: flex;
   align-items: center;
@@ -63,7 +64,7 @@
 }
 
 .nav-link:hover {
-  color: #C200FB;
+  color: #EC0868;
 }
 
 .nav-label {
@@ -88,7 +89,7 @@
   width: auto;
   object-fit: contain;
   margin-left: 0.5rem;
-  
-  
 }
+
+
 

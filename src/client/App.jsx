@@ -14,6 +14,10 @@ import Login from './Components/Auth/Login.jsx';
 import Register from './Components/Auth/Register.jsx';
 import Homepage from './Components/LandingPage/HomePage.jsx';
 import Messenger from './Components/Messages/Messenger.jsx';
+import LostHiring from './Components/LandingPage/LostHiring.jsx';
+import WaitlistPage from './Components/Pages/WaitListPage.jsx';
+
+
 
 const App = () => {
   return (
@@ -32,6 +36,8 @@ const App = () => {
           <Route path='/inbox' element={<Messenger />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/lost-hiring" element={<LostHiring />} />
+          <Route path="/waitlist" element={<WaitlistPage />} />
         </Routes>
       </div>
     </div>
