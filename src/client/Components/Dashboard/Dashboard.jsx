@@ -1,5 +1,6 @@
 import { useAuth } from '../Context/AuthContext.jsx';
 import './Dashboard.css';
+import { useNavigate } from 'react-router-dom';
 import {fetchAdmins} from '../../api/admin.js'
 import { fetchIndustries} from'../../api/industries.js';
 import {updateComment} from '../../api/comments.js';
@@ -55,96 +56,79 @@ import {
 
 const Dashboard = () => {
   const { user, role } = useAuth();
+  const navigate = useNavigate();
 
   // Handlers for Admin
   const handleManageUsers = () => {
-    fetchAllUsers();
-    deleteUser();
+    navigate('/candidates');
   };
 
   const handleManageCompanies = () => {
-    fetchCompanies();
-    addCompany();
-    deleteCompany();
-    fetchIndustries();
-    addIndustry();
+    navigate('/companies');
   };
 
   const handlePlatformFeedback = () => {
-    fetchFeedback();
-    deleteFeedback();
+    navigate('/feedback');
   };
 
   const handleReports = () => {
-    fetchReports();
-    deleteReport();
+    navigate('/reports');
   };
 
   const handleVideoLibrary = () => {
-    fetchAllVideos();
+    navigate('/videos');
   };
 
   const handleAdminTeam = () => {
-    fetchAdmins();
+    navigate('/admins');
   };
 
   const handleVideoApplications = () => {
-    fetchAllVideos();
+    navigate('/videos');
   };
 
   const handleEmployerFeedback = () => {
-    fetchComments();
-    fetchAllReviews();
+    navigate('/feedback');
   };
 
   const handleCandidateMessages = () => {
-    fetchMessages();
-    sendMessage();
+    navigate('/inbox');
   };
 
   const handleIndustryInsights = () => {
-    fetchCompanies();
-    fetchIndustries();
+    navigate('/industry');
   };
 
   const handleBenchmarking = () => {
-    fetchTopCandidates();
+    navigate('/top-candidates');
   };
 
   const handleSearchCandidates = () => {
-    fetchAllUsers();
-    fetchAllVideos();
+    navigate('/candidates');
   };
 
   const handleTopCandidates = () => {
-    createTopCandidate();
-    deleteTopCandidate();
-    fetchTopCandidates();
+    navigate('/top-candidates');
   };
 
   const handleReviewsComments = () => {
-    createReview();
-    createComment();
-    updateComment();
-    deleteComment();
+    navigate('/comments');
   };
 
   const handleManagerMessages = () => {
-    fetchMessages();
-    sendMessage();
+    navigate('/inbox');
   };
 
   const handleAccountSettings = () => {
-    fetchSingleUser();
-    updateUser();
+    navigate('/settings');
   };
 
   const handleSubmitReport = () => {
-    submitReport();
+    navigate('/reports');
   };
 
   const handleGiveFeedback = () => {
-    addFeedback();
+    navigate('/feedback');
   };
 
   const renderAdminTiles = () => (
