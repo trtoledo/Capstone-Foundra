@@ -65,9 +65,9 @@ export default function TopNav() {
         {token ? (
           <>
             <li className="nav-item">
-              <Link to="/account" className="nav-link">
+              <Link to="/dashboard" className="nav-link">
                 <FaInfoCircle />
-                {!collapsed && <span className="nav-label">Account</span>}
+                {!collapsed && <span className="nav-label">Dashboard</span>}
               </Link>
             </li>
             <li className="nav-item">
