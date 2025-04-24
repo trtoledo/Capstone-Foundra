@@ -1,8 +1,9 @@
 .carousel-title {
-  color: #DAFFED ;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  color:  #B1FA63;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
   text-align: center;
+  margin-top: 0;
 }
 
 .carousel-track {
@@ -16,7 +17,7 @@
 
 .news-card {
   min-width: 300px;
-  background-color: #1a1a1a;
+  background-color: black;
   color: #DAFFED;
   border-radius: 12px;
   overflow: hidden;
@@ -52,15 +53,15 @@
 }
 
 .category-filter label {
-  color: #DAFFED;
+  color:  #B1FA63;
   font-size: 1.1rem;
   font-weight: 500;
 }
 
 .category-filter select {
-  background-color: #1f1f1f;
-  color: #DAFFED;
-  border: 1px solid #444;
+  background-color: black;
+  color: #B1FA63;
+  border: 1px solid  #B1FA63;
   border-radius: 8px;
   padding: 0.6rem 2.5rem 0.6rem 1rem; /* space for icon */
   font-size: 1rem;
@@ -75,13 +76,14 @@
 
 .category-filter select:hover,
 .category-filter select:focus {
-  border-color: #DAFFED;
+  border-color:  #B1FA63;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(218, 255, 237, 0.2);
+  box-shadow: 0 0 0 2px black;
 }
 
 .carousel-wrapper {
-  background-color: #210124;
+  
+  background-color: bl;
 background-blend-mode: normal;
 mix-blend-mode: normal;
 opacity: 1;
@@ -94,6 +96,40 @@ opacity: 1;
 .carousel-wrapper {
   position: relative;
   z-index: 2;
+}
+
+
+.news-card {
+  background: linear-gradient(to bottom right, #000000, #1a1a1a);
+  border: 1px solid rgba(177, 250, 99, .2);
+  border-radius: 16px;
+  color: #B1FA63;
+  box-shadow: 0 4px 20px rgba(177, 250, 99, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px rgba(177, 250, 99, 0.5);
+}
+
+.carousel-border-wrapper {
+  position: relative;
+  margin: 3rem auto;
+  padding: .1rem .1rem; /* ↓ reduced vertical padding */
+  border-radius: 12px;
+  max-width: 1200px;
+
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #B1FA63, #EC0868, #C200FB) border-box;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.carousel-border-wrapper > *:first-child {
+  margin-top: 0 !important;
 }
 
 

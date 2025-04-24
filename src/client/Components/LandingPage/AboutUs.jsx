@@ -46,7 +46,7 @@ const team = [
 
 export default function AboutUs() {
   return (
-    <section className="aboutus-section">
+    <section className="aboutus-section spaced">
       <h2 className="aboutus-title">Meet the Team</h2>
       <div className="aboutus-grid">
         {team.map((member, index) => (
@@ -85,4 +85,5 @@ export default function AboutUs() {
     </section>
   );
 }
+
 

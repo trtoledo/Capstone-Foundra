@@ -3,10 +3,11 @@ import {
   FaHome,
   FaCompass,
   FaBriefcase,
+  FaQuestionCircle,
+  FaInfoCircle,
   FaUserPlus,
   FaSignInAlt,
   FaBars,
-  FaUserCircle
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./TopNav.css";
@@ -15,10 +16,15 @@ export default function TopNav() {
   const [collapsed, setCollapsed] = useState(false);
   const toggleNav = () => setCollapsed(!collapsed);
 
-  const navItems = [
+  const mainNavItems = [
     { icon: <FaHome />, label: "Home", path: "/" },
     { icon: <FaCompass />, label: "Explore", path: "/explore" },
     { icon: <FaBriefcase />, label: "Get Found", path: "/get-found" },
+    { icon: <FaQuestionCircle />, label: "I'm Lost", path: "/lost-hiring" },
+    { icon: <FaInfoCircle />, label: "About Us", path: "/about" },
+  ];
+
+  const authNavItems = [
     { icon: <FaUserPlus />, label: "Register", path: "/register" },
     { icon: <FaSignInAlt />, label: "Login", path: "/login" },
   ];
@@ -30,19 +36,19 @@ export default function TopNav() {
           <FaBars />
         </button>
         {!collapsed && (
-  <Link to="/" className="nav-logo-link">
-    <img
-      src="/foundra-logo.png"
-      alt="Foundra Logo"
-      className="nav-logo"
-    />
-  </Link>
-)}
-
+          <Link to="/" className="nav-logo-link">
+            <img
+              src="/foundra-logo.png"
+              alt="Foundra Logo"
+              className="nav-logo"
+            />
+          </Link>
+        )}
       </div>
 
-      <ul className="nav-list">
-        {navItems.map((item, index) => (
+      {/* Main Navigation */}
+      <ul className="nav-list main-nav">
+        {mainNavItems.map((item, index) => (
           <li key={index} className="nav-item">
             <Link to={item.path} className="nav-link">
               {item.icon}
@@ -52,13 +58,22 @@ export default function TopNav() {
         ))}
       </ul>
 
-      <div className="sidebar-footer">
-        <FaUserCircle className="user-icon" />
-        {!collapsed && <span className="user-name">You</span>}
-      </div>
+      {/* Auth Navigation (right side) */}
+      <ul className="nav-list auth-nav">
+        {authNavItems.map((item, index) => (
+          <li key={index} className="nav-item">
+            <Link to={item.path} className="nav-link">
+              {item.icon}
+              {!collapsed && <span className="nav-label">{item.label}</span>}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
+
+
 
 
 

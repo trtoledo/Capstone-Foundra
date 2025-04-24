@@ -6,48 +6,42 @@ const features = [
   {
     id: 1,
     title: "01 Passion-first job matching",
-    content:
-      "We use short intro videos and context-rich profiles to match talent with teams who value their passion as much as their skills.",
+    content: "We use short intro videos and context-rich profiles to match talent with teams who value their passion as much as their skills.",
     screencap: "/assets/screens/passion-matching.png",
     link: "/how-it-works#matching",
   },
   {
     id: 2,
     title: "02 Curated hiring feeds",
-    content:
-      "Hiring managers get curated feeds of energized, qualified candidates who’ve gone the extra mile to stand out.",
+    content: "Hiring managers get curated feeds of energized, qualified candidates who’ve gone the extra mile to stand out.",
     screencap: "/assets/screens/hiring-feeds.png",
     link: "/how-it-works#feeds",
   },
   {
     id: 3,
     title: "03 Built-in screening & discovery",
-    content:
-      "Forget the cold calls. Our async video platform pre-screens candidates so you can focus on culture and fit.",
+    content: "Forget the cold calls. Our async video platform pre-screens candidates so you can focus on culture and fit.",
     screencap: "/assets/screens/screening.png",
     link: "/how-it-works#screening",
   },
   {
     id: 4,
     title: "04 Human-centered design",
-    content:
-      "Our UI puts people first — not resumes. You see stories, voices, and skills brought to life.",
+    content: "Our UI puts people first — not resumes. You see stories, voices, and skills brought to life.",
     screencap: "/assets/screens/ui.png",
     link: "/how-it-works#design",
   },
   {
     id: 5,
     title: "05 Smart tagging",
-    content:
-      "Videos, resumes, and interactions are tagged with role relevance and passion indicators for smarter filtering.",
+    content: "Videos, resumes, and interactions are tagged with role relevance and passion indicators for smarter filtering.",
     screencap: "/assets/screens/tagging.png",
     link: "/how-it-works#metadata",
   },
   {
     id: 6,
     title: "06 Modern async communication",
-    content:
-      "Video replies and contextual notes make it easy to collaborate across teams and move fast on top talent.",
+    content: "Video replies and contextual notes make it easy to collaborate across teams and move fast on top talent.",
     screencap: "/assets/screens/async.png",
     link: "/how-it-works#async",
   },
@@ -76,10 +70,11 @@ export default function FeatureOverview() {
     <section className="feature-overview-container">
       <div className="text-content">
         <h2>
-          <span className="highlight">LinkedIn is Broken.</span> <br />
-          Foundra is a Different & Better Way to Align Interviews
+        <span className="gradient-text">LinkedIn is Broken.</span><br />
+  Foundra is a Different & <br />
+  Better Way to Align Interviews
         </h2>
-        <p className="subtext">
+        <p className="feature-subtext">
           Everything you need to help passionate job seekers connect with hiring managers — with less friction and more humanity.
         </p>
 
@@ -97,28 +92,26 @@ export default function FeatureOverview() {
             </div>
           ))}
         </div>
-
-        <button className="product-tour-btn" onClick={handleClick}>
-          See How It Works →
-        </button>
       </div>
 
       <div className="visual-preview">
-        <div className="mock-ui-box">
+        <div className="mock-ui-box feature-image-wrapper">
           <img
             src={active?.screencap}
             alt={`Preview for ${active?.title}`}
             className="mock-image"
           />
+         
         </div>
-      </div>
-      <div className="feature-nav-right">
-        <button className="arrow-btn" onClick={handlePrev}>←</button>
-        <button className="arrow-btn" onClick={handleNext}>→</button>
+        <div className="feature-nav-right">
+            <button className="arrow-btn" onClick={handlePrev}>←</button>
+            <button className="arrow-btn" onClick={handleNext}>→</button>
+          </div>
       </div>
     </section>
   );
 }
+
 
 
 
