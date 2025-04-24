@@ -114,7 +114,7 @@ const VideoWithRecording = () => {
    
     const presignRes = await fetch(
       `http://localhost:3000/api/videos/sign-s3`,
-      { credentials: 'include',
+      {
         method: "POST",
         headers: {'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
@@ -136,7 +136,7 @@ const VideoWithRecording = () => {
       headers: { 'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
        },
-      credentials: 'include',
+      
       body: JSON.stringify({ title: 'test', url: publicUrl }),
     });
     const addVidResult = await addVid.json();
