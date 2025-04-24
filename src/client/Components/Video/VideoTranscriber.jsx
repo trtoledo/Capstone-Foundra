@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Model, Recognizer } from "vosk-browser";
 
-const VideoTranscriber = () => {
+const VideoTranscriber = ({ src, autoStart = false }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [transcript, setTranscript] = useState("");
@@ -17,7 +17,6 @@ const VideoTranscriber = () => {
       );
       recognizerRef.current = new Recognizer({ model, sampleRate: 16000 });
     };
-
     initRecognizer();
   }, []);
 
@@ -41,7 +40,6 @@ const VideoTranscriber = () => {
       canvasCtx.shadowColor = "#00ffff";
 
       canvasCtx.beginPath();
-
       const sliceWidth = canvas.width / bufferLength;
       let x = 0;
 
@@ -52,7 +50,6 @@ const VideoTranscriber = () => {
         i === 0 ? canvasCtx.moveTo(x, y) : canvasCtx.lineTo(x, y);
         x += sliceWidth;
       }
-
       canvasCtx.lineTo(canvas.width, canvas.height / 2);
       canvasCtx.stroke();
     };
@@ -67,7 +64,6 @@ const VideoTranscriber = () => {
     audioContextRef.current = audioContext;
 
     const source = audioContext.createMediaStreamSource(stream);
-
     const analyser = audioContext.createAnalyser();
     analyser.fftSize = 2048;
     analyserRef.current = analyser;
@@ -80,15 +76,13 @@ const VideoTranscriber = () => {
         process(inputs) {
           const input = inputs[0];
           if (input.length > 0) {
-            const channelData = input[0];
-            this.port.postMessage(channelData);
+            this.port.postMessage(input[0]);
           }
           return true;
         }
       }
       registerProcessor('transcribe-processor', TranscribeProcessor);
-    `,
-        ],
+    `],
         { type: "application/javascript" }
       )
     );
@@ -116,17 +110,26 @@ const VideoTranscriber = () => {
     drawWaveform();
   };
 
+  useEffect(() => {
+    if (autoStart && src && videoRef.current) {
+      videoRef.current.src = src;
+      transcribeVideo();
+    }
+  }, [src, autoStart]);
+
   return (
     <div style={{ background: "#000", color: "#fff", padding: "1rem" }}>
       <video
         ref={videoRef}
         controls
-        src="your-video.mp4"
+        src={src}
         style={{ width: "100%" }}
       />
-      <button onClick={transcribeVideo} style={{ marginTop: "1rem" }}>
-        Transcribe Video
-      </button>
+      {!autoStart && (
+        <button onClick={transcribeVideo} style={{ marginTop: "1rem" }}>
+          Transcribe Video
+        </button>
+      )}
       <canvas
         ref={canvasRef}
         width="800"
