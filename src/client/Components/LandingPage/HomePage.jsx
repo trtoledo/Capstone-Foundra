@@ -8,6 +8,9 @@ import LostPrompt from './LostPrompt';
 
 import './Homepage.css';
 
+import AboutUs from './AboutUs';
+import VideoInterview from '../Video/VideoInterview';
+import TopNav from "./TopNav";
 
 const Homepage = () => {
   const fullText = 'Find Passion. Get Hired.';
