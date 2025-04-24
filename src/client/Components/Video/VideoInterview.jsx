@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import VideoTranscriber from "./VideoTranscriber";
 import Comments from "./Comments";
+import "./Videos.css";
 
 const VideoInterview = () => {
   const { token } = useAuth();
@@ -104,35 +105,37 @@ const VideoInterview = () => {
   };
 
   return (
-    <div>
-      <h2>Record Your Interview</h2>
+    <div className="fullscreen-center-wrapper">
+    <div className="video-interview-container">
+      <h2 className="video-interview-heading">Record Your Interview</h2>
       <video
         ref={localVideoRef}
         autoPlay
         muted
         playsInline
-        style={{ width: "320px", height: "240px", background: "#000" }}
+        className="video-preview"
       />
 
-      <div style={{ margin: "1rem 0" }}>
+      <div className="record-button-container">
         {!recording ? (
-          <button onClick={startRecording} disabled={recording || !devices.length}>
+          <button className="record-button" onClick={startRecording} disabled={recording || !devices.length}>
             Start Recording
           </button>
         ) : (
-          <button onClick={stopRecording}>
+          <button className="record-button stop" onClick={stopRecording}>
             Stop Recording
           </button>
         )}
       </div>
 
       {recordedUrl && (
-        <div style={{ marginTop: "2rem" }}>
+        <div className="recording-review-section">
           <h3>Review & Transcribe</h3>
           <VideoTranscriber src={recordedUrl} autoStart />
           {newVideoId && <Comments videoId={newVideoId} />}
         </div>
       )}
+    </div>
     </div>
   );
 };
