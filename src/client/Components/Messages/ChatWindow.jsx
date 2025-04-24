@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Messages.css";
 
 const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
   const [input, setInput] = useState("");
@@ -9,18 +10,18 @@ const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b font-bold">
+    <div className="chat-window">
+      <div className="chat-header">
         Chatting with {selectedUser.name}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+      <div className="chat-messages">
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`message ${msg.fromSelf ? "sent" : "received"}`}
           >
-            <div>{msg.content}</div>
+            <div className="message-content">{msg.content}</div>
             <div className="timestamp">
               {new Date(msg.createdAt).toLocaleTimeString()}
             </div>
@@ -28,16 +29,16 @@ const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
         ))}
       </div>
 
-      <div className="p-4 border-t flex">
+      <div className="chat-input-container">
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 border rounded px-3 py-2"
+          className="chat-input"
         />
         <button
           onClick={handleSend}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+          className="send-button"
         >
           Send
         </button>
