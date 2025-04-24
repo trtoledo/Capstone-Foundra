@@ -1,0 +1,207 @@
+:root {
+    --purple: #C200FB;
+    --pink: #EC0868;
+    --black: #210124;
+    --mint: #DAFFED;
+    --lime: #C8E9A0;
+  }
+  
+  /* Base Wrapper */
+  .lost-page-wrapper {
+    font-family: 'Inter', sans-serif;
+    color: white;
+    background-color: black;
+    padding-top: 80px; /* space for navbar */
+  }
+  
+  /* ========== MODERN HERO SECTION ========== */
+  .hero-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 5%;
+    background-color: #1c1c1e;
+    border-bottom: 1px solid #333;
+  }
+  
+  .hero-left {
+    flex: 1;
+    min-width: 300px;
+    padding-right: 2rem;
+  }
+  
+  .hero-left h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--mint);
+    margin-bottom: 1rem;
+  }
+  
+  .hero-left p {
+    font-size: 1.2rem;
+    color: #ccc;
+    margin-bottom: 2rem;
+  }
+  
+  .cta-button {
+    background-color: var(--mint);
+    color: var(--black);
+    padding: 0.75rem 1.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background-color: var(--mint);
+  }
+  
+  .hero-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow: visible;
+}
+  
+  .hero-right img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+  
+  /* ========== WHY SECTION ========== */
+  .why-section {
+    background-color: #121212;
+    padding: 4rem 5%;
+    text-align: center;
+  }
+  
+  .why-section h2 {
+    font-size: 2rem;
+    color: #DAFFED;
+    margin-bottom: 3rem;
+  }
+  
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .why-box {
+    background-color: #DAFFED;
+    font-size: 20px;
+    border: 1px solid #333;
+    padding: 2rem;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  .why-box:hover {
+    transform: translateY(-4px);
+  }
+  
+  .why-box img {
+    height: 100px;
+    margin-bottom: 1rem;
+  }
+  
+  .why-box h3 {
+    color: var(--black);
+    margin-bottom: 0.5rem;
+  }
+  
+  .why-box p {
+    color: black;
+    font-size: 17px;
+  }
+  
+  /* ========== INDUSTRIES SECTION ========== */
+  .industries-section {
+    background-color: var(--mint);
+    /* background-color: rgba(218, 255, 237, 0.8); */
+    color: #121212;
+    padding: 4rem 5%;
+    text-align: center;
+  }
+  
+  .industries-section h2 {
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+  }
+  
+  .industry-subtext {
+    color: #aaa;
+    margin-bottom: 2rem;
+  }
+  
+  .industry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .industry-tile {
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0;
+    border-radius: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .industry-tile:hover {
+    transform: scale(1.03);
+  }
+  
+  .industry-card-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .industry-tile img {
+    height: 200px;
+    margin-bottom: 1rem;
+  }
+
+  .cta-button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem; 
+  }
+
+  
+  .cta-button.secondary {
+    background-color: transparent;
+    color: var(--mint);
+    border: 2px solid var(--mint);
+    /* padding: 0.75rem 1.5rem; */
+  }
+  
+  .cta-button.secondary:hover {
+    background-color: var(--mint);
+    color: var(--black);
+  }
+
+  .cta-button-group button {
+    margin: 0;           /* remove default margin */
+    padding: 12px 20px;  /* keep button size comfortable */
+  }
+  
+  
+  

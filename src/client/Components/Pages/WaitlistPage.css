@@ -1,0 +1,18 @@
+.waitlist-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #000;
+    color: var(--mint);
+    text-align: center;
+    gap: 1.5rem;
+   
+    margin-top: 6rem;  /* Pushes entire content down from nav */
+        margin-bottom: 2rem;
+        text-align: center;
+      
+  }
+  

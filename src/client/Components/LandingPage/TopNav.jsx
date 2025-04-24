@@ -3,22 +3,30 @@ import {
   FaHome,
   FaCompass,
   FaBriefcase,
+  FaQuestionCircle,
+  FaInfoCircle,
   FaUserPlus,
   FaSignInAlt,
   FaBars,
-  FaUserCircle
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./TopNav.css";
+import { useAuth } from "../Context/AuthContext";
 
 export default function TopNav() {
   const [collapsed, setCollapsed] = useState(false);
   const toggleNav = () => setCollapsed(!collapsed);
+  const { token, setToken, setUser, setRole, setRefresh } = useAuth();
 
-  const navItems = [
+  const mainNavItems = [
     { icon: <FaHome />, label: "Home", path: "/" },
     { icon: <FaCompass />, label: "Explore", path: "/explore" },
     { icon: <FaBriefcase />, label: "Get Found", path: "/get-found" },
+    { icon: <FaQuestionCircle />, label: "I'm Lost", path: "/lost-hiring" },
+    { icon: <FaInfoCircle />, label: "About Us", path: "/about" },
+  ];
+
+  const authNavItems = [
     { icon: <FaUserPlus />, label: "Register", path: "/register" },
     { icon: <FaSignInAlt />, label: "Login", path: "/login" },
   ];
@@ -30,16 +38,19 @@ export default function TopNav() {
           <FaBars />
         </button>
         {!collapsed && (
-          <img
-            src="/foundra-logo.png"
-            alt="Foundra Logo"
-            className="nav-logo"
-          />
+          <Link to="/" className="nav-logo-link">
+            <img
+              src="/foundra-logo.png"
+              alt="Foundra Logo"
+              className="nav-logo"
+            />
+          </Link>
         )}
       </div>
 
-      <ul className="nav-list">
-        {navItems.map((item, index) => (
+      {/* Main Navigation */}
+      <ul className="nav-list main-nav">
+        {mainNavItems.map((item, index) => (
           <li key={index} className="nav-item">
             <Link to={item.path} className="nav-link">
               {item.icon}
@@ -49,13 +60,44 @@ export default function TopNav() {
         ))}
       </ul>
 
-      <div className="sidebar-footer">
-        <FaUserCircle className="user-icon" />
-        {!collapsed && <span className="user-name">You</span>}
-      </div>
+      {/* Auth Navigation (right side) */}
+      <ul className="nav-list auth-nav">
+        {token ? (
+          <>
+            <li className="nav-item">
+              <Link to="/dashboard" className="nav-link">
+                <FaInfoCircle />
+                {!collapsed && <span className="nav-label">Dashboard</span>}
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/"
+                onClick={() => {
+                  setToken(null);
+                  setUser(null);
+                  setRole("");
+                  localStorage.clear(); 
+                  setRefresh((r) => !r); 
+                }}
+                className="nav-link"
+              >
+                <FaSignInAlt />
+                {!collapsed && <span className="nav-label">Logout</span>}
+              </Link>
+            </li>
+          </>
+        ) : (
+          authNavItems.map((item, index) => (
+            <li key={index} className="nav-item">
+              <Link to={item.path} className="nav-link">
+                {item.icon}
+                {!collapsed && <span className="nav-label">{item.label}</span>}
+              </Link>
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 }
-
-
-

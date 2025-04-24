@@ -98,7 +98,45 @@ const VideoInterview = () => {
   const stopRecording = () => {
     if (recorderRef.current && recorderRef.current.state === "recording") {
       recorderRef.current.stop();
+      setRecording(false);
     }
+  };
+
+  const uploadRecording = async blob => {
+    const filename = `${Date.now()}-call.webm`;
+   
+    const presignRes = await fetch(
+      `http://localhost:3000/api/videos/sign-s3`,
+      {
+        method: "POST",
+        headers: {'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({filename})
+       }
+    );
+    const { url, key } = await presignRes.json();
+   
+    const bucketAPI = await fetch(url, { method: 'PUT', body: blob });
+    // const bucketResult = await bucketAPI.json();
+    console.log(bucketAPI);
+    
+    
+   
+    const publicUrl = `http://foundra-bucket.s3.amazonaws.com/${key}`;
+    const addVid = await fetch(`http://localhost:3000/api/videos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+       },
+      
+      body: JSON.stringify({ title: 'test', url: publicUrl }),
+    });
+    const addVidResult = await addVid.json();
+    console.log(addVidResult);
+    
+    
+    alert('Video uploaded successfully!');
   };
 
   return (

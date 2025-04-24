@@ -1,18 +1,26 @@
 .feature-overview-container {
-    position: relative;
-    z-index: 1;
-    pointer-events: auto;
-    display: flex;
-    padding: 5rem 10%;
-    color: #DAFFED;
-    gap: 5rem;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
-    background-color: #210124;
-    border-radius: 12px;
+  position: relative;
+  z-index: 1;
+  color: #B1FA63;
+  display: flex;
+  gap: 5rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
-  }
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 5rem 2rem;
+  border-radius: 12px;
+
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #B1FA63, #EC0868, #C200FB) border-box;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  padding-bottom: 7.5rem;
+}
+
   
   .text-content {
     flex: 1;
@@ -25,13 +33,13 @@
   }
   
   .highlight {
-    color: #DAFFED;
+    color: #B1FA63;
   }
   
-  .subtext {
+  .feature-subtext {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: #aaaaaa;
+    color: #B1FA63;
   }
   
   .feature-list {
@@ -41,23 +49,41 @@
   }
   
   .feature-item {
-    border-left: 3px solid #444;
-    padding-left: 1rem;
+    position: relative;
+    padding: 1rem;
+    border-radius: 12px;
+    background: transparent;
+    color: #B1FA63;
+    border: none;
+    z-index: 0;
     cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .feature-item.active {
+    background: black;
   }
   
   .feature-item.active {
-    border-left: 3px solid #DAFFED;
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background:
+      linear-gradient(black, black) padding-box,
+      linear-gradient(135deg, #B1FA63, #EC0868, #C200FB) border-box;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
   }
+  
   
   .feature-title {
     font-weight: 600;
-    color: #DAFFED;
+    color: #B1FA63;
   }
   
   .feature-content {
     font-size: 0.95rem;
-    color: #ccc;
+    color: #B1FA63;
     margin-top: 0.5rem;
   }
   
@@ -65,16 +91,16 @@
     margin-top: 2rem;
     padding: 0.75rem 1.5rem;
     background-color: transparent;
-    border: 1px solid #DAFFED;
-    color: #DAFFED;
+    border: 1px solid #B1FA63;
+    color: #B1FA63;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
   }
   
   .product-tour-btn:hover {
-    background-color: #DAFFED;
-    color: #0e0e0e;
+    background-color: #B1FA63;
+    color: #B1FA63;
   }
   
   .visual-preview {
@@ -87,8 +113,9 @@
   }
   
   .mock-ui-box {
-    background: #210124;
-    border: 1px solid #210124;
+    background: #B1FA63;
+    background-color: transparent;
+    border: 1px solid #B1FA63;
     border-radius: 10px;
     padding: 2rem;
     width: auto;
@@ -99,36 +126,22 @@
     font-weight: bold;
     font-size: 1.1rem;
     margin-bottom: 1rem;
-    color: #DAFFED;
+    color: #B1FA63;
   }
   
   .mock-items li {
     margin: 0.5rem 0;
     font-size: 0.95rem;
-    color: #ddd;
+    color: #B1FA63;
   }
 
   .mock-image {
     width: 100%;
     border-radius: 12px;
     margin-top: 1rem;
-    border: 1px solid #DAFFED;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    /* border: 1px solid #B1FA63; */
+    box-shadow: #B1FA63;
     object-fit: cover;
-  }
-
-  .feature-item {
-    border: 2px solid transparent;
-    padding: 1rem;
-    border-radius: 12px;
-    transition: border-color 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .feature-item.active {
-    border-color: #DAFFED;
-    box-shadow: 0 0 0 2px rgba(218, 255, 237, 0.3);
-    background-color: rgba(255, 255, 255, 0.02);
   }
   
   .feature-nav-buttons {
@@ -138,19 +151,8 @@
     justify-content: flex-start;
   }
   
-  .arrow-btn {
-    background: transparent;
-    border: 2px solid #DAFFED;
-    color: #DAFFED;
-    font-size: 1.5rem;
-    padding: 0.3rem 0.9rem;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
   .arrow-btn:hover {
-    background-color: #DAFFED;
+    background-color: #B1FA63;
     color: #0e0e0e;
   }
 
@@ -163,9 +165,9 @@
   
   .arrow-btn {
     background-color: transparent;
-    border: 1px solid #DAFFED;
-    color: #DAFFED;
-    padding: 0.5rem 1rem;
+    border: 1px solid #B1FA63;
+    color: #B1FA63;
+    padding: 0.5rem 1.5rem;
     font-size: 1.25rem;
     border-radius: 8px;
     cursor: pointer;
@@ -173,19 +175,55 @@
   }
   
   .arrow-btn:hover {
-    background-color: #DAFFED;
-    color: #210124;
+    background-color: #B1FA63;
+    
   }
 
-  .feature-nav-right {
-    position: absolute;
-    bottom: 7rem;
-    right: 28rem;
-    display: flex;
-    gap: 1rem;
-  }
-  
-  
-  
-  
-  
+.feature-overview-container {
+  position: relative;
+  z-index: 2;
+}
+
+
+.feature-image-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 500px;
+}
+
+.feature-nav-right {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.mock-ui-box {
+  position: relative;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #000;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.mock-ui-box::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px; bottom: -2px;
+  background: linear-gradient(135deg, #B1FA63, #EC0868, #C200FB);
+  border-radius: 14px;
+  z-index: -1;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #B1FA63, #EC0868, #C200FB);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}

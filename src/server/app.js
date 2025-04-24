@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const cors = require("cors");
 app.use(express.json());
-app.use(cors({origin: ['http://localhost:3000']}));
+app.use(cors({origin: ['http://localhost:3000', 'http://localhost:5173']}));
 
 app.use('/api', require('./api'));
 

@@ -19,22 +19,14 @@ body, html {
   overflow-y: visible;
   padding: 100px 0;
 background-image: url('/lego-foundra-bg.png');
-    background-size: 100%;
-    background-position: cover;
-    background-repeat: no-repeat;
-}
 
-.homepage-container::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* adjust 0.4 → 0.6 for darker */
-  z-index: 0;
-  pointer-events: none;
+    background-size: 100;
+    padding-bottom: 200px;
+   
+    padding-top: 3rem;
+    /* background-position: cover; */
+    /* background-repeat: repeat; */
 }
-
 
 .header {
   width: 100%;
@@ -61,10 +53,10 @@ background-image: url('/lego-foundra-bg.png');
   margin-bottom: 6rem;
 }
 
-.main-logo {
-  height: 350px;
+/* .main-logo {
+  height: 200px;
   margin-bottom: 1px;
-}
+} */
 
 .headline {
   font-family: 'Permanent Marker', cursive;
@@ -118,16 +110,19 @@ background-image: url('/lego-foundra-bg.png');
   background-color: #DAFFED;
   color: #000;
   border: none;
+  margin-top: 7px;
+
 }
 
 .primary-cta:hover {
-  background-color: #b8ecf3;
+  background-color: #DAFFED;
 }
 
 .outline-cta {
   background: transparent;
   color: #DAFFED;
   border: 2px solid #DAFFED;
+  margin-top: 1px;
 }
 
 .outline-cta:hover {
@@ -135,19 +130,22 @@ background-image: url('/lego-foundra-bg.png');
 }
 
 .logo-wrapper {
-  display: inline-block;
+  /* background-color: rgba(0, 0, 0, 0.4);  */
   background-color: black;
-  padding: 1px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  max-width: fit-content;
+  padding-bottom: 30px;
+  /* border-radius: 1px; */
+  text-align: center;
+  display: inline-block;
+  /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); */
+  max-width: 70%;
+  margin: 0 auto;
 }
 
 .main-logo {
   display: block;
   height: 300px; /* adjust as needed */
   width: auto;
-  margin: 0;
+  margin: 0 auto .1rem auto;
 }
 
 .centerpiece,
@@ -158,7 +156,142 @@ background-image: url('/lego-foundra-bg.png');
   z-index: 2;
 }
 
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 🔁 this moves content up */
+  /* padding-top: 1vh;         ✅ adjust as needed */
+  min-height: 100vh;
+  text-align: center;
+}
+
+.subtext {
+  background-color: transparent; /* or any HEX like #000000 */
+  color: #DAFFED; /* your mint */
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+.hero-f-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto auto 1fr;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 2rem;
+  border-radius: 16px;
 
 
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #B1FA63, #EC0868, #C200FB) border-box;
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  position: relative;
+  overflow: visible;
+  padding-bottom: 125px;
+  padding-top: 0;
+  
+}
+
+/* Top horizontal stem */
+.f-top-stem {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: -1rem;
+  /* border-bottom: 2px solid #B1FA63; */
+  border-bottom: 2px solid transparent;
+border-image: linear-gradient(to right, #B1FA63, #EC0868, #C200FB) 1;
+border-image-slice: 1;
+
+  margin-bottom: 0;
+}
+
+/* Middle horizontal stem */
+.f-middle-stem {
+  grid-column: 1 / 3;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0;
+  /* border-bottom: 2px solid #B1FA63; */
+}
+
+.f-button-group {
+  position: absolute;
+  top: 20px; /* adjust this to move it further down */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+}
 
 
+/* Ensure buttons are tight & aligned */
+.primary-cta,
+.outline-cta {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 150px;
+  text-align: center;
+ 
+}
+
+.primary-cta {
+  background-color: #DAFFED;
+  color: #210124;
+  border: none;
+}
+
+.outline-cta {
+  background-color: transparent;
+  color: #DAFFED;
+  border: 2px solid #DAFFED;
+}
+
+.foundra-logo {
+  width: 335px;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+}
+
+.typing-text {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 2rem;
+  color: #DAFFED;
+  text-align: center;
+  margin-bottom: 0.25rem;
+  margin-top: 0;
+}
+
+.subtext {
+  color: #DAFFED;
+  text-align: center;
+  font-size: 1rem;
+  max-width: 600px;
+  margin-top: 0.25rem;
+  margin-bottom: -2.5rem;
+  line-height: 1.3; /* or lower if still too spaced */
+}
+
+.f-bottom-row {
+  position: relative;
+  grid-column: 1 / 3;
+  height: 140px; /* adjust this as needed */
+
+}

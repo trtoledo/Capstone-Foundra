@@ -3,7 +3,7 @@ const router = express.Router();
 const prisma = require("../db/client");
 const { isLoggedIn, isAdmin } = require("../middleware/auth");
 
-//view all reports (only admin)
+//view all reports (admin only)
 router.get("/", isLoggedIn, isAdmin, async (req, res) => {
   try {
     const reports = await prisma.report.findMany();
@@ -13,9 +13,22 @@ router.get("/", isLoggedIn, isAdmin, async (req, res) => {
   }
 });
 
-//submit report (anyone who has account and is logged in)
+//view own reports
+router.get("/mine", isLoggedIn, async (req, res) => {
+  try {
+    const myReports = await prisma.report.findMany({
+      where: { userId: req.user.userId }
+    });
+    res.json(myReports);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+//submit report
 router.post("/", isLoggedIn, async (req, res) => {
-  const { reason, userId, companyId } = req.body;
+  const { reason, companyId } = req.body;
+  const userId = req.user.userId;
   try {
     const report = await prisma.report.create({
       data: { reason, userId, companyId },
@@ -26,9 +39,22 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-//delete report (only admins)
-router.delete("/:id", isLoggedIn, isAdmin, async (req, res) => {
+//delete report (owner or admin only)
+router.delete("/:id", isLoggedIn, async (req, res) => {
   try {
+    const report = await prisma.report.findUnique({
+      where: { id: req.params.id }
+    });
+
+    if (!report) return res.status(404).json({ error: "Report not found" });
+
+    const isOwner = report.userId === req.user.userId;
+    const isAdminUser = req.user.role === "ADMIN";
+
+    if (!isOwner && !isAdminUser) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+
     await prisma.report.delete({ where: { id: req.params.id } });
     res.sendStatus(204);
   } catch (err) {
@@ -37,3 +63,4 @@ router.delete("/:id", isLoggedIn, isAdmin, async (req, res) => {
 });
 
 module.exports = router;
+

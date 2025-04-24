@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { registerUser } from '../../api/auth.js';
 import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
 const Register = () => {
   const { setToken, setUser, setRole, setRefresh } = useAuth();
@@ -24,14 +25,16 @@ const Register = () => {
         password,
         role,
       });
-
+      console.log(result);
+      
       localStorage.setItem("token", result.token);
-      setToken(result.token);
-      setRefresh((prev) => !prev); 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setSelectedRole("CANDIDATE");
+      localStorage.setItem("id", result.user.id);
+      localStorage.setItem("role", result.user.role);
+      setToken(result.token); 
+      setName(result.user.name);
+      setEmail(result.user.email);
+      setSelectedRole(result.user.role);
+      setRefresh(prev=>!prev);
       navigate("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -39,7 +42,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Sign Up</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>

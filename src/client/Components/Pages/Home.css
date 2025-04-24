@@ -1,7 +1,9 @@
 .home-container {
-    font-family: Arial, sans-serif;
-    color: #333;
-  }
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+  /* background-color: #000; */
+}
+
   
 
   /* .navbar {
