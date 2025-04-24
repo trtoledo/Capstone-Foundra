@@ -42,17 +42,19 @@
   }
   
   .save-button {
-    background-color: #C8E9A0;
+    background-color: #210124;
+    color: #1df88e;
   }
   
   .save-button:hover {
-    background-color: #C8E9A0;
+    background-color: #C200FB;
   }
   
   .cancel-button {
     background-color: transparent;
     border: none;
-    color: #555;
+    background-color: #210124;
+    color: red;
     cursor: pointer;
   }
   
@@ -98,7 +100,8 @@
   .action-button {
     background-color: transparent;
     border: none;
-    color: #210124;
+    background-color: #210124;
+    color: white;
     cursor: pointer;
     font-size: 14px;
   }
@@ -108,7 +111,7 @@
   }
   
   .delete-button {
-    color: #dc3545;
+    color: red;
   }
   
   .edit-comment {
