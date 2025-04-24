@@ -16,6 +16,14 @@ import Homepage from './Components/LandingPage/HomePage.jsx';
 import Messenger from './Components/Messages/Messenger.jsx';
 import LostHiring from './Components/LandingPage/LostHiring.jsx';
 import WaitlistPage from './Components/Pages/WaitListPage.jsx';
+import GetFound from './Components/LandingPage/GetFound';
+import AboutUs from './Components/LandingPage/AboutUs';
+
+
+
+
+
+
 
 
 
@@ -38,7 +46,9 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/lost-hiring" element={<LostHiring />} />
           <Route path="/waitlist" element={<WaitlistPage />} />
-        </Routes>
+          <Route path="/get-found" element={<GetFound />} />
+          <Route path="/about" element={<AboutUs />} />
+</Routes>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@
   
   .flip-card {
     background: transparent;
-    width: 240px;
+    width: 231px;
     aspect-ratio: 3 / 4;
     perspective: 1000px;
     margin: 1rem;
@@ -93,9 +93,9 @@
   
   
   .profile-photo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border-radius: 80%;
     object-fit: cover;
     margin-bottom: 1rem;
     border: 2px solid #DAFFED;
@@ -104,13 +104,29 @@
   .linkedin-badge img {
     width: 32px;
     height: 32px;
-    margin-top: 1rem;
+    margin-top: .5rem;
     filter: brightness(0) invert(1);
     transition: transform 0.2s ease;
   }
   
   .linkedin-badge img:hover {
     transform: scale(1.1);
+  }
+
+  .about-us-wrapper {
+    margin-top: 100px; /* adjust if your TopNav is taller/shorter */
+    text-align: center;
+  }
+  
+  .about-heading {
+    color: #DAFFED;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .aboutus-section.spaced {
+    margin-top: 120px; /* or padding-top: 120px if you prefer */
+    text-align: center;
   }
   
   
