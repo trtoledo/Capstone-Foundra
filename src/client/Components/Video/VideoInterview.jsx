@@ -13,12 +13,10 @@ const VideoInterview = () => {
   const recorderRef = useRef(null);
 
   useEffect(() => {
-    const fetchDevices = async () => {
-      const all = await navigator.mediaDevices.enumerateDevices();
-      const videoInputs = all.filter(d => d.kind === "videoinput");
-      setDevices(videoInputs);
-    };
-    fetchDevices();
+    (async () => {
+      const allDevices = await navigator.mediaDevices.enumerateDevices();
+      setDevices(allDevices.filter(d => d.kind === "videoinput"));
+    })();
   }, []);
 
   const startLocalVideo = async () => {
@@ -44,13 +42,15 @@ const VideoInterview = () => {
         body: JSON.stringify({ filename })
       }
     );
+    if (!signRes.ok) throw new Error('Failed to get presigned URL');
     const { url: presignedUrl, key } = await signRes.json();
 
-    await fetch(presignedUrl, {
+    const uploadRes = await fetch(presignedUrl, {
       method: "PUT",
       headers: { "Content-Type": "video/webm" },
       body: blob
     });
+    if (!uploadRes.ok) throw new Error('S3 upload failed');
 
     const publicUrl = `https://${process.env.REACT_APP_S3_BUCKET}.s3.amazonaws.com/${key}`;
     const createRes = await fetch(
@@ -64,8 +64,8 @@ const VideoInterview = () => {
         body: JSON.stringify({ title: filename, url: publicUrl, isPublic: true })
       }
     );
-    const createdVideo = await createRes.json();
-    return createdVideo;
+    if (!createRes.ok) throw new Error('Failed to create video record');
+    return await createRes.json();
   };
 
   const startRecording = async () => {
@@ -76,17 +76,19 @@ const VideoInterview = () => {
       ...stream.getVideoTracks(),
       ...stream.getAudioTracks()
     ]);
-    const recorder = new MediaRecorder(mixed, {
-      mimeType: "video/webm; codecs=vp8,opus"
-    });
+    const recorder = new MediaRecorder(mixed, { mimeType: "video/webm; codecs=vp8,opus" });
     const buffer = [];
 
     recorder.ondataavailable = (e) => buffer.push(e.data);
     recorder.onstop = async () => {
       const blob = new Blob(buffer, { type: "video/webm" });
-      const created = await uploadRecording(blob);
-      setRecordedUrl(URL.createObjectURL(blob));
-      setNewVideoId(created.id);
+      try {
+        const created = await uploadRecording(blob);
+        setRecordedUrl(URL.createObjectURL(blob));
+        setNewVideoId(created.id);
+      } catch (err) {
+        console.error(err);
+      }
       setRecording(false);
     };
 
@@ -98,59 +100,20 @@ const VideoInterview = () => {
   const stopRecording = () => {
     if (recorderRef.current && recorderRef.current.state === "recording") {
       recorderRef.current.stop();
-      setRecording(false);
     }
-  };
-
-  const uploadRecording = async blob => {
-    const filename = `${Date.now()}-call.webm`;
-   
-    const presignRes = await fetch(
-      `http://localhost:3000/api/videos/sign-s3`,
-      {
-        method: "POST",
-        headers: {'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({filename})
-       }
-    );
-    const { url, key } = await presignRes.json();
-   
-    const bucketAPI = await fetch(url, { method: 'PUT', body: blob });
-    // const bucketResult = await bucketAPI.json();
-    console.log(bucketAPI);
-    
-    
-   
-    const publicUrl = `http://foundra-bucket.s3.amazonaws.com/${key}`;
-    const addVid = await fetch(`http://localhost:3000/api/videos`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-       },
-      
-      body: JSON.stringify({ title: 'test', url: publicUrl }),
-    });
-    const addVidResult = await addVid.json();
-    console.log(addVidResult);
-    
-    
-    alert('Video uploaded successfully!');
   };
 
   return (
     <div>
       <h2>Record Your Interview</h2>
-      <div>
-        <video
-          ref={localVideoRef}
-          autoPlay
-          muted
-          playsInline
-          style={{ width: "320px", height: "240px", background: "#000" }}
-        />
-      </div>
+      <video
+        ref={localVideoRef}
+        autoPlay
+        muted
+        playsInline
+        style={{ width: "320px", height: "240px", background: "#000" }}
+      />
+
       <div style={{ margin: "1rem 0" }}>
         {!recording ? (
           <button onClick={startRecording} disabled={recording || !devices.length}>
