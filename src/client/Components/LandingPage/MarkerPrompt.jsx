@@ -21,7 +21,7 @@ const MarkerPrompt = ({ trigger }) => {
     <div
       ref={containerRef}
       className={`marker-container ${visible ? 'visible' : ''}`}
-      style={{ marginBottom: '-80px', marginLeft: '-20px' }}
+      style={{ marginBottom: '-95px', marginLeft: '-16px' }}
     >
       <svg
         className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
@@ -39,7 +39,7 @@ const MarkerPrompt = ({ trigger }) => {
           fill="#DAFFED"
         />
       </svg>
-      <p className="marker-text">Are you a perfect candidate?</p>
+      <p className="marker-text">Are you a perfect candidate? </p>
     </div>
   );
 };

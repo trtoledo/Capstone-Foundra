@@ -21,7 +21,7 @@ const LostPrompt = ({ trigger }) => {
     <div
       ref={containerRef}
       className={`marker-container right-side ${visible ? 'visible' : ''}`}
-      style={{ marginBottom: '-140px', marginLeft: '550px', right: 0 }}
+      style={{ marginBottom: '-150px', marginLeft: '550px', right: 0 }}
     >
       <svg
         className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
@@ -39,7 +39,7 @@ const LostPrompt = ({ trigger }) => {
           fill="#DAFFED"
         />
       </svg>
-      <p className="marker-text" style={{ textAlign: 'right', paddingRight: '1rem' }}>
+      <p className="marker-text" style={{ textAlign: 'right', paddingRight: '.2rem' }}>
         Hiring struggles not coming to an end?
       </p>
     </div>

@@ -23,7 +23,7 @@ background-image: url('/lego-foundra-bg.png');
     background-size: 100;
     padding-bottom: 200px;
    
-    padding-top: 4rem;
+    padding-top: 3rem;
     /* background-position: cover; */
     /* background-repeat: repeat; */
 }
@@ -110,16 +110,19 @@ background-image: url('/lego-foundra-bg.png');
   background-color: #DAFFED;
   color: #000;
   border: none;
+  margin-top: 7px;
+
 }
 
-/* .primary-cta:hover {
-  background-color:#B1FA63;
-} */
+.primary-cta:hover {
+  background-color: #DAFFED;
+}
 
 .outline-cta {
   background: transparent;
   color: #DAFFED;
   border: 2px solid #DAFFED;
+  margin-top: 1px;
 }
 
 .outline-cta:hover {
@@ -189,7 +192,7 @@ background-image: url('/lego-foundra-bg.png');
 
   position: relative;
   overflow: visible;
-  padding-bottom: 100px;
+  padding-bottom: 125px;
   padding-top: 0;
   
 }
