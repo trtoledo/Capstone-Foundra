@@ -1,0 +1,73 @@
+.login-container {
+    position: relative;
+    background: linear-gradient(#121212, #121212) padding-box,
+                linear-gradient(135deg, #C200FB, #DAFFED) border-box;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 40px;
+    max-width: 400px;
+    margin: 100px auto 0;
+    color: #f0f0f0;
+    box-shadow: 0 4px 12px rgba(0, 255, 200, 0.1);
+  }
+  
+  /* Header or messages */
+  .login-container p {
+    color: #ff4d4d;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  /* Form labels */
+  .login-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #DAFFED;
+  }
+  
+  /* Input fields */
+  .login-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000000;
+    background-color: #1f1f1f;
+    color: #e0ffe6;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+  }
+  
+  .login-container input:focus {
+    border-color: #DAFFED;
+    outline: none;
+  }
+  
+  /* Submit button */
+  .login-container button {
+    width: 100%;
+    background-color: #210124;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .login-container button:hover {
+    background-color: #C200FB;
+  }
+
+  .login-container h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #c200fb, #daffed);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }

@@ -3,9 +3,9 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 100px;
+  height: 70px;
   
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   color: #DAFFED;
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
 }
 
 .topnav.collapsed {
-  height: 40px;
+  height: 50px;
 }
 
 .topnav-left {
@@ -28,13 +28,23 @@
   background: none;
   border: none;
   color: #DAFFED;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   cursor: pointer;
-  margin-right: 1rem;
+  margin: 0 1rem 0 0; /* Left a little room before the logo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Center inside nav height */
+}
+
+
+.toggle-btn {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .logo {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -59,7 +69,7 @@
   align-items: center;
   color: #DAFFED;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.17rem;
   transition: color 0.3s;
 }
 
@@ -85,11 +95,23 @@
   margin-left: 0.5rem;
 }
 .nav-logo {
-  height: 100px;
+  height: 55px;
   width: auto;
   object-fit: contain;
   margin-left: 0.5rem;
 }
 
+.nav-list.main-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-left: auto;
+}
 
-
+.nav-list.auth-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-left: auto;
+  margin-right: 2rem;
+}
