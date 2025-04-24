@@ -77,8 +77,8 @@ export default function TopNav() {
                   setToken(null);
                   setUser(null);
                   setRole("");
-                  localStorage.clear(); // or remove only relevant items
-                  setRefresh((r) => !r); // trigger refresh if needed
+                  localStorage.clear(); 
+                  setRefresh((r) => !r); 
                 }}
                 className="nav-link"
               >
