@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Inbox from "./Inbox";
 import ChatWindow from "./ChatWindow";
-import "./Messenger.css";
+import "./Messages.css";
 import { fetchMessages, fetchMessageById, sendMessage } from "../../api/messages";
 import { useAuth } from "../Context/AuthContext";
 
@@ -34,14 +34,14 @@ const Messenger = () => {
 
   return (
     <div className="messenger-container">
-      <div className="inbox">
+      <div className="inbox-panel">
         <Inbox
           threads={threads}
           selectedUser={selectedUser}
           onSelectThread={setSelectedUser}
         />
       </div>
-      <div className="chat-window">
+      <div className="chat-panel">
         {selectedUser ? (
           <ChatWindow
             messages={messages}
@@ -49,7 +49,7 @@ const Messenger = () => {
             onSendMessage={handleSendMessage}
           />
         ) : (
-          <div className="p-4 text-center text-gray-400">
+          <div className="empty-chat-message">
             Select a conversation to start chatting
           </div>
         )}
