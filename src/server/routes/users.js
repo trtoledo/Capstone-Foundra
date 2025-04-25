@@ -103,10 +103,10 @@ router.get('/candidates/:id', async (req, res) => {
 //PUT /api/users/:id —> only that individual user or admins
 router.put('/:id', isLoggedIn, isOwnerOrAdmin, async (req, res) => {
   try {
-    const { name, companyId, email, bio, avatarUrl } = req.body;
+    const { name, companyId, email, bio, avatarUrl, resumeUrl } = req.body;
     const updated = await prisma.user.update({
       where: { id: req.params.id },
-      data: { name, companyId, email, bio, avatarUrl }
+      data: { name, companyId, email, bio, avatarUrl, resumeUrl }
     });
     res.json(updated);
   } catch (err) {

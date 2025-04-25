@@ -18,6 +18,7 @@ model User {
   companyId String?
   avatarUrl String?
   bio       String?
+  resumeUrl String?
   reports   Report[]
   comments  Comment[]
   reviews   Review[]
