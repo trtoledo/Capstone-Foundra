@@ -8,8 +8,8 @@ const LostPrompt = ({ trigger }) => {
 
   useEffect(() => {
     if (trigger) {
-      const textTimeout = setTimeout(() => setVisible(true), 4000); // appears after "perfect candidate"
-      const arrowTimeout = setTimeout(() => setDrawArrow(true), 5000); // then draw arrow
+      const textTimeout = setTimeout(() => setVisible(true), 4000); 
+      const arrowTimeout = setTimeout(() => setDrawArrow(true), 5000); 
       return () => {
         clearTimeout(textTimeout);
         clearTimeout(arrowTimeout);
@@ -40,7 +40,7 @@ const LostPrompt = ({ trigger }) => {
         />
       </svg>
       <p className="marker-text" style={{ textAlign: 'right', paddingRight: '.2rem' }}>
-        Hiring struggles not coming to an end?
+        Are you looking for the perfect candidate?
       </p>
     </div>
   );

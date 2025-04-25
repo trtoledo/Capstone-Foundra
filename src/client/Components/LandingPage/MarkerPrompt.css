@@ -39,8 +39,8 @@
   
   .marker-container {
     position: absolute;
-    pointer-events: none; /* 👈 this prevents blocking interaction */
-    z-index: 1; /* still shows above background but under interactive elements */
+    pointer-events: none; 
+    z-index: 1; 
   }
 
   

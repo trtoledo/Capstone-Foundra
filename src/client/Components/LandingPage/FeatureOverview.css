@@ -78,7 +78,7 @@
   
   .feature-title {
     font-weight: 600;
-    color: #B1FA63;
+    color: #B1FA63 !important;
   }
   
   .feature-content {
