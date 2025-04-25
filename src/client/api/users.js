@@ -30,7 +30,7 @@ export async function fetchSingleUser(id) {
     }
 }
 
-export async function updateUser(id, name, companyId) {
+export async function updateUser(id, name, companyId, token) {
     try {
         const response = await fetch(`${API}/${id}`, {
             method: "PUT",
@@ -46,8 +46,9 @@ export async function updateUser(id, name, companyId) {
           }
       
           return await response.json();
-    } catch (error) {
-        console.error("Could not update user", err)
+    } catch (err) {
+        console.error("Could not update user", err);
+        throw err;
     }
 }
 

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
+import { updateUser } from "../../api/users";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
   const { token, user, setUser, loading, role } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [newUserData, setNewUserData] = useState({
-    username: "",
+    name: "",
     email: "",
     bio: "",
     avatarUrl: "",
@@ -16,7 +17,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (user) {
       setNewUserData({
-        username: user.username || "",
+        name: user.name || "",
         email: user.email || "",
         bio: user.bio || "",
         avatarUrl: user.avatarUrl || "",
@@ -36,32 +37,24 @@ const ProfilePage = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
-    if (!newUserData.username || !newUserData.email) {
-      alert("Username and email are required");
+    if (!newUserData.name || !newUserData.email) {
+      alert("name and email are required");
       return;
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/users/${user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newUserData),
-        }
+      const updatedUser = await updateUser(
+        user.id,
+        newUserData.name,
+        newUserData.companyId
       );
 
-      if (response.ok) {
-        const updatedUser = await response.json();
+      if (updatedUser) {
         setUser(updatedUser);
         alert("Profile updated successfully!");
         setIsEditing(false);
       } else {
-        const errorData = await response.json();
-        alert(errorData.error || "Failed to update profile");
+        alert("Failed to update profile");
       }
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -92,19 +85,14 @@ const ProfilePage = () => {
       body: file,
     });
 
-    const updatedUser = await fetch(
-      `http://localhost:3000/api/users/${user.id}`,
+    const updatedUser = await updateUser(
+      user.id,
+      newUserData.name,
+      newUserData.companyId,
       {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          avatarUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
-        }),
+        avatarUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
       }
-    ).then((res) => res.json());
+    );
 
     setUser(updatedUser);
     alert("Avatar updated successfully!");
@@ -133,19 +121,14 @@ const ProfilePage = () => {
       body: file,
     });
 
-    const updatedUser = await fetch(
-      `http://localhost:3000/api/users/${user.id}`,
+    const updatedUser = await updateUser(
+      user.id,
+      newUserData.name,
+      newUserData.companyId,
       {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          resumeUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
-        }),
+        resumeUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
       }
-    ).then((res) => res.json());
+    );
 
     setUser(updatedUser);
     alert("Resume uploaded successfully!");
@@ -157,18 +140,16 @@ const ProfilePage = () => {
     <div className="account-settings-container">
       <h2>Profile</h2>
 
-      {/* Avatar Upload Section */}
       <div className="avatar-upload-container">
         <label htmlFor="avatar-upload">Upload Avatar</label>
         <input type="file" id="avatar-upload" onChange={handleAvatarUpload} />
         <img
-          src={user?.avatarUrl || "default-avatar.png"}
+          src={user?.avatarUrl || "/assets/flounder_foundra.jpg"}
           alt="Profile Avatar"
           className="avatar-preview"
         />
       </div>
 
-      {/* Resume Upload Section */}
       <div className="resume-upload-container">
         <label htmlFor="resume-upload">Upload Resume (PDF)</label>
         <input
@@ -192,16 +173,15 @@ const ProfilePage = () => {
         )}
       </div>
 
-      {/* Profile Info or Editing Form */}
       {isEditing ? (
         <form onSubmit={handleUpdateProfile}>
           <div className="input-section">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={newUserData.username}
+              id="name"
+              name="name"
+              value={newUserData.name}
               onChange={handleChange}
             />
           </div>
@@ -231,7 +211,7 @@ const ProfilePage = () => {
       ) : (
         <div className="user-info">
           <p>
-            <strong>Username:</strong> {user?.username}
+            <strong>Name:</strong> {user?.name}
           </p>
           <p>
             <strong>Email:</strong> {user?.email}
