@@ -19,5 +19,6 @@ router.use('/feedback', require('../routes/feedback'));
 router.use('/reports', require('../routes/reports'));
 router.use('/messages', require('../routes/messages'));
 router.use('/comments', require('../routes/comments'));
+router.use('/resumes', require('../routes/resumes'));
 
 module.exports = router;

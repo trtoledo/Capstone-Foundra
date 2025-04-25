@@ -1,24 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
-import './ProfilePage.css';
+import { updateUser } from "../../api/users";
+import "./ProfilePage.css";
 
 const ProfilePage = () => {
-  const { token, user, setUser, loading, role } = useAuth(); 
+  const { token, user, setUser, loading, role } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [newUserData, setNewUserData] = useState({
-    username: "",
+    name: "",
     email: "",
     bio: "",
-    avatarUrl: "", 
+    avatarUrl: "",
+    resumeUrl: "",
   });
 
   useEffect(() => {
     if (user) {
       setNewUserData({
-        username: user.username || "",
+        name: user.name || "",
         email: user.email || "",
         bio: user.bio || "",
         avatarUrl: user.avatarUrl || "",
+        resumeUrl: user.resumeUrl || "",
       });
     }
   }, [user]);
@@ -34,29 +37,24 @@ const ProfilePage = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
-    if (!newUserData.username || !newUserData.email) {
-      alert("Username and email are required");
+    if (!newUserData.name || !newUserData.email) {
+      alert("name and email are required");
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newUserData),
-      });
+      const updatedUser = await updateUser(
+        user.id,
+        newUserData.name,
+        newUserData.companyId
+      );
 
-      if (response.ok) {
-        const updatedUser = await response.json();
+      if (updatedUser) {
         setUser(updatedUser);
         alert("Profile updated successfully!");
         setIsEditing(false);
       } else {
-        const errorData = await response.json();
-        alert(errorData.error || "Failed to update profile");
+        alert("Failed to update profile");
       }
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -68,30 +66,72 @@ const ProfilePage = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    try {
-      const formData = new FormData();
-      formData.append("avatar", file);
-
-      const response = await fetch("http://localhost:3000/api/users/upload-avatar", {
+    const response = await fetch(
+      "http://localhost:3000/api/users/sign-s3-profile",
+      {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
-      });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setUser(updatedUser); 
-        alert("Avatar updated successfully!");
-      } else {
-        const errorData = await response.json();
-        alert(errorData.error || "Failed to upload avatar");
+        body: JSON.stringify({ filename: file.name }),
       }
-    } catch (err) {
-      console.error("Error uploading avatar:", err);
-      alert("An error occurred while uploading your avatar");
-    }
+    );
+
+    const { url, key } = await response.json();
+    await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+
+    const updatedUser = await updateUser(
+      user.id,
+      newUserData.name,
+      newUserData.companyId,
+      {
+        avatarUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
+      }
+    );
+
+    setUser(updatedUser);
+    alert("Avatar updated successfully!");
+  };
+
+  const handleResumeUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const response = await fetch(
+      "http://localhost:3000/api/resumes/sign-s3-resume",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ filename: file.name }),
+      }
+    );
+
+    const { url, key } = await response.json();
+    await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+
+    const updatedUser = await updateUser(
+      user.id,
+      newUserData.name,
+      newUserData.companyId,
+      {
+        resumeUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
+      }
+    );
+
+    setUser(updatedUser);
+    alert("Resume uploaded successfully!");
   };
 
   if (loading) return <p>Loading...</p>;
@@ -99,41 +139,52 @@ const ProfilePage = () => {
   return (
     <div className="account-settings-container">
       <h2>Profile</h2>
-      
-      {/* Avatar Upload Section */}
+
       <div className="avatar-upload-container">
-        <div>
-          <label htmlFor="avatar-upload">Upload Avatar</label>
-          <input
-            type="file"
-            id="avatar-upload"
-            onChange={handleAvatarUpload}
-          />
-        </div>
-        
-        <div>
-          <img
-            src={user?.avatarUrl || "default-avatar.png"}
-            alt="Profile Avatar"
-            className="avatar-preview"
-          />
-        </div>
+        <label htmlFor="avatar-upload">Upload Avatar</label>
+        <input type="file" id="avatar-upload" onChange={handleAvatarUpload} />
+        <img
+          src={user?.avatarUrl || "/assets/flounder_foundra.jpg"}
+          alt="Profile Avatar"
+          className="avatar-preview"
+        />
       </div>
-  
-      {/* Profile Editing Form */}
+
+      <div className="resume-upload-container">
+        <label htmlFor="resume-upload">Upload Resume (PDF)</label>
+        <input
+          type="file"
+          id="resume-upload"
+          accept=".pdf"
+          onChange={handleResumeUpload}
+        />
+        {user?.resumeUrl && (
+          <p>
+            Current resume:{" "}
+            <a
+              href={user.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="resume-view-button"
+            >
+              View Resume
+            </a>
+          </p>
+        )}
+      </div>
+
       {isEditing ? (
         <form onSubmit={handleUpdateProfile}>
           <div className="input-section">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="name">Name</label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={newUserData.username}
+              id="name"
+              name="name"
+              value={newUserData.name}
               onChange={handleChange}
             />
           </div>
-          
           <div className="input-section">
             <label htmlFor="email">Email</label>
             <input
@@ -144,7 +195,6 @@ const ProfilePage = () => {
               onChange={handleChange}
             />
           </div>
-  
           <div className="input-section">
             <label htmlFor="bio">Bio</label>
             <textarea
@@ -154,14 +204,21 @@ const ProfilePage = () => {
               onChange={handleChange}
             />
           </div>
-  
-          <button type="submit" className="save-button">Save Changes</button>
+          <button type="submit" className="save-button">
+            Save Changes
+          </button>
         </form>
       ) : (
         <div className="user-info">
-          <p><strong>Username:</strong> {user?.username}</p>
-          <p><strong>Email:</strong> {user?.email}</p>
-          <p><strong>Bio:</strong> {user?.bio}</p>
+          <p>
+            <strong>Name:</strong> {user?.name}
+          </p>
+          <p>
+            <strong>Email:</strong> {user?.email}
+          </p>
+          <p>
+            <strong>Bio:</strong> {user?.bio}
+          </p>
           <button onClick={() => setIsEditing(true)} className="save-button">
             Edit Profile
           </button>

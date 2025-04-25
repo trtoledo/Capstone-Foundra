@@ -26,7 +26,7 @@ const Videos = () => {
     <div className="videos-container">
       <div className="videos-header">Record a New Interview</div>
       <div className="video-interview-sections">
-      <VideoInterview />
+      <VideoInterview setVideos={setVideos} />
       </div>
 
       <div className="videos-header" style={{ marginTop: "2rem" }}>Your Previous Videos</div>

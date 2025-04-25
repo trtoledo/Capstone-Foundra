@@ -1,27 +1,43 @@
-const { PrismaClient } = require('@prisma/client');
-const bcrypt = require('bcryptjs');
-const { faker } = require('@faker-js/faker');
+const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcryptjs");
+const { faker } = require("@faker-js/faker");
 
 const prisma = new PrismaClient();
 
 async function main() {
-  //10 industry
   const industryNames = [
-    'Healthcare', 'Finance', 'Education', 'Technology', 'Retail',
-    'Manufacturing', 'Energy', 'Transportation', 'Hospitality', 'Media'
+    "Healthcare",
+    "Finance",
+    "Education",
+    "Technology",
+    "Retail",
+    "Manufacturing",
+    "Energy",
+    "Transportation",
+    "Hospitality",
+    "Media",
   ];
 
   const industries = [];
   for (const name of industryNames) {
-    const industry = await prisma.industry.create({ data: { name } });
+    const industry = await prisma.industry.create({
+      data: { name },
+    });
     industries.push(industry);
+    console.log("Created industry:", industry.name);
   }
 
-  //10 company
   const companyNames = [
-    'Nimbus Tech', 'UrbanGrid Solutions', 'BlueRiver Financial',
-    'NextGen Learning', 'PulseCare Systems', 'AeroBuild Manufacturing',
-    'SunCore Energy', 'MetroMove Logistics', 'Skyline Hotels', 'Visionary Media'
+    "Nimbus Tech",
+    "UrbanGrid Solutions",
+    "BlueRiver Financial",
+    "NextGen Learning",
+    "PulseCare Systems",
+    "AeroBuild Manufacturing",
+    "SunCore Energy",
+    "MetroMove Logistics",
+    "Skyline Hotels",
+    "Visionary Media",
   ];
 
   const companies = [];
@@ -35,7 +51,6 @@ async function main() {
     companies.push(company);
   }
 
-  //users: 10 candidates, 10 HMs, 10 admins
   const candidates = [];
   const hiringManagers = [];
   const admins = [];
@@ -57,7 +72,6 @@ async function main() {
     else admins.push(user);
   }
 
-  //10 video (1 per candidate)
   const videos = [];
   for (let i = 0; i < candidates.length; i++) {
     const video = await prisma.video.create({
@@ -72,7 +86,6 @@ async function main() {
     videos.push(video);
   }
 
-  //5 top candidates
   for (let i = 0; i < 5; i++) {
     await prisma.topCandidate.create({
       data: {
@@ -85,7 +98,6 @@ async function main() {
     });
   }
 
-  //report
   const reporters = [...candidates.slice(0, 5), ...hiringManagers.slice(0, 5)];
   for (const user of reporters) {
     await prisma.report.create({
@@ -97,7 +109,6 @@ async function main() {
     });
   }
 
-  //comment (2 per video —> tied to videoId)
   const commentContent = [
     "Impressive pitch! You clearly know your strengths.",
     "Loved your passion for tech — very authentic.",
@@ -130,7 +141,6 @@ async function main() {
         data: {
           content: commentContent[commentIndex % commentContent.length],
           userId: commenter.id,
-          //link each comment to a video
           videoId: video.id,
         },
       });
@@ -138,7 +148,6 @@ async function main() {
     }
   }
 
-  //message —> exclude candidates from sending+ correct content based on roles
   function getMessageContent(senderRole, recipientRole) {
     if (senderRole === "ADMIN" && recipientRole === "CANDIDATE") {
       return faker.helpers.arrayElement([
@@ -152,7 +161,10 @@ async function main() {
         "Reminder to leave feedback.",
         "Let’s sync about next week’s hiring plan.",
       ]);
-    } else if (senderRole === "HIRING_MANAGER" && recipientRole === "CANDIDATE") {
+    } else if (
+      senderRole === "HIRING_MANAGER" &&
+      recipientRole === "CANDIDATE"
+    ) {
       return faker.helpers.arrayElement([
         "We’re impressed by your video!",
         "Can you tell us more about your experience?",
@@ -169,14 +181,14 @@ async function main() {
 
   let createdMessages = 0;
   while (createdMessages < 15) {
-    //candidates cannot send messages
-    const senderPool = [...hiringManagers, ...admins]; 
+    const senderPool = [...hiringManagers, ...admins];
     const recipientPool = [...candidates, ...hiringManagers, ...admins];
 
     const sender = senderPool[Math.floor(Math.random() * senderPool.length)];
     let recipient;
     do {
-      recipient = recipientPool[Math.floor(Math.random() * recipientPool.length)];
+      recipient =
+        recipientPool[Math.floor(Math.random() * recipientPool.length)];
     } while (recipient.id === sender.id);
 
     const content = getMessageContent(sender.role, recipient.role);
