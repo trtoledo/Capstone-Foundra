@@ -36,25 +36,6 @@ const Explore = () => {
     ),
   }));
 
-  // useEffect(() => {
-  //   if (selectedCompanyId) {
-  //     const company = companies.find((c) => c.id === selectedCompanyId);
-  //     if (company) {
-  //       setCompanyName(company.name);
-  //       setIndustryId(company.industryId || "");
-  //     }
-  //   }
-  // }, [selectedCompanyId, companies]);
-
-  // useEffect(() => {
-  //   if (selectedIndustryId) {
-  //     const industry = industries.find((i) => i.id === selectedIndustryId);
-  //     if (industry) {
-  //       setIndustryName(industry.name);
-  //     }
-  //   }
-  // }, [selectedIndustryId, industries]);
-
   return (
     <div className="explore-container">
       <div className="section">
