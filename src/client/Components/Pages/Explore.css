@@ -66,3 +66,17 @@
     background-color: #C200FB;
   }
   
+  .card.clickable {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .card.clickable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 10px #ff4fd8;
+  }
+  
+  .industry-section {
+    margin-bottom: 2rem;
+  }
+  
