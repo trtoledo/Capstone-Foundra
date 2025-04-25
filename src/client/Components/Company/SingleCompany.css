@@ -1,0 +1,32 @@
+.single-company-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 100px auto 0;
+  }
+  
+  .single-company-container h2 {
+    color: #333;
+  }
+  
+  .single-company-container h4 {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .industry-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e3e3e3;
+    border-radius: 8px;
+  }
+  
+  .industry-details h4 {
+    color: #333;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }

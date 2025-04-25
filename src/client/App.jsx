@@ -7,6 +7,7 @@ import Candidates from "./Components/Pages/Candidates.jsx";
 import Companies from "./Components/Pages/Companies.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import SingleIndustryPage from "./Components/Industry/SingleIndustryPage.jsx";
+import SingleCompany from "./Components/Company/SingleCompany.jsx";
 import TopCandidates from "./Components/Candidate/TopCandidates.jsx";
 import Videos from "./Components/Video/Videos.jsx";
 import Comments from "./Components/Video/Comments.jsx";
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/companies" element={<Companies />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/industry/:id" element={<SingleIndustryPage />} />
+          <Route path="/company/:id" element={<SingleCompany />} />
           <Route path="/candidates/top" element={<TopCandidates />} />
           <Route path="/videos" element={<Videos />} />
           <Route path="/inbox" element={<Messenger />} />
