@@ -4,7 +4,7 @@ import Explore from "./Components/Pages/Explore.jsx";
 import Home from "./Components/Pages/Home.jsx";
 import TopNav from "./Components/LandingPage/TopNav.jsx";
 import Candidates from "./Components/Pages/Candidates.jsx";
-import Companies from "./Components/Pages/Companies.jsx";
+import Companies from "./Components/Company/Companies.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
 import SingleIndustryPage from "./Components/Industry/SingleIndustryPage.jsx";
 import SingleCompany from "./Components/Company/SingleCompany.jsx";
