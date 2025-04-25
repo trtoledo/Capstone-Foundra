@@ -1,185 +1,143 @@
-import { useEffect, useRef, useState } from 'react';
-import {useAuth} from '../Context/AuthContext';
-const ROOM_ID = 'test-room';
+import React, { useEffect, useRef, useState } from "react";
+import { useAuth } from "../Context/AuthContext";
+import VideoTranscriber from "./VideoTranscriber";
+import Comments from "./Comments";
+import "./Videos.css";
 
-const VideoWithRecording = () => {
-  const localVideoRef = useRef(null);
-  const remoteVideoRef = useRef(null);
-  const peerConnectionRef = useRef(null);
-  const recorderRef = useRef(null);
+const VideoInterview = () => {
   const { token } = useAuth();
+  const localVideoRef = useRef(null);
   const [devices, setDevices] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState('');
-  const [callStarted, setCallStarted] = useState(false);
   const [recording, setRecording] = useState(false);
-  const [chunks, setChunks] = useState([]);
-
-  const rtcConfig = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-  };
+  const [recordedUrl, setRecordedUrl] = useState("");
+  const [newVideoId, setNewVideoId] = useState(null);
+  const recorderRef = useRef(null);
 
   useEffect(() => {
-    getDevices();
-
-    // return () => {
-    //   if (peerConnectionRef.current) peerConnectionRef.current.close();
-    // };
+    (async () => {
+      const allDevices = await navigator.mediaDevices.enumerateDevices();
+      setDevices(allDevices.filter(d => d.kind === "videoinput"));
+    })();
   }, []);
 
-  const getDevices = async () => {
-    const all = await navigator.mediaDevices.enumerateDevices();
-    const videoInputs = all.filter(d => d.kind === 'videoinput');
-    setDevices(videoInputs);
-    setSelectedDeviceId(videoInputs[0]?.deviceId || '');
-  };
-
   const startLocalVideo = async () => {
+    if (!devices.length) return null;
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { deviceId: selectedDeviceId },
-      audio: true,
+      video: { deviceId: devices[0].deviceId },
+      audio: true
     });
     localVideoRef.current.srcObject = stream;
     return stream;
   };
 
+  const uploadRecording = async (blob) => {
+    const filename = `${Date.now()}-interview.webm`;
+    const signRes = await fetch(
+      `http://localhost:3000/api/videos/sign-s3`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ filename })
+      }
+    );
+    if (!signRes.ok) throw new Error('Failed to get presigned URL');
+    const { url: presignedUrl, key } = await signRes.json();
 
+    const uploadRes = await fetch(presignedUrl, {
+      method: "PUT",
+      headers: { "Content-Type": "video/webm" },
+      body: blob
+    });
+    if (!uploadRes.ok) throw new Error('S3 upload failed');
 
-  // const handleSignalingData = async ({ type, offer, answer, candidate }) => {
-  //   if (!peerConnectionRef.current) {
-  //     const stream = await startLocalVideo();
-  //     createPeerConnection(stream);
-  //   }
-  //   const pc = peerConnectionRef.current;
-  //   switch (type) {
-  //     case 'offer':
-  //       await pc.setRemoteDescription(new RTCSessionDescription(offer));
-  //       const ans = await pc.createAnswer();
-  //       await pc.setLocalDescription(ans);
-  //       signalingChannel.send(ROOM_ID, { type: 'answer', answer: ans });
-  //       setCallStarted(true);
-  //       break;
-  //     case 'answer':
-  //       await pc.setRemoteDescription(new RTCSessionDescription(answer));
-  //       setCallStarted(true);
-  //       break;
-  //     case 'candidate':
-  //       if (candidate) await pc.addIceCandidate(new RTCIceCandidate(candidate));
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+    const publicUrl = `https://${process.env.REACT_APP_S3_BUCKET}.s3.amazonaws.com/${key}`;
+    const createRes = await fetch(
+      `http://localhost:3000/api/videos`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ title: filename, url: publicUrl, isPublic: true })
+      }
+    );
+    if (!createRes.ok) throw new Error('Failed to create video record');
+    return await createRes.json();
+  };
 
-  // const initiateCall = async () => {
-  //   const stream = await startLocalVideo();
-  // };
-
-  
   const startRecording = async () => {
     const stream = await startLocalVideo();
-    const localStream = localVideoRef.current.srcObject;
-    const remoteStream = remoteVideoRef.current.srcObject;
-    
+    if (!stream) return;
+
     const mixed = new MediaStream([
-      ...localStream.getVideoTracks(),
-      ...localStream.getAudioTracks(),
-      // ...remoteStream.getAudioTracks(), lookup later
+      ...stream.getVideoTracks(),
+      ...stream.getAudioTracks()
     ]);
-    const options = { mimeType: 'video/webm; codecs=vp8,opus' };
-    const mediaRecorder = new MediaRecorder(mixed, options);
+    const recorder = new MediaRecorder(mixed, { mimeType: "video/webm; codecs=vp8,opus" });
     const buffer = [];
 
-    mediaRecorder.ondataavailable = e => buffer.push(e.data);
-    mediaRecorder.onstop = async () => {
-      
-      const blob = new Blob(buffer, { type: options.mimeType });
-      await uploadRecording(blob);
+    recorder.ondataavailable = (e) => buffer.push(e.data);
+    recorder.onstop = async () => {
+      const blob = new Blob(buffer, { type: "video/webm" });
+      try {
+        const created = await uploadRecording(blob);
+        setRecordedUrl(URL.createObjectURL(blob));
+        setNewVideoId(created.id);
+      } catch (err) {
+        console.error(err);
+      }
+      setRecording(false);
     };
 
-    mediaRecorder.start(1000);
-    recorderRef.current = mediaRecorder;
-    setChunks(buffer);
+    recorder.start(1000);
+    recorderRef.current = recorder;
     setRecording(true);
   };
 
   const stopRecording = () => {
-    if (recorderRef.current && recorderRef.current.state === 'recording') {
+    if (recorderRef.current && recorderRef.current.state === "recording") {
       recorderRef.current.stop();
-      setRecording(false);
     }
   };
 
-  const uploadRecording = async blob => {
-    const filename = `${Date.now()}-call.webm`;
-   
-    const presignRes = await fetch(
-      `http://localhost:3000/api/videos/sign-s3`,
-      {
-        method: "POST",
-        headers: {'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({filename})
-       }
-    );
-    const { url, key } = await presignRes.json();
-   
-    const bucketAPI = await fetch(url, { method: 'PUT', body: blob });
-    // const bucketResult = await bucketAPI.json();
-    console.log(bucketAPI);
-    
-    
-   
-    const publicUrl = `http://foundra-bucket.s3.amazonaws.com/${key}`;
-    const addVid = await fetch(`http://localhost:3000/api/videos`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-       },
-      
-      body: JSON.stringify({ title: 'test', url: publicUrl }),
-    });
-    const addVidResult = await addVid.json();
-    console.log(addVidResult);
-    
-    
-    alert('Video uploaded successfully!');
-  };
-
   return (
-    <div>
-      <div>
-        <select
-          value={selectedDeviceId}
-          onChange={e => setSelectedDeviceId(e.target.value)}
-          disabled={callStarted}
-        >
-          {devices.map(d => (
-            <option key={d.deviceId} value={d.deviceId}>
-              {d.label || d.deviceId}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className="fullscreen-center-wrapper">
+    <div className="video-interview-container">
+      <h2 className="video-interview-heading">Record Your Interview</h2>
+      <video
+        ref={localVideoRef}
+        autoPlay
+        muted
+        playsInline
+        className="video-preview"
+      />
 
-      <div style={{ display: 'flex', gap: '1rem', margin: '1rem 0' }}>
-        <video ref={localVideoRef} autoPlay muted playsInline width="300" />
-        <video ref={remoteVideoRef} autoPlay playsInline width="300" />
-      </div>
-
-        <button onClick={startRecording} disabled={!selectedDeviceId}>
-          Start Call
-        </button>
-        <>
-          <button onClick={startRecording} disabled={recording}>
+      <div className="record-button-container">
+        {!recording ? (
+          <button className="record-button" onClick={startRecording} disabled={recording || !devices.length}>
             Start Recording
           </button>
-          <button onClick={stopRecording} disabled={!recording} style={{ marginLeft: '0.5rem' }}>
+        ) : (
+          <button className="record-button stop" onClick={stopRecording}>
             Stop Recording
           </button>
-        </>
+        )}
+      </div>
+
+      {recordedUrl && (
+        <div className="recording-review-section">
+          <h3>Review & Transcribe</h3>
+          <VideoTranscriber src={recordedUrl} autoStart />
+          {newVideoId && <Comments videoId={newVideoId} />}
+        </div>
+      )}
+    </div>
     </div>
   );
 };
 
-export default VideoWithRecording;
+export default VideoInterview;

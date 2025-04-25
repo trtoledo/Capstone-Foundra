@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
-  color: #DAFFED;
+  font-family: "Inter", sans-serif;
+  color: #daffed;
   background-color: #000;
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -44,7 +45,6 @@ body, html {
   position: relative;
 }
 
-
 .centerpiece {
   position: relative;
   z-index: 1;
@@ -64,35 +64,38 @@ body, html {
 } */
 
 .headline {
-  font-family: 'Permanent Marker', cursive;
+  font-family: "Permanent Marker", cursive;
   font-size: 2.8rem;
   font-weight: 400;
-  color: #DAFFED;
+  color: #daffed;
   margin: 0 0 15px;
   min-height: 3.2rem;
 }
 
-
 .typing-text::after {
-  content: '|';
+  content: "|";
   display: inline-block;
   margin-left: 5px;
   animation: blink 1s infinite;
-  color: #DAFFED;
+  color: #daffed;
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .subtext {
   font-size: 1.15rem;
-  color: #DAFFED;
+  color: #daffed;
   margin-bottom: 30px;
   max-width: 700px;
 }
-
 
 .cta-buttons {
   display: flex;
@@ -112,21 +115,20 @@ body, html {
 }
 
 .primary-cta {
-  background-color: #DAFFED;
+  background-color: #daffed;
   color: #000;
   border: none;
   margin-top: 7px;
-
 }
 
 .primary-cta:hover {
-  background-color: #DAFFED;
+  background-color: #daffed;
 }
 
 .outline-cta {
   background: transparent;
-  color: #DAFFED;
-  border: 2px solid #DAFFED;
+  color: #daffed;
+  border: 2px solid #daffed;
   margin-top: 1px;
 }
 
@@ -150,7 +152,7 @@ body, html {
   display: block;
   height: 300px; /* adjust as needed */
   width: auto;
-  margin: 0 auto .1rem auto;
+  margin: 0 auto 0.1rem auto;
 }
 
 .centerpiece,
@@ -172,7 +174,7 @@ body, html {
 
 .subtext {
   background-color: transparent; /* or any HEX like #000000 */
-  color: #DAFFED; /* your mint */
+  color: #daffed; /* your mint */
   padding: 0.5rem 1rem;
   border-radius: 6px;
 }
@@ -187,10 +189,8 @@ body, html {
   padding: 2rem;
   border-radius: 16px;
 
-
-  background:
-    linear-gradient(black, black) padding-box,
-    linear-gradient(135deg, #B1FA63, #EC0868, #C200FB) border-box;
+  background: linear-gradient(black, black) padding-box,
+    linear-gradient(135deg, #b1fa63, #ec0868, #c200fb) border-box;
   border: 2px solid transparent;
   background-origin: border-box;
   background-clip: padding-box, border-box;
@@ -199,7 +199,6 @@ body, html {
   overflow: visible;
   padding-bottom: 125px;
   padding-top: 0;
-  
 }
 
 
@@ -211,8 +210,8 @@ body, html {
   padding-bottom: -1rem;
   /* border-bottom: 2px solid #B1FA63; */
   border-bottom: 2px solid transparent;
-border-image: linear-gradient(to right, #B1FA63, #EC0868, #C200FB) 1;
-border-image-slice: 1;
+  border-image: linear-gradient(to right, #b1fa63, #ec0868, #c200fb) 1;
+  border-image-slice: 1;
 
   margin-bottom: 0;
 }
@@ -238,7 +237,6 @@ border-image-slice: 1;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-
 }
 
 .primary-cta,
@@ -251,19 +249,18 @@ border-image-slice: 1;
   transition: all 0.3s ease;
   width: 150px;
   text-align: center;
- 
 }
 
 .primary-cta {
-  background-color: #DAFFED;
+  background-color: #daffed;
   color: #210124;
   border: none;
 }
 
 .outline-cta {
   background-color: transparent;
-  color: #DAFFED;
-  border: 2px solid #DAFFED;
+  color: #daffed;
+  border: 2px solid #daffed;
 }
 
 .foundra-logo {
@@ -274,16 +271,16 @@ border-image-slice: 1;
 }
 
 .typing-text {
-  font-family: 'Permanent Marker', cursive;
+  font-family: "Permanent Marker", cursive;
   font-size: 2rem;
-  color: #DAFFED;
+  color: #daffed;
   text-align: center;
   margin-bottom: 0.25rem;
   margin-top: 0;
 }
 
 .subtext {
-  color: #DAFFED;
+  color: #daffed;
   text-align: center;
   font-size: 1rem;
   max-width: 600px;
@@ -296,5 +293,4 @@ border-image-slice: 1;
   position: relative;
   grid-column: 1 / 3;
   height: 140px;
-
 }

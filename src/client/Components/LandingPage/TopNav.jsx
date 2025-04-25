@@ -11,10 +11,12 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import "./TopNav.css";
+import { useAuth } from "../Context/AuthContext";
 
 export default function TopNav() {
   const [collapsed, setCollapsed] = useState(false);
   const toggleNav = () => setCollapsed(!collapsed);
+  const { token, setToken, setUser, setRole, setRefresh } = useAuth();
 
   const mainNavItems = [
     { icon: <FaHome />, label: "Home", path: "/" },
@@ -60,20 +62,42 @@ export default function TopNav() {
 
       {/* Auth Navigation (right side) */}
       <ul className="nav-list auth-nav">
-        {authNavItems.map((item, index) => (
-          <li key={index} className="nav-item">
-            <Link to={item.path} className="nav-link">
-              {item.icon}
-              {!collapsed && <span className="nav-label">{item.label}</span>}
-            </Link>
-          </li>
-        ))}
+        {token ? (
+          <>
+            <li className="nav-item">
+              <Link to="/dashboard" className="nav-link">
+                <FaInfoCircle />
+                {!collapsed && <span className="nav-label">Dashboard</span>}
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/"
+                onClick={() => {
+                  setToken(null);
+                  setUser(null);
+                  setRole("");
+                  localStorage.clear(); 
+                  setRefresh((r) => !r); 
+                }}
+                className="nav-link"
+              >
+                <FaSignInAlt />
+                {!collapsed && <span className="nav-label">Logout</span>}
+              </Link>
+            </li>
+          </>
+        ) : (
+          authNavItems.map((item, index) => (
+            <li key={index} className="nav-item">
+              <Link to={item.path} className="nav-link">
+                {item.icon}
+                {!collapsed && <span className="nav-label">{item.label}</span>}
+              </Link>
+            </li>
+          ))
+        )}
       </ul>
     </div>
   );
 }
-
-
-
-
-
