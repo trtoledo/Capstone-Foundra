@@ -8,8 +8,8 @@ const MarkerPrompt = ({ trigger }) => {
 
   useEffect(() => {
     if (trigger) {
-      const textTimeout = setTimeout(() => setVisible(true), 2000); // wait for "Hired" to type before text
-      const arrowTimeout = setTimeout(() => setDrawArrow(true), 3000); // then draw arrow
+      const textTimeout = setTimeout(() => setVisible(true), 2000); 
+      const arrowTimeout = setTimeout(() => setDrawArrow(true), 3000); 
       return () => {
         clearTimeout(textTimeout);
         clearTimeout(arrowTimeout);
@@ -39,7 +39,7 @@ const MarkerPrompt = ({ trigger }) => {
           fill="#DAFFED"
         />
       </svg>
-      <p className="marker-text">Are you a perfect candidate? </p>
+      <p className="marker-text">Are you a perfect applicant? </p>
     </div>
   );
 };
