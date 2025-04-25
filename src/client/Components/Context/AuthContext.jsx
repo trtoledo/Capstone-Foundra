@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { fetchSingleUser } from '../../api/users';
+import { initializeSocket, connectSocket, disconnectSocket } from '../../api/socket';
 
 const AuthContext = createContext();
 
@@ -11,6 +12,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [role, setRole] = useState("");
+  const [socket, setSocket] = useState(null); 
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -44,6 +46,18 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, [refresh]);
 
+  useEffect(() => {
+    if (token) {
+      const socketInstance = initializeSocket(token);
+      setSocket(socketInstance);
+      connectSocket();
+
+      return () => {
+        disconnectSocket();
+      };
+    }
+  }, [token]); 
+
   return (
     <AuthContext.Provider
       value={{
@@ -55,7 +69,8 @@ export const AuthProvider = ({ children }) => {
         setUser,
         loading,
         role,
-        setRole
+        setRole,
+        socket,
       }}
     >
       {children}

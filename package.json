@@ -35,6 +35,7 @@
     "react-draggable": "^4.4.6",
     "react-icons": "^5.5.0",
     "react-refresh": "^0.17.0",
+    "socket.io": "^4.8.1",
     "vite-express": "*",
     "vosk-browser": "^0.0.8",
     "ziggeo": "^0.1.30",
