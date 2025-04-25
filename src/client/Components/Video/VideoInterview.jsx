@@ -4,7 +4,7 @@ import VideoTranscriber from "./VideoTranscriber";
 import Comments from "./Comments";
 import "./Videos.css";
 
-const VideoInterview = () => {
+const VideoInterview = ({ setVideos }) => {
   const { token } = useAuth();
   const localVideoRef = useRef(null);
   const [devices, setDevices] = useState([]);
@@ -66,7 +66,11 @@ const VideoInterview = () => {
       }
     );
     if (!createRes.ok) throw new Error('Failed to create video record');
-    return await createRes.json();
+    const created = await createRes.json();
+
+    setVideos((prevVideos) => [...prevVideos, created]);
+    setRecordedUrl(URL.createObjectURL(blob));
+    setNewVideoId(created.id);
   };
 
   const startRecording = async () => {
@@ -106,36 +110,36 @@ const VideoInterview = () => {
 
   return (
     <div className="fullscreen-center-wrapper">
-    <div className="video-interview-container">
-      <h2 className="video-interview-heading">Record Your Interview</h2>
-      <video
-        ref={localVideoRef}
-        autoPlay
-        muted
-        playsInline
-        className="video-preview"
-      />
+      <div className="video-interview-container">
+        <h2 className="video-interview-heading">Record Your Interview</h2>
+        <video
+          ref={localVideoRef}
+          autoPlay
+          muted
+          playsInline
+          className="video-preview"
+        />
 
-      <div className="record-button-container">
-        {!recording ? (
-          <button className="record-button" onClick={startRecording} disabled={recording || !devices.length}>
-            Start Recording
-          </button>
-        ) : (
-          <button className="record-button stop" onClick={stopRecording}>
-            Stop Recording
-          </button>
+        <div className="record-button-container">
+          {!recording ? (
+            <button className="record-button" onClick={startRecording} disabled={recording || !devices.length}>
+              Start Recording
+            </button>
+          ) : (
+            <button className="record-button stop" onClick={stopRecording}>
+              Stop Recording
+            </button>
+          )}
+        </div>
+
+        {recordedUrl && (
+          <div className="recording-review-section">
+            <h3>Review & Transcribe</h3>
+            <VideoTranscriber src={recordedUrl} autoStart />
+            {newVideoId && <Comments videoId={newVideoId} />}
+          </div>
         )}
       </div>
-
-      {recordedUrl && (
-        <div className="recording-review-section">
-          <h3>Review & Transcribe</h3>
-          <VideoTranscriber src={recordedUrl} autoStart />
-          {newVideoId && <Comments videoId={newVideoId} />}
-        </div>
-      )}
-    </div>
     </div>
   );
 };
