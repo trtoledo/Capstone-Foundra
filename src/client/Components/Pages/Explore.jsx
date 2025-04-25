@@ -82,6 +82,8 @@ const Explore = () => {
         ))}
       </div>
 
+    {/* I kept both sections for now to see what we like more but I am still working on the functionality to get them to display companies and be able to click them to navigate to that company */}
+
       <div className="section">
         <h2>Industries</h2>
         <div className="card-grid">
