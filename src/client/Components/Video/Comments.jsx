@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./Comments.css";
 import { useAuth } from "../Context/AuthContext";
-import { fetchComments, createComment, updateComment, deleteComment} from "../../api/comments";
+import {
+  fetchComments,
+  createComment,
+  updateComment,
+  deleteComment,
+} from "../../api/comments";
 
-export default function Comments() {
+export default function Comments({ videoId }) {
   const [comments, setComments] = useState([]);
   const [newContent, setNewContent] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editingContent, setEditingContent] = useState("");
   const [error, setError] = useState(null);
-  const { user, role } = useAuth();
+  const { user, role, token } = useAuth();
 
   useEffect(() => {
     loadComments();
@@ -26,7 +31,7 @@ export default function Comments() {
 
   async function handleCreate() {
     try {
-      await createComment(newContent);
+      await createComment(newContent, videoId);
       setNewContent("");
       loadComments();
     } catch (err) {
@@ -73,7 +78,7 @@ export default function Comments() {
             onChange={(e) => setNewContent(e.target.value)}
             placeholder="Comment here..."
           />
-          <button className="comment-button" onClick={handleCreate}>
+          <button className="comment-button" onClick={() => handleCreate()}>
             Post
           </button>{" "}
         </div>

@@ -7,6 +7,9 @@ const { isLoggedIn } = require("../middleware/auth");
 router.get("/", async (req, res) => {
   try {
     const comments = await prisma.comment.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         user: {
           select: {
@@ -26,7 +29,7 @@ router.get("/", async (req, res) => {
 
 //POST /api/comments —> only people who have an account (NOT admins)
 router.post("/", isLoggedIn, async (req, res) => {
-  const { content } = req.body;
+  const { content, videoId } = req.body;
 
   //block admins from creating comments
   if (req.user.role === "ADMIN") {
@@ -39,6 +42,7 @@ router.post("/", isLoggedIn, async (req, res) => {
         content,
         //only use authenticated user
         userId: req.user.userId,
+        videoId,
       },
     });
     res.status(201).json(comment);

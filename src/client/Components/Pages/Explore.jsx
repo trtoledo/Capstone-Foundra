@@ -29,6 +29,11 @@ const Explore = () => {
     fetchData();
   }, []);
 
+  const companiesByIndustry = industries.map(industry => ({
+    ...industry,
+    companies: companies.filter(company => company.industry?.id === industry.id)
+  }));
+
   // useEffect(() => {
   //   if (selectedCompanyId) {
   //     const company = companies.find((c) => c.id === selectedCompanyId);
@@ -52,23 +57,46 @@ const Explore = () => {
     <>
       <div className="explore-container">
         <div className="section">
-          <h2>Companies</h2>
-          <div className="card-grid">
+          <h2>Explore Companies by Industry</h2>
+
+          {companiesByIndustry.map((industry) => (
+            <div key={industry.id} className="industry-section">
+              <h3>{industry.name}</h3>
+              <div className="card-grid">
+                {industry.companies.map((company) => (
+                  <div
+                  key={company.id}
+                  className="card clickable"
+                  onClick={() => navigate(`/companies/${company.id}`)}>
+                    <h4>{company.name}</h4>
+                    <p>{company.description || "No description"}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          {/* <div className="card-grid">
             {companies.map((company) => (
               <div key={company.id} className="card">
                 <h3>{company.name}</h3>
                 <p>Industry: {company.industry?.name || "Unassigned"}</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
+
         <div className="section">
           <h2>Industries</h2>
           <div className="card-grid">
             {industries.map((industry) => (
               <div key={industry.id} className="card">
                 <h3>{industry.name}</h3>
-                <p>{industry.companies?.length || 0} companies</p>
+                <p>
+                  {
+                    companies.filter((company) => company.industry?.id === industry.id).length
+                  }{" "}
+                  companies
+                </p>
               </div>
             ))}
           </div>
