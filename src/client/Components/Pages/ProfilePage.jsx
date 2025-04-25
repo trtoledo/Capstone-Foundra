@@ -98,7 +98,7 @@ const ProfilePage = () => {
 
   return (
     <div className="account-settings-container">
-      <h2>Account Settings</h2>
+      <h2>Profile</h2>
       
       {/* Avatar Upload Section */}
       <div className="avatar-upload-container">
