@@ -20,12 +20,12 @@ export async function addCompany(name, industryId) {
   try {
     const response = await fetch(API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ name, industryId }),
-  }});
+  });
 
     if (!response.ok) {
       const errorData = await response.json();

@@ -6,7 +6,7 @@ import { useAuth } from "../Context/AuthContext";
 import "./Explore.css";
 
 const Explore = () => {
-  const { token, setToken, refresh, setRefresh } = useAuth();
+  const { token, refresh, setRefresh } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
@@ -27,11 +27,13 @@ const Explore = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
-  const companiesByIndustry = industries.map(industry => ({
+  const companiesByIndustry = industries.map((industry) => ({
     ...industry,
-    companies: companies.filter(company => company.industry?.id === industry.id)
+    companies: companies.filter(
+      (company) => company.industry?.id === industry.id
+    ),
   }));
 
   // useEffect(() => {
@@ -54,56 +56,51 @@ const Explore = () => {
   // }, [selectedIndustryId, industries]);
 
   return (
-    <>
-      <div className="explore-container">
-        <div className="section">
-          <h2>Explore Companies by Industry</h2>
-
-          {companiesByIndustry.map((industry) => (
-            <div key={industry.id} className="industry-section">
-              <h3>{industry.name}</h3>
-              <div className="card-grid">
-                {industry.companies.map((company) => (
+    <div className="explore-container">
+      <div className="section">
+        <h2>Explore Companies by Industry</h2>
+        {companiesByIndustry.map((industry) => (
+          <div key={industry.id} className="industry-section">
+            <h3>{industry.name}</h3>
+            <div className="card-grid">
+              {industry.companies.length > 0 ? (
+                industry.companies.map((company) => (
                   <div
-                  key={company.id}
-                  className="card clickable"
-                  onClick={() => navigate(`/companies/${company.id}`)}>
+                    key={company.id}
+                    className="card clickable"
+                    onClick={() => navigate(`/companies/${company.id}`)}
+                  >
                     <h4>{company.name}</h4>
                     <p>{company.description || "No description"}</p>
                   </div>
-                ))}
-              </div>
+                ))
+              ) : (
+                <p>No companies in this industry.</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="section">
+        <h2>Industries</h2>
+        <div className="card-grid">
+          {industries.map((industry) => (
+            <div key={industry.id} className="card">
+              <h3>{industry.name}</h3>
+              <p>
+                {
+                  companies.filter(
+                    (company) => company.industry?.id === industry.id
+                  ).length
+                }{" "}
+                companies
+              </p>
             </div>
           ))}
-          {/* <div className="card-grid">
-            {companies.map((company) => (
-              <div key={company.id} className="card">
-                <h3>{company.name}</h3>
-                <p>Industry: {company.industry?.name || "Unassigned"}</p>
-              </div>
-            ))}
-          </div> */}
-        </div>
-
-        <div className="section">
-          <h2>Industries</h2>
-          <div className="card-grid">
-            {industries.map((industry) => (
-              <div key={industry.id} className="card">
-                <h3>{industry.name}</h3>
-                <p>
-                  {
-                    companies.filter((company) => company.industry?.id === industry.id).length
-                  }{" "}
-                  companies
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
-      <button onClick={() => navigate('/')}>Home</button>
-    </>
+    </div>
   );
 };
 

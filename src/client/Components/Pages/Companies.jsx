@@ -15,7 +15,11 @@ const Companies = () => {
         renderCompanies();
     }, []);
 
-    const companiesToDisplay = searchParam ? companies.filter((idx) => idx.name.toLowerCase().includes(searchParam)) : companies;
+    const companiesToDisplay = searchParam
+    ? companies.filter((c) =>
+        c.name.toLowerCase().includes(searchParam.toLowerCase())
+      )
+    : companies;
 
     // async function handleDetails(industryId) {
     //     const response = await 
@@ -38,7 +42,7 @@ const Companies = () => {
               return (
                 <div key={idx.id} className="company">
                   <h4>{idx.name}</h4>
-                  <h5>{idx.industry}</h5>
+                  <h5>{idx.industry?.name || "Unassigned"}</h5>
                   <h6>{idx.videos}</h6>
                   <br />
                   {/* <button
