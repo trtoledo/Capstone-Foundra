@@ -16,6 +16,8 @@ model User {
   isDeleted Boolean        @default(false)
   company   Company?       @relation(fields: [companyId], references: [id])
   companyId String?
+  avatarUrl String?
+  bio       String?
   reports   Report[]
   comments  Comment[]
   reviews   Review[]
