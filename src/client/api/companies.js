@@ -17,6 +17,7 @@ export async function fetchCompanies() {
 };
 
 export async function addCompany(name, industryId) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(API, {
       method: "POST",
@@ -40,14 +41,16 @@ export async function addCompany(name, industryId) {
 };
 
 export async function updateCompany(name, industryId, companyId) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API}/${companyId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ name, industryId }),
-    }});
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -62,6 +65,7 @@ export async function updateCompany(name, industryId, companyId) {
 };
 
 export async function deleteCompany(companyId) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API}/${companyId}`, {
       method: "DELETE",
