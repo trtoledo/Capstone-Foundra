@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { fetchCompanies, addCompany, updateCompany, deleteCompany } from "../../api/companies";
 import { fetchIndustries } from "../../api/industries";
 import "./Companies.css"
+import { useAuth } from "../Context/AuthContext";
 
 const Companies = () => {
+    const { user, role, loading } = useAuth();
     const [companies, setCompanies] = useState([]);
     const [searchParam, setSearchParam] = useState("");
     const [newCompanyName, setNewCompanyName] = useState("");
@@ -41,8 +43,11 @@ const Companies = () => {
       }
     };
 
+    if (loading) return null;
+
     return (
       <>
+      <div className="companies-container">
         <div className="search">
           <label>
             Search:{" "}
@@ -54,7 +59,7 @@ const Companies = () => {
           </label>
         </div>
   
-        {userRole === "HIRING_MANAGER" && (
+        {role === "HIRING_MANAGER" && (
           <div className="addCompanyForm">
             <h3>Add a New Company</h3>
             <input
@@ -89,6 +94,7 @@ const Companies = () => {
               </button>
             </div>
           ))}
+        </div>
         </div>
       </>
     );

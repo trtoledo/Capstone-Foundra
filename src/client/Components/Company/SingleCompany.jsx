@@ -11,7 +11,6 @@ const SingleCompany = () => {
   const [industry, setIndustry] = useState(null);
   const [error, setError] = useState(null);
   
-  // Fetch the company by its ID
   useEffect(() => {
     async function getCompanyData() {
       try {
@@ -30,9 +29,8 @@ const SingleCompany = () => {
     getCompanyData();
   }, [id]);
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (error) return <div>Failed to load company details.</div>;
+  if (!company) return <div>Loading...</div>;
 
   return (
     <div className="single-company-container">

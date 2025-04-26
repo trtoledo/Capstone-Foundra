@@ -1,3 +1,7 @@
+.companies-container {
+  margin: 100px auto 0;
+}
+
 .addCompanyForm {
     background: #1c1c1e;
     padding: 1rem;
