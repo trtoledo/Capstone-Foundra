@@ -9,7 +9,10 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'CANDIDATE',
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
-    "companyId" TEXT,
+    "companyId" INTEGER,
+    "avatarUrl" TEXT,
+    "bio" TEXT,
+    "resumeUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -17,16 +20,16 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Company" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "industryId" TEXT,
+    "industryId" INTEGER,
 
     CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Industry" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Industry_pkey" PRIMARY KEY ("id")
@@ -38,7 +41,7 @@ CREATE TABLE "Video" (
     "title" TEXT NOT NULL,
     "url" TEXT NOT NULL,
     "isPublic" BOOLEAN NOT NULL DEFAULT true,
-    "companyId" TEXT,
+    "companyId" INTEGER,
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -50,7 +53,7 @@ CREATE TABLE "TopCandidate" (
     "isPublic" BOOLEAN NOT NULL DEFAULT false,
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "companyId" TEXT NOT NULL,
+    "companyId" INTEGER NOT NULL,
     "videoUrl" TEXT NOT NULL,
     "userId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -59,21 +62,11 @@ CREATE TABLE "TopCandidate" (
 );
 
 -- CreateTable
-CREATE TABLE "Feedback" (
-    "id" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Feedback_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Report" (
     "id" TEXT NOT NULL,
     "reason" TEXT NOT NULL,
     "userId" TEXT,
-    "companyId" TEXT,
+    "companyId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Report_pkey" PRIMARY KEY ("id")
@@ -95,6 +88,7 @@ CREATE TABLE "Comment" (
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "videoId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
@@ -136,9 +130,6 @@ ALTER TABLE "TopCandidate" ADD CONSTRAINT "TopCandidate_companyId_fkey" FOREIGN 
 ALTER TABLE "TopCandidate" ADD CONSTRAINT "TopCandidate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Feedback" ADD CONSTRAINT "Feedback_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Report" ADD CONSTRAINT "Report_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -152,6 +143,9 @@ ALTER TABLE "Message" ADD CONSTRAINT "Message_recipientId_fkey" FOREIGN KEY ("re
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comment" ADD CONSTRAINT "Comment_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
