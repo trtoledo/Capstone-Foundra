@@ -2,14 +2,15 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 const { isLoggedIn } = require("../middleware/auth");
+
 router.use(express.json());
-//GET /api/messages —> fetch messages relevant to the logged-in user
+
+// GET /api/messages 
 router.get("/", isLoggedIn, async (req, res) => {
   try {
     let messages;
 
     if (req.user.role === "ADMIN") {
-      //admins see all messages
       messages = await prisma.message.findMany({
         include: {
           sender: { select: { id: true, name: true, role: true } },
@@ -17,7 +18,6 @@ router.get("/", isLoggedIn, async (req, res) => {
         },
       });
     } else {
-      //other users see only their own (sent or received)
       messages = await prisma.message.findMany({
         where: {
           OR: [
@@ -38,7 +38,7 @@ router.get("/", isLoggedIn, async (req, res) => {
   }
 });
 
-//POST /api/messages —> Admins or HMs send messages (with role restrictions)
+// POST /api/messages 
 router.post("/", isLoggedIn, async (req, res) => {
   const { recipientId, content } = req.body;
 
@@ -55,16 +55,6 @@ router.post("/", isLoggedIn, async (req, res) => {
       return res.status(404).json({ error: "Recipient not found" });
     }
 
-    //HMs can only message candidates
-    if (
-      req.user.role === "HIRING_MANAGER" &&
-      recipient.role !== "CANDIDATE"
-    ) {
-      return res
-        .status(403)
-        .json({ error: "HMs can only message candidates" });
-    }
-
     const message = await prisma.message.create({
       data: {
         senderId: req.user.userId,
@@ -79,34 +69,58 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-//GET /api/messages/:id —> only sender/recipient/admin can access message
-router.get("/:id", isLoggedIn, async (req, res, next) => {
-  const {id} = req.params;
-  
+// GET /api/messages/:id 
+router.get("/:id", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const message = await prisma.message.findMany({
-      where: { senderId: id },
+    const message = await prisma.message.findUnique({
+      where: { id: Number(id) },
       include: {
-        sender: true,
-        recipient: true,
+        sender: { select: { id: true, name: true } },
+        recipient: { select: { id: true, name: true } },
       },
     });
-    
-    if (!message) {
-      return res.status(404).json({ error: "Message not found" });
+
+    if (
+      req.user.role !== "ADMIN" &&
+      message.senderId !== req.user.userId &&
+      message.recipientId !== req.user.userId
+    ) {
+      return res.status(403).json({ error: "Not authorized to view this message" });
     }
-
-    // const isSender = message.senderId === req.user.userId;
-    // const isRecipient = message.recipientId === req.user.userId;
-    // const isAdmin = req.user.role === "ADMIN";
-
-    // if (!isSender && !isRecipient) {
-    //   return res.status(403).json({ error: "Access denied" });
-    // }
 
     res.json(message);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/messages/conversation/:userId/:otherUserId 
+router.get("/conversation/:userId/:otherUserId", isLoggedIn, async (req, res) => {
+  const { userId, otherUserId } = req.params;
+
+  try {
+    const messages = await prisma.message.findMany({
+      where: {
+        OR: [
+          { senderId: Number(userId), recipientId: Number(otherUserId) },
+          { senderId: Number(otherUserId), recipientId: Number(userId) },
+        ],
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+      include: {
+        sender: { select: { id: true, name: true } },
+        recipient: { select: { id: true, name: true } },
+      },
+    });
+
+    res.json(messages);
+  } catch (err) {
+    console.error("Failed to fetch conversation:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

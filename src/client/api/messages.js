@@ -56,8 +56,39 @@ export async function fetchMessageById(id, token) {
       },
     });
     const result = await response.json();
-    console.log(result);
 
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export async function fetchConversation(userId, selectedUserId, token) {
+  try {
+    const response = await fetch(`${API}/conversation/${userId}/${selectedUserId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export async function sendHttpMessage(recipientId, content, token) {
+  try {
+    const response = await fetch(`${API}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ recipientId, content }),
+    });
+    const result = await response.json();
     return result;
   } catch (err) {
     throw err;
