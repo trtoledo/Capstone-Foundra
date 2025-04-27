@@ -5,7 +5,8 @@ import "./Messages.css";
 import { fetchAllUsers } from "../../api/users";
 import {
   fetchMessages,
-  fetchMessageById,
+  fetchConversation,
+  sendHttpMessage,
 } from "../../api/messages";
 import { useAuth } from "../Context/AuthContext";
 import {
@@ -31,6 +32,7 @@ const Messenger = () => {
   useEffect(() => {
     const initializedSocket = initializeSocket();
     setSocket(initializedSocket);
+
     return () => {
       initializedSocket.disconnect();
     };
@@ -38,16 +40,13 @@ const Messenger = () => {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
-      
-      connectSocket(localStorage.getItem("token"));
-      return () => {
-        offMessageReceived();
-        disconnectSocket();
-      };
+      connectSocket(token);
+      onMessageReceived(handleMessageReceived);
     }
-    offMessageReceived();
-    disconnectSocket();
+    return () => {
+      offMessageReceived();
+      disconnectSocket();
+    };
   }, [user, socket]);
 
   const handleMessageReceived = useCallback(
@@ -65,13 +64,6 @@ const Messenger = () => {
     },
     [selectedUser]
   );
-
-  useEffect(() => {
-    onMessageReceived(handleMessageReceived);
-    return () => {
-      offMessageReceived();
-    };
-  }, [handleMessageReceived]);
 
   useEffect(() => {
     const loadThreads = async () => {
@@ -95,11 +87,7 @@ const Messenger = () => {
         setLoadingMessages(true);
         setError(null);
         try {
-          console.log(selectedUser);
-          
-          const msgs = await fetchMessageById(user.id, token);
-          console.log(msgs);
-          
+          const msgs = await fetchConversation(user.id, selectedUser.id, token);
           const formatted = msgs.map((m) => ({
             ...m,
             fromSelf: m.senderId === user.id,
@@ -127,10 +115,11 @@ const Messenger = () => {
       const localMessage = {
         id: tempId,
         content: text,
-        senderId: user.userId,
+        senderId: user.id,
         recipientId: selectedUser.id,
         createdAt: new Date().toISOString(),
         fromSelf: true,
+        status: "sending",
       };
 
       setMessages((prevMessages) => [...prevMessages, localMessage]);
@@ -141,19 +130,21 @@ const Messenger = () => {
         senderId: user.id,
       });
 
-      // try {
-      //   const savedMessage = await sendHttpMessage(selectedUser.id, text);
-      //   setMessages((prevMessages) =>
-      //     prevMessages.map((msg) =>
-      //       msg.id === tempId ? { ...savedMessage, fromSelf: true } : msg
-      //     )
-      //   );
-      // } catch (err) {
-      //   setError("Failed to send message.");
-      //   setMessages((prevMessages) =>
-      //     prevMessages.filter((msg) => msg.id !== tempId)
-      //   );
-      // }
+      try {
+        const savedMessage = await sendHttpMessage(selectedUser.id, text, token);
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.id === tempId ? { ...savedMessage, fromSelf: true, status: "sent" } : msg
+          )
+        );
+      } catch (err) {
+        setError("Failed to send message.");
+        setMessages((prevMessages) =>
+          prevMessages.map((msg) =>
+            msg.id === tempId ? { ...msg, status: "failed" } : msg
+          )
+        );
+      }
     },
     [selectedUser, user]
   );
@@ -163,8 +154,6 @@ const Messenger = () => {
       try {
         const users = await fetchAllUsers();
         setAllUsers(users);
-        console.log(users);
-        
       } catch (err) {
         console.error("Failed to fetch users", err);
       }
@@ -172,7 +161,7 @@ const Messenger = () => {
     loadUsers();
   }, []);
 
-  const memoizedThreads = useMemo(() => {threads}, [threads]);
+  const memoizedThreads = useMemo(() => threads, [threads]);
 
   return (
     <div className="messenger-container">
@@ -186,17 +175,7 @@ const Messenger = () => {
             className="user-search-input"
           />
           <div className="user-list">
-            {searchQuery && (
-              allUsers.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase())) .map((userOption) => (
-                <div
-                  key={userOption.id}
-                  className="user-list-item"
-                  onClick={() => setSelectedUser(userOption)}
-                >
-                  {userOption.name}
-                </div>
-            )))}
-            {/* {allUsers
+            {allUsers
               .filter((u) =>
                 u.name.toLowerCase().includes(searchQuery.toLowerCase())
               )
@@ -208,7 +187,7 @@ const Messenger = () => {
                 >
                   {userOption.name}
                 </div>
-              ))} */}
+              ))}
           </div>
         </div>
         <Inbox
