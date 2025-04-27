@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import Inbox from "./Inbox";
 import ChatWindow from "./ChatWindow";
 import "./Messages.css";
+import { fetchAllUsers } from "../../api/users";
 import {
   fetchMessages,
   fetchMessageById,
-  sendMessage as sendHttpMessage,
 } from "../../api/messages";
 import { useAuth } from "../Context/AuthContext";
 import {
@@ -18,45 +18,40 @@ import {
 } from "../../api/socket";
 
 const Messenger = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [threads, setThreads] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [error, setError] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Initialize socket once
   useEffect(() => {
     const initializedSocket = initializeSocket();
     setSocket(initializedSocket);
-  
-    // Cleanup the socket connection on unmount
     return () => {
       initializedSocket.disconnect();
     };
   }, []);
 
-
-  // Connect and disconnect socket based on user presence
   useEffect(() => {
     if (user) {
-      connectSocket();
+      console.log(user);
+      
+      connectSocket(localStorage.getItem("token"));
       return () => {
         offMessageReceived();
         disconnectSocket();
       };
     }
-
-    // Cleanup if user becomes null
     offMessageReceived();
     disconnectSocket();
-  }, [user, socket]); // Depend on user to manage connection
+  }, [user, socket]);
 
-  // Handle incoming messages and update the state
   const handleMessageReceived = useCallback(
     (newMessage) => {
-      console.log("Message received:", newMessage);
       if (
         selectedUser &&
         (newMessage.senderId === selectedUser.id ||
@@ -71,7 +66,6 @@ const Messenger = () => {
     [selectedUser]
   );
 
-  // Attach the message handler
   useEffect(() => {
     onMessageReceived(handleMessageReceived);
     return () => {
@@ -79,63 +73,59 @@ const Messenger = () => {
     };
   }, [handleMessageReceived]);
 
-  // Load threads when the user changes or the component mounts
   useEffect(() => {
     const loadThreads = async () => {
       if (user) {
         try {
-          const data = await fetchMessages();
-          console.log("Threads:", data);
+          const data = await fetchMessages(user.id, token);
           setThreads(data);
         } catch (err) {
-          console.error(err);
           setError("Failed to load message threads.");
         }
       } else {
-        setThreads([]); // Clear threads when user logs out
+        setThreads([]);
       }
     };
     loadThreads();
   }, [user]);
 
-  // Load messages when a thread is selected
   useEffect(() => {
-    console.log("Selected user:", selectedUser);
     const loadMessages = async () => {
       if (user && selectedUser) {
-        const token = user?.token;
         setLoadingMessages(true);
-        setError(null); // Clear any previous message loading errors
-
+        setError(null);
         try {
-          const msgs = await fetchMessageById(selectedUser.id, token);
-          console.log("Messages for selected user:", msgs);
+          console.log(selectedUser);
+          
+          const msgs = await fetchMessageById(user.id, token);
+          console.log(msgs);
+          
           const formatted = msgs.map((m) => ({
             ...m,
-            fromSelf: m.senderId === user.userId,
+            fromSelf: m.senderId === user.id,
           }));
           setMessages(formatted);
         } catch (err) {
-          console.error(err);
           setError("Failed to load messages.");
-          setMessages([]); // Clear messages on error
+          setMessages([]);
         } finally {
           setLoadingMessages(false);
         }
       } else {
-        setMessages([]); // Clear messages when no user or selectedUser
+        setMessages([]);
       }
     };
     loadMessages();
   }, [selectedUser, user]);
 
-  // Handle sending a message
   const handleSendMessage = useCallback(
     async (text) => {
       if (!text.trim() || !selectedUser || !user) return;
 
+      const tempId = `temp-${Date.now()}`;
+
       const localMessage = {
-        id: Date.now(),
+        id: tempId,
         content: text,
         senderId: user.userId,
         recipientId: selectedUser.id,
@@ -143,36 +133,84 @@ const Messenger = () => {
         fromSelf: true,
       };
 
-      setMessages((prevMessages) => [
-        ...prevMessages.filter((msg) => msg.id !== localMessage.id),
-        localMessage,
-      ]);
+      setMessages((prevMessages) => [...prevMessages, localMessage]);
 
       sendSocketMessage({
         recipientId: selectedUser.id,
         content: text,
+        senderId: user.id,
       });
 
-      try {
-        await sendHttpMessage(selectedUser.id, text);
-      } catch (err) {
-        console.error("HTTP send failed:", err);
-        setError("Failed to send message.");
-        // Optionally revert the local message on failure
-        setMessages((prevMessages) =>
-          prevMessages.filter((msg) => msg.id !== localMessage.id)
-        );
-      }
+      // try {
+      //   const savedMessage = await sendHttpMessage(selectedUser.id, text);
+      //   setMessages((prevMessages) =>
+      //     prevMessages.map((msg) =>
+      //       msg.id === tempId ? { ...savedMessage, fromSelf: true } : msg
+      //     )
+      //   );
+      // } catch (err) {
+      //   setError("Failed to send message.");
+      //   setMessages((prevMessages) =>
+      //     prevMessages.filter((msg) => msg.id !== tempId)
+      //   );
+      // }
     },
     [selectedUser, user]
   );
 
-  // Memoize threads for performance optimization
-  const memoizedThreads = useMemo(() => threads, [threads]);
+  useEffect(() => {
+    const loadUsers = async () => {
+      try {
+        const users = await fetchAllUsers();
+        setAllUsers(users);
+        console.log(users);
+        
+      } catch (err) {
+        console.error("Failed to fetch users", err);
+      }
+    };
+    loadUsers();
+  }, []);
+
+  const memoizedThreads = useMemo(() => {threads}, [threads]);
 
   return (
     <div className="messenger-container">
       <div className="inbox-panel">
+        <div className="user-search-panel">
+          <input
+            type="text"
+            placeholder="Search users..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="user-search-input"
+          />
+          <div className="user-list">
+            {searchQuery && (
+              allUsers.filter((user) => user.name.toLowerCase().includes(searchQuery.toLowerCase())) .map((userOption) => (
+                <div
+                  key={userOption.id}
+                  className="user-list-item"
+                  onClick={() => setSelectedUser(userOption)}
+                >
+                  {userOption.name}
+                </div>
+            )))}
+            {/* {allUsers
+              .filter((u) =>
+                u.name.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((userOption) => (
+                <div
+                  key={userOption.id}
+                  className="user-list-item"
+                  onClick={() => setSelectedUser(userOption)}
+                >
+                  {userOption.name}
+                </div>
+              ))} */}
+          </div>
+        </div>
         <Inbox
           threads={memoizedThreads}
           selectedUser={selectedUser}
@@ -182,17 +220,15 @@ const Messenger = () => {
       <div className="chat-panel">
         {error && <div className="error-message">{error}</div>}
         {selectedUser ? (
-          <>
-            {loadingMessages ? (
-              <div>Loading messages...</div>
-            ) : (
-              <ChatWindow
-                messages={messages}
-                selectedUser={selectedUser}
-                onSendMessage={handleSendMessage}
-              />
-            )}
-          </>
+          loadingMessages ? (
+            <div>Loading messages...</div>
+          ) : (
+            <ChatWindow
+              messages={messages}
+              selectedUser={selectedUser}
+              onSendMessage={handleSendMessage}
+            />
+          )
         ) : (
           <div className="empty-chat-message">
             Select a conversation to start chatting
@@ -203,4 +239,4 @@ const Messenger = () => {
   );
 };
 
-export default Messenger;
+export default React.memo(Messenger);

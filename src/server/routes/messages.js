@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const prisma = require("../db/client");
 const { isLoggedIn } = require("../middleware/auth");
-
+router.use(express.json());
 //GET /api/messages —> fetch messages relevant to the logged-in user
 router.get("/", isLoggedIn, async (req, res) => {
   try {
@@ -80,27 +80,29 @@ router.post("/", isLoggedIn, async (req, res) => {
 });
 
 //GET /api/messages/:id —> only sender/recipient/admin can access message
-router.get("/:id", isLoggedIn, async (req, res) => {
+router.get("/:id", isLoggedIn, async (req, res, next) => {
+  const {id} = req.params;
+  
   try {
-    const message = await prisma.message.findUnique({
-      where: { id: parseInt(req.params.id) },
+    const message = await prisma.message.findMany({
+      where: { senderId: id },
       include: {
         sender: true,
         recipient: true,
       },
     });
-
+    
     if (!message) {
       return res.status(404).json({ error: "Message not found" });
     }
 
-    const isSender = message.senderId === req.user.userId;
-    const isRecipient = message.recipientId === req.user.userId;
-    const isAdmin = req.user.role === "ADMIN";
+    // const isSender = message.senderId === req.user.userId;
+    // const isRecipient = message.recipientId === req.user.userId;
+    // const isAdmin = req.user.role === "ADMIN";
 
-    if (!isSender && !isRecipient && !isAdmin) {
-      return res.status(403).json({ error: "Access denied" });
-    }
+    // if (!isSender && !isRecipient) {
+    //   return res.status(403).json({ error: "Access denied" });
+    // }
 
     res.json(message);
   } catch (err) {

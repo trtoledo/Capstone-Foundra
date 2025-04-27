@@ -5,16 +5,17 @@ let socket;
 export function initializeSocket(token) {
   if (!socket) {
     socket = io("http://localhost:3000", {
-      autoConnect: false,
-      auth: { token }, 
+      autoConnect: false, 
     });
   }
   return socket;
 }
 
-export function connectSocket() {
+export function connectSocket(token) {
   if (socket && !socket.connected) {
+    socket.auth = { token };
     socket.connect();
+    socket.emit("join", localStorage.getItem("id"));
   }
 }
 
@@ -24,9 +25,9 @@ export function disconnectSocket() {
   }
 }
 
-export function sendMessage({ recipientId, content }) {
+export function sendMessage({ recipientId, content, senderId }) {
   if (socket) {
-    socket.emit("send_message", { recipientId, content });
+    socket.emit("send_message", { recipientId, content, senderId });
   }
 }
 

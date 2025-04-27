@@ -30,10 +30,10 @@ const Register = () => {
       localStorage.setItem("token", result.token);
       localStorage.setItem("id", result.user.id);
       localStorage.setItem("role", result.user.role);
-      setToken(result.token); 
-      setName(result.user.name);
-      setEmail(result.user.email);
-      setSelectedRole(result.user.role);
+      // setToken(result.token); 
+      // setName(result.user.name);
+      // setEmail(result.user.email);
+      // setSelectedRole(result.user.role);
       setRefresh(prev=>!prev);
       navigate("/dashboard");
     } catch (err) {

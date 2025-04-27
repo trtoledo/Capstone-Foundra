@@ -43,9 +43,9 @@ io.on("connection", (socket) => {
     console.log(`User ${userId} joined with socket ID ${socket.id}`);
   });
 
-  socket.on("send_message", async ({ recipientId, content }) => {
+  socket.on("send_message", async ({  senderId, recipientId, content }) => {
     try {
-      const senderId = socket.userId;
+      // const senderId = socket.userId;
 
       const message = await client.message.create({
         data: {
@@ -56,11 +56,10 @@ io.on("connection", (socket) => {
       });
 
       const recipientSocketId = connectedUsers[recipientId];
+      
       if (recipientSocketId) {
         io.to(recipientSocketId).emit("receive_message", message);
       }
-
-      socket.emit("receive_message", message);
 
     } catch (err) {
       console.error("Error handling send_message:", err.message);
