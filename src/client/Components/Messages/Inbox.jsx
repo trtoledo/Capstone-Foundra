@@ -1,20 +1,22 @@
-import "./Messages.css";
+import "./Inbox.css";
 
 const Inbox = ({ threads, selectedUser, onSelectThread }) => {
+  console.log(threads);
+  
   return (
     <div className="inbox-container">
       <div className="inbox-header">Inbox</div>
       {threads
-        .filter(({ user }) => user && user.id)
-        .map(({ user, lastMessage, timestamp }) => (
+        ?.filter(( user ) => user.senderId === localStorage.getItem("id"))
+        .map(( message ) => (
           <div
-            key={user.id}
-            onClick={() => onSelectThread(user)}
+            key={message.id}
+            onClick={() => onSelectThread(message)}
             className={`thread-preview ${
-              selectedUser?.id === user.id ? "selected" : ""
+              selectedUser?.id === message.recipientId ? "selected" : ""
             }`}
           >
-            <div className="thread-name">{user.name}</div>
+            <div className="thread-name">{message.recipient.name}</div>
             <div className="thread-last-message">{lastMessage}</div>
             <div className="thread-timestamp">
               {new Date(timestamp).toLocaleString()}

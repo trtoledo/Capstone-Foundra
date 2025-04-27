@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      const socketInstance = initializeSocket(token);
+      const socketInstance = initializeSocket();
       setSocket(socketInstance);
       connectSocket();
 

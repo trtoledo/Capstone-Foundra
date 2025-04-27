@@ -23,45 +23,42 @@ export async function fetchMessages() {
   }
 };
 
-export async function sendMessage(userId, content) {
-  const token = localStorage.getItem("token");
+// export async function sendMessage(userId, content) {
+//   const token = localStorage.getItem("token");
 
-  try {
-    const response = await fetch(API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify({ userId, content }),
-    });
+//   try {
+//     const response = await fetch(API, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({ userId, content }),
+//     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP ${response.status}`);
-    }
+//     if (!response.ok) {
+//       const errorData = await response.json();
+//       throw new Error(errorData.error || `HTTP ${response.status}`);
+//     }
 
-    return await response.json();
-  } catch (err) {
-    console.error("Could not send message:", err.message);
-    throw err;
-  }
-};
+//     return await response.json();
+//   } catch (err) {
+//     console.error("Could not send message:", err.message);
+//     throw err;
+//   }
+// };
 
 export async function fetchMessageById(id, token) {
   try {
-    const response = await fetch(`/api/messages/${id}`, {
+    const response = await fetch(`${API}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    const result = await response.json();
+    console.log(result);
 
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.error || "Failed to fetch message");
-    }
-
-    return await response.json();
+    return result;
   } catch (err) {
     throw err;
   }
