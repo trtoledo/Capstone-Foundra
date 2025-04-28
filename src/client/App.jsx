@@ -20,6 +20,7 @@ import WaitlistPage from "./Components/Pages/WaitListPage.jsx";
 import GetFound from "./Components/LandingPage/GetFound";
 import AboutUs from "./Components/LandingPage/AboutUs";
 import ProfilePage from "./Components/Pages/ProfilePage.jsx";
+import Industries from "./Components/Industry/Industries.jsx";
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/companies" element={<Companies />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/industry/:id" element={<SingleIndustryPage />} />
+          <Route path='/industries' element={<Industries />} />
           <Route path="/companies/:id" element={<SingleCompany />} />
           <Route path="/candidates/top" element={<TopCandidates />} />
           <Route path="/videos" element={<Videos />} />
