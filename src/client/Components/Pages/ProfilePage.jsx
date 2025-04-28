@@ -46,7 +46,12 @@ const ProfilePage = () => {
       const updatedUser = await updateUser(
         user.id,
         newUserData.name,
-        newUserData.companyId
+        newUserData.companyId,
+        newUserData.email,
+        newUserData.bio,
+        newUserData.avatarUrl,
+        newUserData.resumeUrl,
+        token
       );
 
       if (updatedUser) {
@@ -89,9 +94,13 @@ const ProfilePage = () => {
       user.id,
       newUserData.name,
       newUserData.companyId,
+      newUserData.email,
+      newUserData.bio,
       {
         avatarUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
-      }
+      },
+      newUserData.resumeUrl,
+      token
     );
 
     setUser(updatedUser);
@@ -125,9 +134,13 @@ const ProfilePage = () => {
       user.id,
       newUserData.name,
       newUserData.companyId,
+      newUserData.email,
+      newUserData.bio,
+      newUserData.avatarUrl,
       {
         resumeUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
-      }
+      },
+      token
     );
 
     setUser(updatedUser);
