@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaCompass,
@@ -9,13 +10,12 @@ import {
   FaSignInAlt,
   FaBars,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import "./TopNav.css";
 import { useAuth } from "../Context/AuthContext";
+import "./TopNav.css";
 
 export default function TopNav() {
   const [collapsed, setCollapsed] = useState(false);
-  const toggleNav = () => setCollapsed(!collapsed);
+  const navigate = useNavigate();
   const { token, setToken, setUser, setRole, setRefresh } = useAuth();
 
   const mainNavItems = [
@@ -30,6 +30,10 @@ export default function TopNav() {
     { icon: <FaUserPlus />, label: "Register", path: "/register" },
     { icon: <FaSignInAlt />, label: "Login", path: "/login" },
   ];
+
+  const toggleNav = () => {
+    setCollapsed((prev) => !prev);
+  };
 
   return (
     <div className={`topnav ${collapsed ? "collapsed" : ""}`}>
@@ -48,19 +52,44 @@ export default function TopNav() {
         )}
       </div>
 
-      {/* Main Navigation */}
       <ul className="nav-list main-nav">
         {mainNavItems.map((item, index) => (
-          <li key={index} className="nav-item">
-            <Link to={item.path} className="nav-link">
-              {item.icon}
-              {!collapsed && <span className="nav-label">{item.label}</span>}
-            </Link>
+          <li key={index} className={`nav-item ${item.label === "Explore" ? "explore-nav-item" : ""}`}>
+            {item.label === "Explore" ? (
+              <div className="nav-link-wrapper">
+                <Link to={item.path} className="nav-link">
+                  {item.icon}
+                  {!collapsed && <span className="nav-label">{item.label}</span>}
+                </Link>
+
+                {/* Dropdown inside Explore */}
+                {!collapsed && (
+                  <div className="dropdown-menu">
+                    <Link to="/candidates" className="nav-link dropdown-link">
+                      <FaUserPlus />
+                      <span className="nav-label">Candidates</span>
+                    </Link>
+                    <Link to="/companies" className="nav-link dropdown-link">
+                      <FaBriefcase />
+                      <span className="nav-label">Companies</span>
+                    </Link>
+                    <Link to="/industries" className="nav-link dropdown-link">
+                      <FaCompass />
+                      <span className="nav-label">Industries</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to={item.path} className="nav-link">
+                {item.icon}
+                {!collapsed && <span className="nav-label">{item.label}</span>}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
 
-      {/* Auth Navigation (right side) */}
       <ul className="nav-list auth-nav">
         {token ? (
           <>
@@ -77,8 +106,8 @@ export default function TopNav() {
                   setToken(null);
                   setUser(null);
                   setRole("");
-                  localStorage.clear(); 
-                  setRefresh((r) => !r); 
+                  localStorage.clear();
+                  setRefresh((r) => !r);
                 }}
                 className="nav-link"
               >
