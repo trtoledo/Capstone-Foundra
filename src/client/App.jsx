@@ -4,6 +4,7 @@ import Explore from "./Components/Pages/Explore.jsx";
 import Home from "./Components/Pages/Home.jsx";
 import TopNav from "./Components/LandingPage/TopNav.jsx";
 import Candidates from "./Components/Candidate/Candidates.jsx";
+import SingleCandidate from "./Components/Candidate/SingleCandidate.jsx";
 import Companies from "./Components/Company/Companies.jsx";
 import SingleCompany from "./Components/Company/SingleCompany.jsx";
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/candidates" element={<Candidates />} />
+          <Route path="/candidates/:id" element={<SingleCandidate />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/industries/:id" element={<SingleIndustryPage />} />

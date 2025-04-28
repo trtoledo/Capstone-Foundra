@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchCompanyById, updateCompany } from "../../api/companies"; // Import updateCompany
-import { fetchIndustries } from "../../api/industries"; // Import fetchIndustries
+import { fetchCompanyById, updateCompany } from "../../api/companies";
+import { fetchIndustries } from "../../api/industries";
 import "./SingleCompany.css";
 
 const SingleCompany = () => {
