@@ -36,6 +36,7 @@ const Industries = () => {
 
   return (
     <>
+    <div className="industriesContainer">
       <div className="search">
         <label>
           Search:{" "}
@@ -73,6 +74,7 @@ const Industries = () => {
             </div>
           );
         })}
+      </div>
       </div>
     </>
   );
