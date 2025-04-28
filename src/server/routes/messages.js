@@ -104,8 +104,8 @@ router.get("/conversation/:userId/:otherUserId", isLoggedIn, async (req, res) =>
     const messages = await prisma.message.findMany({
       where: {
         OR: [
-          { senderId: Number(userId), recipientId: Number(otherUserId) },
-          { senderId: Number(otherUserId), recipientId: Number(userId) },
+          { senderId: userId, recipientId: otherUserId },
+          { senderId: otherUserId, recipientId: userId },
         ],
       },
       orderBy: {

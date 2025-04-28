@@ -88,14 +88,15 @@ const Messenger = () => {
         setError(null);
         try {
           const msgs = await fetchConversation(user.id, selectedUser.id, token);
+          console.log(msgs);
           const formatted = msgs.map((m) => ({
             ...m,
             fromSelf: m.senderId === user.id,
           }));
+          
           setMessages(formatted);
         } catch (err) {
-          setError("Failed to load messages.");
-          setMessages([]);
+          setError("Failed to load messages. test");
         } finally {
           setLoadingMessages(false);
         }
