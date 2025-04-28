@@ -69,7 +69,7 @@ const Messenger = () => {
     const loadThreads = async () => {
       if (user) {
         try {
-          const data = await fetchMessages(user.id, token);
+          const data = await fetchMessages(token);
           setThreads(data);
         } catch (err) {
           setError("Failed to load message threads.");
