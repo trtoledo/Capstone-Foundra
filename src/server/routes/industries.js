@@ -16,12 +16,25 @@ router.get("/", async (req, res) => {
 //newly added: GET /api/industries/:id -> everyone incl guests
 router.get("/:id", async (req, res) => {
   try {
+    console.log("Fetching industry with ID:", req.params.id);
+    
+    // Convert req.params.id to an integer
+    const industryId = parseInt(req.params.id, 10);
+    
+    // Check if the conversion failed
+    if (isNaN(industryId)) {
+      return res.status(400).json({ error: "Invalid ID format" });
+    }
+
     const industry = await prisma.industry.findUnique({
-      where: { id: req.params.id },
+      where: { id: industryId },
     });
+
     if (!industry) return res.status(404).json({ error: "Industry not found" });
+
     res.json(industry);
   } catch (err) {
+    console.error("Error in fetching industry:", err.message);
     res.status(500).json({ error: err.message });
   }
 });

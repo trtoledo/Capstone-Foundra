@@ -1,84 +1,101 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchIndustries, fetchIndustryById } from "../../api/industries";
-import { addCompany } from "../../api/companies";
-import { useAuth } from "../Context/AuthContext";
+import { fetchIndustryById } from "../../api/industries";
+import { fetchCompanies, updateCompany } from "../../api/companies";
 import "./SingleIndustryPage.css";
 
 const SingleIndustryPage = () => {
-  const { token, refresh, setRefresh } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const [industry, setIndustry] = useState(null);
-  const [companyName, setCompanyName] = useState("");
+  const [companies, setCompanies] = useState([]);
+  const [selectedCompanyId, setSelectedCompanyId] = useState("");
   const [error, setError] = useState(null);
+  const [updateError, setUpdateError] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
-  // useEffect(() => {
-  //   async function selectIndustry() {
-  //     const response = await fetchIndustries(id);
-  //     setIndustry(response);
-  //   }
-  //   selectIndustry();
-  // }, []);
-  
-  // const handleClick = async (name) => {
-  //   try {
-  //     const response = await addCompany(name, token);
-  //     setCompany(response);
-  //     setRefresh(!refresh);
-  //   } catch (err) {
-  //     setError(err.message);
-  //   }
-  // };
-
-  
   useEffect(() => {
-    async function getIndustry() {
+    async function loadData() {
       try {
-        const data = await fetchIndustryById(id)
-        setIndustry(data);
+        const industryData = await fetchIndustryById(id);
+        setIndustry(industryData);
+
+        const companiesData = await fetchCompanies();
+        setCompanies(companiesData);
       } catch (err) {
-        setError("Failed to load industry")
+        setError("Failed to load industry details.");
       }
     }
-    getIndustry();
-  }, [id, refresh]);
+    loadData();
+  }, [id, updateSuccess]);
+
+  const handleCompanyChange = (e) => {
+    setSelectedCompanyId(e.target.value);
+  };
+
+  const handleAssignCompany = async () => {
+    if (!selectedCompanyId) {
+      setUpdateError("Please select a company.");
+      return;
+    }
+    try {
+      await updateCompany(selectedCompanyId, { industryId: parseInt(id, 10) });
+      setUpdateSuccess(true);
+      setUpdateError(null);
+      const refreshed = await fetchIndustryById(id);
+      setIndustry(refreshed);
+    } catch (err) {
+      console.error(err);
+      setUpdateError("Failed to assign company to industry.");
+      setUpdateSuccess(false);
+    }
+  };
+
+  if (error) return <div className="errorMessage">{error}</div>;
+  if (!industry || !companies.length) return <div>Loading...</div>;
 
   return (
     <div className="industryContainer">
-      {industry ? (
-        <>
-          <h2>{industry.name}</h2>
-          <h4>Companies in this industry:</h4>
+      <h2>{industry.name}</h2>
+      <h4>{industry.description || "No description available."}</h4>
+
+      <div className="companyAssignment">
+        <h3>Assign Company to "{industry.name}"</h3>
+        {updateError && <p className="errorMessage">{updateError}</p>}
+        {updateSuccess && <p className="successMessage">Company assigned successfully!</p>}
+
+        <label htmlFor="company-select">Select Company:</label>
+        <select
+          id="company-select"
+          value={selectedCompanyId}
+          onChange={handleCompanyChange}
+        >
+          <option value="">-- Select a Company --</option>
+          {companies.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleAssignCompany}>
+          Add to {industry.name}
+        </button>
+      </div>
+
+      {industry.companies?.length > 0 && (
+        <div className="currentCompanies">
+          <h3>Current Companies in this Industry</h3>
           <ul>
-            {industry.companies?.map((company) => (
-              <li key={company.id}>{company.name}</li>
+            {industry.companies.map((c) => (
+              <li key={c.id}>{c.name}</li>
             ))}
           </ul>
-
-          {token && (
-            <div className="addCompanyForm">
-              <input
-                type="text"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="New company name"
-              />
-              <button onClick={handleAddCompany}>
-                Add to {industry.name}
-              </button>
-            </div>
-          )}
-        </>
-      ) : (
-        <p>Loading industry...</p>
+        </div>
       )}
 
-      <button className="back" onClick={() => navigate("/")}>
-        Home
+      <button className="back" onClick={() => navigate("/explore")}>
+        Back to Explore
       </button>
-
-      {error && <p className="error">{error}</p>}
     </div>
   );
 };
