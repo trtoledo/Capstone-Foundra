@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+.candidatesContainer {
+  padding: 2rem;
+  color: #daffed;
+}
+
+.candidatesContainer h2 {
+  font-family: "Permanent Marker", cursive;
+  color: #b1fa63;
+  margin: 100px auto 0;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.search {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+}
+
+.search label {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.search input[type="text"] {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.allCandidates {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.candidate {
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.candidate:hover {
+  transform: scale(1.05);
+  background-color: #222;
+}
+
+.candidate h4 {
+  color: #daffed;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.candidate h6 {
+  color: #aaa;
+  font-style: italic;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
