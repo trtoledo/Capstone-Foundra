@@ -13,6 +13,7 @@ const ProfilePage = () => {
     avatarUrl: "",
     resumeUrl: "",
   });
+  const S3_BUCKET = 'foundra-bucket';
 
   useEffect(() => {
     if (user) {
@@ -97,7 +98,7 @@ const ProfilePage = () => {
       newUserData.email,
       newUserData.bio,
       {
-        avatarUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
+        avatarUrl: `https://${S3_BUCKET}.s3.amazonaws.com/${key}`,
       },
       newUserData.resumeUrl,
       token
@@ -138,7 +139,7 @@ const ProfilePage = () => {
       newUserData.bio,
       newUserData.avatarUrl,
       {
-        resumeUrl: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`,
+        resumeUrl: `https://${S3_BUCKET}.s3.amazonaws.com/${key}`,
       },
       token
     );
