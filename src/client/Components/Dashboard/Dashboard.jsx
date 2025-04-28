@@ -61,16 +61,8 @@ const Dashboard = () => {
     navigate("/lost-hiring");
   };
 
-  const handleBenchmarking = () => {
-    navigate("/topCandidates");
-  };
-
   const handleSearchCandidates = () => {
     navigate("/candidates");
-  };
-
-  const handleTopCandidates = () => {
-    navigate("/topCandidates");
   };
 
   const handleIndustryInsights = () => {
@@ -86,11 +78,11 @@ const Dashboard = () => {
   };
 
   const handleAccountSettings = () => {
-    navigate("/settings");
+    navigate("/profile");
   };
 
   const handleGiveFeedback = () => {
-    navigate("/feedback");
+    navigate("/request-demo");
   };
 
   const renderAdminTiles = () => (

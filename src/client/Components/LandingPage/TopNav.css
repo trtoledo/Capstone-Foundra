@@ -4,9 +4,8 @@
   left: 0;
   right: 0;
   height: 70px;
-  
   background-color: rgba(0, 0, 0, 0.7);
-  color: #DAFFED;
+  color: #daffed;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,16 +26,15 @@
 .toggle-btn {
   background: none;
   border: none;
-  color: #DAFFED;
+  color: #daffed;
   font-size: 1.6rem;
   cursor: pointer;
-  margin: 0 1rem 0 0; /* Left a little room before the logo */
+  margin: 0 1rem 0 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%; /* Center inside nav height */
+  height: 100%;
 }
-
 
 .toggle-btn {
   background-color: transparent !important;
@@ -48,7 +46,6 @@
   font-weight: bold;
 }
 
-/* Nav Links */
 .nav-list {
   display: flex;
   list-style: none;
@@ -67,21 +64,20 @@
 .nav-link {
   display: flex;
   align-items: center;
-  color: #DAFFED;
+  color: #daffed;
   text-decoration: none;
   font-size: 1.17rem;
   transition: color 0.3s;
 }
 
 .nav-link:hover {
-  color: #EC0868;
+  color: #ec0868;
 }
 
 .nav-label {
   margin-left: 0.5rem;
 }
 
-/* Footer / Right Side */
 .sidebar-footer {
   display: flex;
   align-items: center;
@@ -94,6 +90,7 @@
 .user-name {
   margin-left: 0.5rem;
 }
+
 .nav-logo {
   height: 55px;
   width: auto;
@@ -114,4 +111,59 @@
   gap: 1rem;
   margin-left: auto;
   margin-right: 2rem;
+}
+
+.explore-nav-item {
+  position: relative;
+}
+
+.nav-link-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(177, 250, 99, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  min-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.explore-nav-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #daffed;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-link:hover {
+  background-color: #1a1a1a;
+  color: #ec0868;
+}
+
+.dropdown-link svg {
+  font-size: 1.25rem;
 }
