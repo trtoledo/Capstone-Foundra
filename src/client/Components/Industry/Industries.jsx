@@ -32,7 +32,7 @@ const Industries = () => {
 
   async function handleIndustryDetails(industryId) {
     navigate(`/industries/${industryId}`);
-  }
+  };
 
   return (
     <>
