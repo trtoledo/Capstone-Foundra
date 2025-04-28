@@ -47,7 +47,7 @@ const Companies = () => {
 
     return (
       <>
-      <div className="companies-container">
+      <div className="companiesContainer">
         <div className="search">
           <label>
             Search:{" "}
@@ -59,7 +59,7 @@ const Companies = () => {
           </label>
         </div>
   
-        {role === "HIRING_MANAGER" && (
+        {role === "ADMIN" && (
           <div className="addCompanyForm">
             <h3>Add a New Company</h3>
             <input
