@@ -28,8 +28,7 @@ const Explore = () => {
   const companiesByIndustry = industries.map((industry) => ({
     ...industry,
     companies: companies.filter(
-      (company) => company.industryId === industry.id // Use industryId directly
-    ),
+      (company) => company.industryId === industry.id),
   }));
 
   return (

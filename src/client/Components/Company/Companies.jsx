@@ -6,15 +6,13 @@ import "./Companies.css"
 import { useAuth } from "../Context/AuthContext";
 
 const Companies = () => {
-    const { user, role, loading } = useAuth();
+    const { role, loading } = useAuth();
     const [companies, setCompanies] = useState([]);
     const [searchParam, setSearchParam] = useState("");
     const [newCompanyName, setNewCompanyName] = useState("");
     const [industries, setIndustries] = useState([]);
     const [selectedIndustry, setSelectedIndustry] = useState("");
     const navigate = useNavigate();
-
-    const userRole = localStorage.getItem("userRole");
 
     useEffect(() => {
       async function loadData() {

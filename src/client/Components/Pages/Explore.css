@@ -1,4 +1,3 @@
-/* Explore.module.css */
 @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
 .exploreContainer {
@@ -9,7 +8,7 @@
 .section {
   margin: 100px auto 0;
   padding: 1.5rem;
-  background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent black background */
+  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 12px;
   border: 1px solid #222;
 }
@@ -31,7 +30,7 @@
 }
 
 .industrySection h3 {
-  color: #b1fa63; /* A highlight color */
+  color: #b1fa63;
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.5rem;
