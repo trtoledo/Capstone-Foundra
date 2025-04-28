@@ -1,32 +1,136 @@
-.single-company-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    max-width: 800px;
-    margin: 100px auto 0;
-  }
-  
-  .single-company-container h2 {
-    color: #333;
-  }
-  
-  .single-company-container h4 {
-    color: #666;
-    font-style: italic;
-  }
-  
-  .industry-details {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e3e3e3;
-    border-radius: 8px;
-  }
-  
-  .industry-details h4 {
-    color: #333;
-  }
-  
-  .error {
-    color: red;
-    font-weight: bold;
-  }
+/* SingleCompany.module.css */
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+.singleCompanyContainer {
+  padding: 2rem;
+  color: #daffed;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  margin: 100px auto 0;
+  max-width: 800px;
+  border: 1px solid #222;
+}
+
+.singleCompanyContainer h2 {
+  font-family: "Permanent Marker", cursive;
+  color: #daffed;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.singleCompanyContainer h4 {
+  color: #aaa;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.industrySelection {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.industrySelection h3 {
+  color: #b1fa63;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.industrySelection label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.industrySelection select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+}
+
+.industrySelection select option {
+  background-color: #111;
+}
+
+.industrySelection button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #b1fa63;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+.industrySelection button:hover {
+  background-color: #c3ff7a;
+}
+
+.industryDetails {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.industryDetails h3 {
+  color: #ec0868; /* Another highlight color */
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.industryDetails h4 {
+  color: #daffed;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.industryDetails p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.backButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #daffed;
+  background-color: transparent;
+  color: #daffed;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+  margin-top: 1rem;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.backButton:hover {
+  background-color: rgba(218, 255, 237, 0.1);
+}
+
+.errorMessage {
+  color: #ff4d4d;
+  margin-bottom: 0.5rem;
+}
+
+.successMessage {
+  color: #63ff84;
+  margin-bottom: 0.5rem;
+}

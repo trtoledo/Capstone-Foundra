@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchCompanies } from "../../api/companies";
 import { fetchIndustries } from "../../api/industries";
@@ -6,22 +6,18 @@ import { useAuth } from "../Context/AuthContext";
 import "./Explore.css";
 
 const Explore = () => {
-  const { token, refresh, setRefresh } = useAuth();
-  const { id } = useParams();
+  const { refresh } = useAuth();
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
-  const [companyName, setCompanyName] = useState("");
   const [industries, setIndustries] = useState([]);
-  const [industryName, setIndustryName] = useState("");
-  const [industryId, setIndustryId] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const CompaniesData = await fetchCompanies();
-        const IndustriesData = await fetchIndustries();
-        setCompanies(CompaniesData);
-        setIndustries(IndustriesData);
+        const fetchedCompanies = await fetchCompanies();
+        const fetchedIndustries = await fetchIndustries();
+        setCompanies(fetchedCompanies);
+        setIndustries(fetchedIndustries);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -32,18 +28,18 @@ const Explore = () => {
   const companiesByIndustry = industries.map((industry) => ({
     ...industry,
     companies: companies.filter(
-      (company) => company.industry?.id === industry.id
+      (company) => company.industryId === industry.id // Use industryId directly
     ),
   }));
 
   return (
-    <div className="explore-container">
+    <div className="exploreContainer">
       <div className="section">
         <h2>Explore Companies by Industry</h2>
         {companiesByIndustry.map((industry) => (
-          <div key={industry.id} className="industry-section">
+          <div key={industry.id} className="industrySection">
             <h3>{industry.name}</h3>
-            <div className="card-grid">
+            <div className="cardGrid">
               {industry.companies.length > 0 ? (
                 industry.companies.map((company) => (
                   <div
@@ -56,32 +52,11 @@ const Explore = () => {
                   </div>
                 ))
               ) : (
-                <p>No companies in this industry.</p>
+                <p className="noCompanies">No companies in this industry.</p>
               )}
             </div>
           </div>
         ))}
-      </div>
-
-    {/* I kept both sections for now to see what we like more but I am still working on the functionality to get them to display companies and be able to click them to navigate to that company */}
-
-      <div className="section">
-        <h2>Industries</h2>
-        <div className="card-grid">
-          {industries.map((industry) => (
-            <div key={industry.id} className="card">
-              <h3>{industry.name}</h3>
-              <p>
-                {
-                  companies.filter(
-                    (company) => company.industry?.id === industry.id
-                  ).length
-                }{" "}
-                companies
-              </p>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
