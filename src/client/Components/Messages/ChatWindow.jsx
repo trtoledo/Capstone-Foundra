@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./ChatWindow.css";
 
 const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
   const [input, setInput] = useState("");
+  const messagesEndRef = useRef(null);
 
   const handleSend = () => {
-    onSendMessage(input);
-    setInput("");
+    if (input.trim() !== "") {
+      onSendMessage(input);
+      setInput("");
+    }
   };
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="chat-window">
       <div className="chat-header">
-        Chatting with {selectedUser.name}
+        {selectedUser ? `Chatting with ${selectedUser.name}` : "Select a conversation"}
       </div>
 
       <div className="chat-messages">
@@ -27,6 +36,7 @@ const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
             </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input-container">
