@@ -43,6 +43,7 @@
     "ziggeo": "^0.1.30",
     "ziggeo-client-sdk": "^2.43.3"
   },
+  
   "devDependencies": {
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
