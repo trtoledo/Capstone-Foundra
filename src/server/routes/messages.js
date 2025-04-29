@@ -5,7 +5,7 @@ const { isLoggedIn } = require("../middleware/auth");
 
 router.use(express.json());
 
-// GET /api/messages 
+//GET /api/messages 
 router.get("/", isLoggedIn, async (req, res) => {
   try {
     let messages;
@@ -38,13 +38,9 @@ router.get("/", isLoggedIn, async (req, res) => {
   }
 });
 
-// POST /api/messages 
+//POST /api/messages 
 router.post("/", isLoggedIn, async (req, res) => {
   const { recipientId, content } = req.body;
-
-  if (req.user.role === "CANDIDATE") {
-    return res.status(403).json({ error: "Candidates cannot send messages" });
-  }
 
   try {
     const recipient = await prisma.user.findUnique({
@@ -69,7 +65,7 @@ router.post("/", isLoggedIn, async (req, res) => {
   }
 });
 
-// GET /api/messages/:id 
+//GET /api/messages/:id 
 router.get("/:id", isLoggedIn, async (req, res) => {
   const { id } = req.params;
 
@@ -96,7 +92,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
   }
 });
 
-// GET /api/messages/conversation/:userId/:otherUserId 
+//GET /api/messages/conversation/:userId/:otherUserId 
 router.get("/conversation/:userId/:otherUserId", isLoggedIn, async (req, res) => {
   const { userId, otherUserId } = req.params;
 

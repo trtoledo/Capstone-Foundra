@@ -1,30 +1,52 @@
+import { useState } from "react";
 import "./Inbox.css";
 import { useAuth } from "../Context/AuthContext";
 
 const Inbox = ({ threads, selectedUser, onSelectThread }) => {
-  const {user} = useAuth();
+  const { user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const sortedThreads = [...threads].sort(
-    (a, b) =>
-      new Date(b.messages?.[b.messages.length - 1]?.createdAt || 0) -
-      new Date(a.messages?.[a.messages.length - 1]?.createdAt || 0)
-  );
+  const sortedThreads = [...threads].sort((a, b) => {
+    const aLast = a.messages?.[a.messages.length - 1]?.createdAt || 0;
+    const bLast = b.messages?.[b.messages.length - 1]?.createdAt || 0;
+    return new Date(bLast) - new Date(aLast);
+  });
+
+  const filteredThreads = sortedThreads.filter((thread) => {
+    const otherUser =
+      thread.sender.id === user.id ? thread.recipient : thread.sender;
+    return otherUser.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="inbox-container">
       <div className="inbox-header">Inbox</div>
 
-      {sortedThreads.length === 0 ? (
-        <div className="empty-inbox-message">
-          No conversations yet.
-        </div>
-      ) : (
-        sortedThreads.map((thread) => {
-          const lastMessage = thread.messages?.[thread.messages.length - 1];
-          const timestamp = lastMessage?.createdAt;
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search messages..."
+        className="inbox-search"
+      />
 
+      {searchTerm.length === 0 ? (
+        <div className="empty-inbox-message">
+          Type to search for conversations.
+        </div>
+      ) : filteredThreads.length === 0 ? (
+        <div className="empty-inbox-message">No matching users.</div>
+      ) : (
+        filteredThreads.map((thread) => {
           const otherUser =
             thread.sender.id === user.id ? thread.recipient : thread.sender;
+
+          const lastMessage =
+            Array.isArray(thread.messages) && thread.messages.length
+              ? thread.messages[thread.messages.length - 1]
+              : null;
+
+          const timestamp = lastMessage?.createdAt;
 
           return (
             <div
@@ -36,10 +58,17 @@ const Inbox = ({ threads, selectedUser, onSelectThread }) => {
             >
               <div className="thread-name">{otherUser.name}</div>
               <div className="thread-last-message">
-                {lastMessage ? lastMessage.content : "No messages yet"}
+                {lastMessage?.content || "No messages yet"}
               </div>
               <div className="thread-timestamp">
-                {timestamp ? new Date(timestamp).toLocaleString() : "No timestamp"}
+                {timestamp && !isNaN(new Date(timestamp))
+                  ? new Date(timestamp).toLocaleString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : "No timestamp"}
               </div>
             </div>
           );

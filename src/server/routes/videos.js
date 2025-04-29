@@ -83,7 +83,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
 
 //POST create video —> only candidates
 router.post("/", isLoggedIn, async (req, res, next) => {
-  console.log(req.user.role);
+  console.log("anything", req.user);
   
   try {
     if (req.user.role !== "CANDIDATE") {
@@ -91,14 +91,15 @@ router.post("/", isLoggedIn, async (req, res, next) => {
     }
 
 
-    const { title, url} = req.body;
+    const { title, url, isPublic } = req.body;
 
 
     const video = await prisma.video.create({
       data: {
         title,
         url,
-        userId: req.user.userId
+        isPublic,
+        userId: req.user.id
       }
     });
 
