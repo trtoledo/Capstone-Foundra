@@ -1,0 +1,48 @@
+
+.request-demo-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: black;
+  padding: 5rem 2rem;
+  gap: 4rem;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: #DAFFED;
+}
+
+.left-content {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.page-heading {
+  font-size: 2.8rem;
+  color: #B1FA63;
+  font-family: 'Permanent Marker', cursive;
+  margin-bottom: 1rem;
+}
+
+.page-subtext {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+}
+
+.benefits-list li {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.right-content {
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}

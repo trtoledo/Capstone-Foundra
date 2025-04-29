@@ -6,7 +6,7 @@ const features = [
   {
     id: 1,
     title: "01 Passion-first job matching",
-    content: "We use short intro videos and context-rich profiles to match talent with teams who value their passion as much as their skills.",
+    content: "Foundra uses short intro videos and context-rich profiles to match talent with teams who value their passion as much as their skills.",
     screencap: "/assets/screens/passion-matching.png",
     link: "/how-it-works#matching",
   },
@@ -20,7 +20,7 @@ const features = [
   {
     id: 3,
     title: "03 Built-in screening & discovery",
-    content: "Forget the cold calls. Our async video platform pre-screens candidates so you can focus on culture and fit.",
+    content: "Our async video platform pre-screens candidates so you can focus on culture and fit.",
     screencap: "/assets/screens/screening.png",
     link: "/how-it-works#screening",
   },

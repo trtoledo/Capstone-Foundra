@@ -1,25 +1,24 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Explore from "./Components/Pages/Explore.jsx";
-import Home from "./Components/Pages/Home.jsx";
-import TopNav from "./Components/LandingPage/TopNav.jsx";
-import Candidates from "./Components/Candidate/Candidates.jsx";
-import SingleCandidate from "./Components/Candidate/SingleCandidate.jsx";
-import Companies from "./Components/Company/Companies.jsx";
-import SingleCompany from "./Components/Company/SingleCompany.jsx";
-import Dashboard from "./Components/Dashboard/Dashboard.jsx";
-import SingleIndustryPage from "./Components/Industry/SingleIndustryPage.jsx";
-import TopCandidates from "./Components/Candidate/TopCandidates.jsx";
-import Videos from "./Components/Video/Videos.jsx";
-import Comments from "./Components/Video/Comments.jsx";
-import Login from "./Components/Auth/Login.jsx";
-import Register from "./Components/Auth/Register.jsx";
-import Homepage from "./Components/LandingPage/HomePage.jsx";
-import Messenger from "./Components/Messages/Messenger.jsx";
-import LostHiring from "./Components/LandingPage/LostHiring.jsx";
-import WaitlistPage from "./Components/Pages/WaitListPage.jsx";
-import GetFound from "./Components/LandingPage/GetFound";
-import AboutUs from "./Components/LandingPage/AboutUs";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Explore from './Components/Pages/Explore.jsx';
+import Home from './Components/Pages/Home.jsx';
+import TopNav from './Components/LandingPage/TopNav.jsx';
+import Candidates from './Components/Pages/Candidates.jsx';
+import Companies from './Components/Pages/Companies.jsx';
+import Dashboard from './Components/Dashboard/Dashboard.jsx';
+import SingleIndustryPage from './Components/Industry/SingleIndustryPage.jsx';
+import TopCandidates from './Components/Candidate/TopCandidates.jsx';
+import Videos from './Components/Video/Videos.jsx';
+import Comments from './Components/Video/Comments.jsx';
+import Login from './Components/Auth/Login.jsx';
+import Register from './Components/Auth/Register.jsx';
+import Homepage from './Components/LandingPage/HomePage.jsx';
+import Messenger from './Components/Messages/Messenger.jsx';
+import LostHiring from './Components/LandingPage/LostHiring.jsx';
+import WaitlistPage from './Components/Pages/WaitListPage.jsx';
+import GetFound from './Components/LandingPage/GetFound';
+import AboutUs from './Components/LandingPage/AboutUs';
+import RequestDemoPage from './components/Pages/RequestDemoPage';
 import ProfilePage from "./Components/Pages/ProfilePage.jsx";
 import Industries from "./Components/Industry/Industries.jsx";
 
@@ -49,7 +48,9 @@ const App = () => {
           <Route path="/get-found" element={<GetFound />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/request-demo" element={<RequestDemoPage />} />
         </Routes>
+
       </div>
     </div>
   );
