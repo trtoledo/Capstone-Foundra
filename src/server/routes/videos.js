@@ -91,13 +91,14 @@ router.post("/", isLoggedIn, async (req, res, next) => {
     }
 
 
-    const { title, url} = req.body;
+    const { title, url, isPublic } = req.body;
 
 
     const video = await prisma.video.create({
       data: {
         title,
         url,
+        isPublic,
         userId: req.user.userId
       }
     });
