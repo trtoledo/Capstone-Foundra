@@ -78,7 +78,7 @@ export default function Comments({ videoId }) {
             onChange={(e) => setNewContent(e.target.value)}
             placeholder="Comment here..."
           />
-          <button className="comment-button" onClick={() => handleCreate()}>
+          <button style={{ width: 100, margin: 0 }}className="comment-button" onClick={() => handleCreate()}>
             Post
           </button>{" "}
         </div>
@@ -94,6 +94,7 @@ export default function Comments({ videoId }) {
               {isAuthorOrAdmin(comment.user.id) && (
                 <div className="comment-actions">
                   <button
+                    style={{ width: 100, margin: 0 }}
                     className="action-button"
                     onClick={() => {
                       setEditingId(comment.id);
@@ -103,6 +104,7 @@ export default function Comments({ videoId }) {
                     Edit
                   </button>
                   <button
+                    style={{ width: 100, margin: 0 }}
                     className="action-button delete-button"
                     onClick={() => handleDelete(comment.id)}
                   >
@@ -121,12 +123,14 @@ export default function Comments({ videoId }) {
                   onChange={(e) => setEditingContent(e.target.value)}
                 />
                 <button
+                  style={{ width: 100, margin: 0 }}
                   className="comment-button save-button"
                   onClick={() => handleUpdate(comment.id)}
                 >
                   Save
                 </button>
                 <button
+                  style={{ width: 100, margin: 0 }}
                   className="cancel-button"
                   onClick={() => setEditingId(null)}
                 >

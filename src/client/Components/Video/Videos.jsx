@@ -4,6 +4,7 @@ import VideoInterview from "./VideoInterview";
 import Comments from "./Comments";
 import { fetchAllVideos, deleteVideo } from "../../api/videos"; 
 import ConfirmModal from "./ConfirmModal";
+import { useRef } from "react";
 import "./Videos.css";
 
 const Videos = () => {
@@ -12,6 +13,15 @@ const Videos = () => {
   const [deletingId, setDeletingId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [videoToDelete, setVideoToDelete] = useState(null);
+
+  const carouselRef = useRef(null);
+
+  const scrollCarousel = (direction) => {
+  const scrollAmount = 320; // roughly one card width
+  if (carouselRef.current) {
+    carouselRef.current.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+  }
+  };
 
   useEffect(() => {
     const loadVideos = async () => {
@@ -66,31 +76,41 @@ const Videos = () => {
       {videos.length === 0 ? (
         <p className="empty-video-message">No videos found.</p>
       ) : (
-        <div className="video-grid">
-          {videos.map((video) => (
-            <div key={video.id} className="video-card">
-              <video src={video.url} controls className="video-thumbnail" />
-              <div className="video-info">
-                <h4 className="video-title">{video.title}</h4>
-                <Comments videoId={video.id} />
+        <div className="video-carousel-container">
+  <button style={{ width: 100, margin: 0 }} className="carousel-button left" onClick={() => scrollCarousel(-1)}>
+    &#8592;
+  </button>
 
-                {(user?.id === video.userId || role === 'admin') && (
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(video.id)}
-                    disabled={deletingId === video.id}
-                  >
-                    {deletingId === video.id ? (
-                      <span className="loader"></span>
-                    ) : (
-                      "Delete Video"
-                    )}
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
+  <div className="video-carousel" ref={carouselRef}>
+    {videos.map((video) => (
+      <div key={video.id} className="video-card">
+        <video src={video.url} controls className="video-thumbnail" />
+        <div className="video-info">
+          <h4 className="video-title">{video.title}</h4>
+          <Comments videoId={video.id} />
+          {(user?.id === video.userId || role === 'admin') && (
+            <button
+              style={{ width: 100, margin: 0 }}
+              className="delete-button"
+              onClick={() => handleDelete(video.id)}
+              disabled={deletingId === video.id}
+            >
+              {deletingId === video.id ? (
+                <span className="loader"></span>
+              ) : (
+                "Delete Video"
+              )}
+            </button>
+          )}
         </div>
+      </div>
+    ))}
+  </div>
+
+  <button style={{ width: 100, margin: 0 }} className="carousel-button right" onClick={() => scrollCarousel(1)}>
+    &#8594;
+  </button>
+</div>
       )}
 
       <ConfirmModal

@@ -35,18 +35,50 @@
   margin-top: 1rem;
 }
 
-.video-card {
-  background-color: #111;
-  border: 1px solid #1effbc;
-  border-radius: 10px;
+.video-carousel-container {
+  position: relative;
+  width: 100%;
   overflow: hidden;
-  color: #daffed;
-  transition: transform 0.2s ease;
 }
 
-.video-card:hover {
-  transform: scale(1.01);
+.video-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 1rem;
+  padding: 1rem 0;
 }
+
+.video-card {
+  min-width: 300px;
+  flex-shrink: 0;
+  border: 1px solid #00ffff;
+  border-radius: 10px;
+  padding: 3rem;
+  background-color: #111;
+  width: 100%;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #222;
+  color: #0ff;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-button.left {
+  left: 0;
+}
+
+.carousel-button.right {
+  right: 0;
+}
+
 
 .video-thumbnail {
   width: 100%;
