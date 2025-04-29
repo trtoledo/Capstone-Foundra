@@ -16,7 +16,7 @@ import "./TopNav.css";
 export default function TopNav() {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
-  const { token, setToken, setUser, setRole, setRefresh } = useAuth();
+  const { token, setToken, setUser, setRole, setRefresh, user } = useAuth();
 
   const mainNavItems = [
     { icon: <FaHome />, label: "Home", path: "/" },
@@ -54,12 +54,19 @@ export default function TopNav() {
 
       <ul className="nav-list main-nav">
         {mainNavItems.map((item, index) => (
-          <li key={index} className={`nav-item ${item.label === "Explore" ? "explore-nav-item" : ""}`}>
+          <li
+            key={index}
+            className={`nav-item ${
+              item.label === "Explore" ? "explore-nav-item" : ""
+            }`}
+          >
             {item.label === "Explore" ? (
               <div className="nav-link-wrapper">
                 <Link to={item.path} className="nav-link">
                   {item.icon}
-                  {!collapsed && <span className="nav-label">{item.label}</span>}
+                  {!collapsed && (
+                    <span className="nav-label">{item.label}</span>
+                  )}
                 </Link>
 
                 {/* Dropdown inside Explore */}
@@ -113,6 +120,15 @@ export default function TopNav() {
               >
                 <FaSignInAlt />
                 {!collapsed && <span className="nav-label">Logout</span>}
+              </Link>
+            </li>
+            <li className="nav-item avatar-item">
+              <Link to="/profile" className="nav-link avatar-link">
+                <img
+                  src={user?.avatarUrl || "/assets/flounder_foundra.jpg"}
+                  alt="User Avatar"
+                  className="nav-avatar"
+                />
               </Link>
             </li>
           </>
