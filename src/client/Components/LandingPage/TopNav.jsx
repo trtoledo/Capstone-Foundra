@@ -37,8 +37,8 @@ export default function TopNav() {
 
   return (
     <div className={`topnav ${collapsed ? "collapsed" : ""}`}>
-      <div className="topnav-left">
-        <button className="toggle-btn" onClick={toggleNav}>
+      <div className="nav-section nav-left">
+        <button className="toggle-btn" style={{ width: 100, margin: 0 }}onClick={toggleNav}>
           <FaBars />
         </button>
         {!collapsed && (
@@ -52,6 +52,7 @@ export default function TopNav() {
         )}
       </div>
 
+      <div className="nav-section nav-center">
       <ul className="nav-list main-nav">
         {mainNavItems.map((item, index) => (
           <li
@@ -69,7 +70,6 @@ export default function TopNav() {
                   )}
                 </Link>
 
-                {/* Dropdown inside Explore */}
                 {!collapsed && (
                   <div className="dropdown-menu">
                     <Link to="/candidates" className="nav-link dropdown-link">
@@ -96,7 +96,8 @@ export default function TopNav() {
           </li>
         ))}
       </ul>
-
+      </div>
+      <div className="nav-section nav-right">
       <ul className="nav-list auth-nav">
         {token ? (
           <>
@@ -143,6 +144,7 @@ export default function TopNav() {
           ))
         )}
       </ul>
+      </div>
     </div>
   );
 }
