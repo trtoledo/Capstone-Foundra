@@ -106,7 +106,7 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
       class TranscribeProcessor extends AudioWorkletProcessor {
         process(inputs) {
           const input = inputs[0];
-          console.log('AudioWorklet Input:', input[0]);
+          
           if (input.length > 0) {
             this.port.postMessage(input[0]);
           }

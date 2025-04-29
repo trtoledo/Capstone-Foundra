@@ -83,7 +83,7 @@ router.get("/:id", isLoggedIn, async (req, res) => {
 
 //POST create video —> only candidates
 router.post("/", isLoggedIn, async (req, res, next) => {
-  console.log(req.user.role);
+  console.log("anything", req.user);
   
   try {
     if (req.user.role !== "CANDIDATE") {
@@ -99,7 +99,7 @@ router.post("/", isLoggedIn, async (req, res, next) => {
         title,
         url,
         isPublic,
-        userId: req.user.userId
+        userId: req.user.id
       }
     });
 
