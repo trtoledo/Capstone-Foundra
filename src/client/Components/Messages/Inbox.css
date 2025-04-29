@@ -62,3 +62,14 @@
   color: #888;
   font-style: italic;
 }
+
+.inbox-search {
+  width: 100%;
+  padding: 10px;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #1e1e1e;
+  color: #fff;
+}
