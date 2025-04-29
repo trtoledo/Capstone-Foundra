@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Explore from './Components/Pages/Explore.jsx';
@@ -20,14 +19,8 @@ import WaitlistPage from './Components/Pages/WaitListPage.jsx';
 import GetFound from './Components/LandingPage/GetFound';
 import AboutUs from './Components/LandingPage/AboutUs';
 import RequestDemoPage from './components/Pages/RequestDemoPage';
-
-
-
-
-
-
-
-
+import ProfilePage from "./Components/Pages/ProfilePage.jsx";
+import Industries from "./Components/Industry/Industries.jsx";
 
 const App = () => {
   return (
@@ -38,21 +31,26 @@ const App = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/candidates" element={<Candidates />} />
+          <Route path="/candidates/:id" element={<SingleCandidate />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/industry/:id" element={<SingleIndustryPage />} />
+          <Route path="/industries/:id" element={<SingleIndustryPage />} />
+          <Route path='/industries' element={<Industries />} />
+          <Route path="/companies/:id" element={<SingleCompany />} />
           <Route path="/candidates/top" element={<TopCandidates />} />
           <Route path="/videos" element={<Videos />} />
-          <Route path='/inbox' element={<Messenger />} />
+          <Route path="/inbox" element={<Messenger />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/comments" element={<Comments />} />
           <Route path="/lost-hiring" element={<LostHiring />} />
           <Route path="/waitlist" element={<WaitlistPage />} />
           <Route path="/get-found" element={<GetFound />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/request-demo" element={<RequestDemoPage />} />
-</Routes>
+        </Routes>
+
       </div>
     </div>
   );

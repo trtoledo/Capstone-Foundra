@@ -1,0 +1,241 @@
+.account-settings-container {
+  max-width: 1200px;
+  margin: 100px auto 40px;
+  padding: 0 20px;
+  color: #daffed;
+}
+
+.section {
+  margin-bottom: 60px;
+}
+
+.section h2 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #daffed;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: linear-gradient(#1f1f1f, #1f1f1f) padding-box,
+    linear-gradient(135deg, #c200fb, #daffed) border-box;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  color: #f0f0f0;
+  box-shadow: 0 4px 12px rgba(0, 255, 200, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px #210124;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #daffed;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.card p {
+  font-size: 14px;
+  color: #bdbdbd;
+}
+
+button {
+  display: block;
+  margin: 40px auto 0;
+  background-color: #210124;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 200px;
+}
+
+button:hover {
+  background-color: #c200fb;
+}
+
+.card.clickable {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card.clickable:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 10px #ff4fd8;
+}
+
+.avatar-upload-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 255, 200, 0.1);
+}
+
+.avatar-upload-container label {
+  font-size: 16px;
+  color: #daffed;
+  margin-right: 20px;
+}
+
+.avatar-upload-container input[type="file"] {
+  background-color: #210124;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.avatar-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #daffed;
+}
+
+.resume-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 255, 200, 0.1);
+}
+
+.resume-upload-container label {
+  font-size: 16px;
+  color: #daffed;
+  margin-bottom: 10px;
+}
+
+.resume-upload-container input[type="file"] {
+  background-color: #210124;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+}
+
+.resume-view-button {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #1e1e2f;
+  color: #00fff7;
+  border: 1px solid #00fff7;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.resume-view-button:hover {
+  background-color: #00fff7;
+  color: #1e1e2f;
+  box-shadow: 0 0 10px #00fff7;
+}
+
+.input-section {
+  margin-bottom: 20px;
+}
+
+.input-section input,
+.input-section textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #210124;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  color: #daffed;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.input-section input:focus,
+.input-section textarea:focus {
+  border-color: #c200fb;
+  outline: none;
+}
+
+.password-section {
+  margin-bottom: 20px;
+}
+
+.password-section input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #210124;
+  border-radius: 8px;
+  background-color: #1f1f1f;
+  color: #daffed;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.password-section input:focus {
+  border-color: #c200fb;
+  outline: none;
+}
+
+.save-button {
+  margin-top: 20px;
+  background-color: #210124;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 40px auto 0;
+  width: 200px;
+}
+
+.save-button:hover {
+  background-color: #c200fb;
+}
+
+.resume-upload-container,
+.avatar-upload-container {
+  margin-bottom: 1rem;
+}
+
+.resume-upload-container input,
+.avatar-upload-container input {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.avatar-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 0.5rem;
+}

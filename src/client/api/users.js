@@ -30,7 +30,7 @@ export async function fetchSingleUser(id) {
     }
 }
 
-export async function updateUser(id, name, companyId) {
+export async function updateUser(id, name, companyId, email, bio, avatarUrl, resumeUrl, token) {
     try {
         const response = await fetch(`${API}/${id}`, {
             method: "PUT",
@@ -38,7 +38,7 @@ export async function updateUser(id, name, companyId) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
-              body: JSON.stringify({name, companyId})
+              body: JSON.stringify({name, companyId, email, bio, avatarUrl, resumeUrl})
         });
         if (!response.ok) {
             const errorData = await response.json();
@@ -46,8 +46,9 @@ export async function updateUser(id, name, companyId) {
           }
       
           return await response.json();
-    } catch (error) {
-        console.error("Could not update user", err)
+    } catch (err) {
+        console.error("Could not update user", err);
+        throw err;
     }
 }
 

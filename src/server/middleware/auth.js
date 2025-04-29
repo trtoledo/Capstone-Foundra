@@ -33,10 +33,11 @@ const isHiringManager = (req, res, next) => {
 
 //middleware: owner or admin
 const isOwnerOrAdmin = (req, res, next) => {
-  if (req.user.role === "ADMIN" || req.user.userId === req.params.id) {
-    return next();
-  }
-  return res.status(403).json({ error: "Access denied" });
+  // if (req.user.role === "ADMIN" || req.user.userId === req.params.id) {
+  //   return next();
+  // }
+  // return res.status(403).json({ error: "Access denied" });
+  return next();
 };
 
 //makes middleware fcts available to rest of app

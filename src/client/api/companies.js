@@ -16,16 +16,17 @@ export async function fetchCompanies() {
     }
 };
 
-export async function addCompany(name, industryId) {
+export async function addCompany(name) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      body: JSON.stringify({ name, industryId }),
-  }});
+      },
+      body: JSON.stringify({ name }),
+  });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -39,19 +40,21 @@ export async function addCompany(name, industryId) {
   }
 };
 
-export async function updateCompany(name, industryId, companyId) {
+export async function updateCompany(companyId, updateData) {
+  const token = localStorage.getItem("token");
   try {
     const response = await fetch(`${API}/${companyId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-      body: JSON.stringify({ name, industryId }),
-    }});
+      },
+      body: JSON.stringify(updateData),
+    });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP ${response.status}`);
+      const data = await response.json();
+      throw new Error(data.error || `HTTP ${response.status}`);
     }
 
     return await response.json();
@@ -61,9 +64,10 @@ export async function updateCompany(name, industryId, companyId) {
   }
 };
 
-export async function deleteCompany(companyId) {
+export async function deleteCompany(id) {
+  const token = localStorage.getItem("token");
   try {
-    const response = await fetch(`${API}/${companyId}`, {
+    const response = await fetch(`${API}/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -77,14 +81,14 @@ export async function deleteCompany(companyId) {
 
     return await response.json();
   } catch (err) {
-    console.error(`Could not delete company ${companyId}:`, err.message);
+    console.error(`Could not delete company ${id}:`, err.message);
     throw err;
   }
 };
 
 export async function fetchCompanyById(id) {
   try {
-    const response = await fetch(`/api/companies/${id}`);
+    const response = await fetch(`${API}/${id}`);
 
     if (!response.ok) {
       const data = await response.json();

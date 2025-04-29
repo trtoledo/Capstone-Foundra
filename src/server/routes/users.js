@@ -1,10 +1,46 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const prisma = require('../db/client');
+const prisma = require("../db/client");
+
+const { S3Client, PutObjectCommand, PutBucketCorsCommand } = require("@aws-sdk/client-s3");
+const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
+
 const {
   isLoggedIn,
   isOwnerOrAdmin,
 } = require('../middleware/auth');
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+async function applyCorsPolicy() {
+  const corsParams = {
+    Bucket: process.env.S3_BUCKET,
+    CORSConfiguration: {
+      CORSRules: [
+        {
+          AllowedOrigins: ["*"],
+          AllowedMethods: ["GET", "PUT", "POST"],
+          AllowedHeaders: ["*"],
+          ExposeHeaders: ["ETag"],
+        },
+      ],
+    },
+  };
+  try {
+    const command = new PutBucketCorsCommand(corsParams);
+    await s3.send(command);
+    console.log("✅ S3 CORS policy applied successfully.");
+  } catch (err) {
+    console.error("❌ Error applying S3 CORS policy:", err);
+  }
+}
+applyCorsPolicy();
 
 //GET all users -> everyone incl guests
 router.get('/', async (req, res) => {
@@ -67,10 +103,10 @@ router.get('/candidates/:id', async (req, res) => {
 //PUT /api/users/:id —> only that individual user or admins
 router.put('/:id', isLoggedIn, isOwnerOrAdmin, async (req, res) => {
   try {
-    const { name, companyId } = req.body;
+    const { name, companyId, email, bio, avatarUrl, resumeUrl } = req.body;
     const updated = await prisma.user.update({
       where: { id: req.params.id },
-      data: { name, companyId }
+      data: { name, companyId, email, bio, avatarUrl, resumeUrl }
     });
     res.json(updated);
   } catch (err) {
@@ -98,6 +134,29 @@ router.delete('/:id', isLoggedIn, isOwnerOrAdmin, async (req, res) => {
     res.json({ message: "User deleted", deletedUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/users/sign-profile-upload → get S3 signed URL for avatar
+router.post("/sign-s3-profile", isLoggedIn, async (req, res) => {
+  const { filename } = req.body;
+  if (!filename) return res.status(400).json({ error: "filename is required" });
+
+  const key = `avatar/${req.user.userId}/${filename}`;
+
+  const params = {
+    Bucket: process.env.S3_BUCKET,
+    Key: key,
+    ContentType: "image/jpeg",
+  };
+
+  try {
+    const cmd = new PutObjectCommand(params);
+    const url = await getSignedUrl(s3, cmd, { expiresIn: 60 });
+    res.json({ url, key });
+  } catch (err) {
+    console.error("Error signing S3 URL:", err);
+    res.status(500).json({ error: "Could not generate signed URL" });
   }
 });
 

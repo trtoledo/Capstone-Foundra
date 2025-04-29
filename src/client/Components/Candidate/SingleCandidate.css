@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+.singleCandidateContainer {
+  padding: 2rem;
+  color: #daffed;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  margin: 100px auto 0;
+  max-width: 800px;
+  border: 1px solid #222;
+}
+
+.singleCandidateContainer h2 {
+  font-family: "Permanent Marker", cursive;
+  color: #b1fa63;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.singleCandidateContainer h4 {
+  color: #ec0868;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.candidateInfo {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.candidateInfo p {
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.videosSection {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.videoContainer {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.videoContainer video {
+  max-width: 100%;
+  height: auto;
+}
+
+.videoContainer p {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.error {
+  color: #ff4d4d;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  color: #aaa;
+  font-style: italic;
+}

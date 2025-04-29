@@ -1,5 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
 .industryContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  padding: 2rem;
+  color: #daffed;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  margin: 100px auto 0;
+  max-width: 800px;
+  border: 1px solid #222;
+}
+
+.industryContainer h2 {
+  font-family: "Permanent Marker", cursive;
+  color: #daffed;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.industryContainer h4 {
+  color: #aaa;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.companyAssignment {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.companyAssignment h3 {
+  color: #b1fa63;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.companyAssignment label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.companyAssignment select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+}
+
+.companyAssignment select option {
+  background-color: #111;
+}
+
+.companyAssignment button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #b1fa63;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+.companyAssignment button:hover {
+  background-color: #c3ff7a;
+}
+
+.currentCompanies {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.currentCompanies h3 {
+  color: #ec0868;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.currentCompanies ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.currentCompanies li {
+  margin-bottom: 0.5rem;
+}
+
+.back {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: 2px solid #daffed;
+  background-color: transparent;
+  color: #daffed;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0;
+}
+
+.back:hover {
+  background-color: rgba(218, 255, 237, 0.1);
+}
+
+.errorMessage {
+  color: #ff4d4d;
+  margin-bottom: 0.5rem;
+}
+
+.successMessage {
+  color: #63ff84;
+  margin-bottom: 0.5rem;
 }

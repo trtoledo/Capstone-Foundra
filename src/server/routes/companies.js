@@ -17,7 +17,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const company = await prisma.company.findUnique({
-      where: { id: req.params.id },
+      where: {
+        id: parseInt(req.params.id, 10), // This conversion is necessary
+      },
     });
     if (!company) return res.status(404).json({ error: "Company not found" });
     res.json(company);
@@ -32,7 +34,10 @@ router.post("/", isLoggedIn, isAdmin, async (req, res) => {
 
   try {
     const company = await prisma.company.create({
-      data: { name, industryId },
+      data: {
+        name: name, // Use the dynamic name from the request
+        industryId: parseInt(industryId, 10) // Convert the industryId to an integer (base 10)
+      }
     });
     res.status(201).json(company);
   } catch (err) {
@@ -43,11 +48,16 @@ router.post("/", isLoggedIn, isAdmin, async (req, res) => {
 //PUT /api/companies/:id -> only admins
 router.put("/:id", isLoggedIn, isAdmin, async (req, res) => {
   const { name, industryId } = req.body;
-
+  console.log("Updating company ID:", req.params.id);
   try {
     const updated = await prisma.company.update({
-      where: { id: req.params.id },
-      data: { name, industryId },
+      where: {
+        id: parseInt(req.params.id, 10),
+      },
+      data: {
+        name: name,
+        industryId: parseInt(industryId, 10)
+      }
     });
     res.json(updated);
   } catch (err) {

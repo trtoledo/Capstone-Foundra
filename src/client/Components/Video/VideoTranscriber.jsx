@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Model, Recognizer } from "vosk-browser";
+import { useEffect, useRef, useState } from "react";
+import * as vosk from "vosk-browser";
 
 const VideoTranscriber = ({ src, autoStart = false }) => {
   const videoRef = useRef(null);
@@ -9,13 +9,32 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
   const audioContextRef = useRef(null);
   const analyserRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const workletNodeRef = useRef(null);
+  const [isRecognizerReady, setIsRecognizerReady] = useState(false);
 
   useEffect(() => {
     const initRecognizer = async () => {
-      const model = await Model.create(
-        "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.tar.gz"
-      );
-      recognizerRef.current = new Recognizer({ model, sampleRate: 16000 });
+      try {
+        console.log("init");
+        // vosk.setLogLevel(0);
+        const model = await vosk.createModel("/vosk-model-small-en-us-0.15/");
+        console.log('recognizer init');
+        
+        const recognizer = await vosk.createRecognizer(model, 16000);
+        console.log('recognizer loaded');
+        
+        recognizer.setWords(true);
+        recognizerRef.current = recognizer;
+        console.log("Attempting to initialize recognizer...");
+        console.log(recognizer);
+        console.log(recognizerRef);
+        
+        
+        setIsRecognizerReady(true);
+        console.log("Recognizer initialized successfully!");
+      } catch (error) {
+        console.error("Error initializing recognizer:", error);
+      }
     };
     initRecognizer();
   }, []);
@@ -59,9 +78,21 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
 
   const transcribeVideo = async () => {
     const video = videoRef.current;
+    if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+      console.warn("Video not ready to capture stream.");
+      return;
+    }
     const stream = video.captureStream();
+    console.log("Audio Tracks After Capture:", stream.getAudioTracks());
+    const audioTracks = stream.getAudioTracks();
+    if (audioTracks.length > 0) {
+      audioTracks[0].onmute = () => console.warn("Audio track is muted!");
+      audioTracks[0].onunmute = () => console.log("Audio track is unmuted!");
+    }
+
     const audioContext = new AudioContext({ sampleRate: 16000 });
     audioContextRef.current = audioContext;
+    console.log("AudioContext State:", audioContextRef.current.state);
 
     const source = audioContext.createMediaStreamSource(stream);
     const analyser = audioContext.createAnalyser();
@@ -75,6 +106,7 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
       class TranscribeProcessor extends AudioWorkletProcessor {
         process(inputs) {
           const input = inputs[0];
+          console.log('AudioWorklet Input:', input[0]);
           if (input.length > 0) {
             this.port.postMessage(input[0]);
           }
@@ -82,7 +114,8 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
         }
       }
       registerProcessor('transcribe-processor', TranscribeProcessor);
-    `],
+    `,
+        ],
         { type: "application/javascript" }
       )
     );
@@ -92,13 +125,39 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
       audioContext,
       "transcribe-processor"
     );
+    workletNodeRef.current = workletNode;
 
     workletNode.port.onmessage = (event) => {
+      if (!isRecognizerReady || !recognizerRef.current) {
+        console.warn("Recognizer not yet ready, skipping audio chunk.");
+        return;
+      }
+
+      console.log("Recognizer Ref in onmessage:", recognizerRef.current);
+
       const audioData = Float32Array.from(event.data);
-      if (recognizerRef.current.acceptWaveform(audioData)) {
-        const result = recognizerRef.current.result();
-        if (result.text) {
-          setTranscript((prev) => prev + " " + result.text);
+      const accepted = recognizerRef.current.acceptWaveform(audioData);
+      console.log("acceptWaveform returned:", accepted);
+
+      if (accepted) {
+        try {
+          const result = recognizerRef.current.result();
+          console.log("FINAL RESULT:", result);
+          if (result && result.text) {
+            setTranscript((prev) => prev + " " + result.text);
+          }
+        } catch (error) {
+          console.error("Error getting final result:", error);
+        }
+      } else {
+        try {
+          const partial = recognizerRef.current.partialResult();
+          console.log("PARTIAL RESULT:", partial);
+          if (partial && partial.partial) {
+            setTranscript((prev) => prev + " " + partial.partial);
+          }
+        } catch (error) {
+          console.error("Error getting partial result:", error);
         }
       }
     };
@@ -108,23 +167,72 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
 
     video.play();
     drawWaveform();
+
+    const stopTranscription = async () => {
+      console.log("Stopping transcription...");
+
+      if (workletNodeRef.current) {
+        workletNodeRef.current.disconnect();
+        workletNodeRef.current = null;
+      }
+
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+
+      if (analyserRef.current) {
+        analyserRef.current.disconnect();
+        analyserRef.current = null;
+      }
+
+      if (audioContextRef.current) {
+        const ctx = audioContextRef.current;
+        if (ctx.state !== "closed") {
+          await ctx.close();
+        }
+        audioContextRef.current = null;
+      }
+
+      if (recognizerRef.current) {
+        recognizerRef.current.free();
+        recognizerRef.current = null;
+      }
+    };
+
+    video.addEventListener("ended", stopTranscription);
+    video.addEventListener("pause", stopTranscription);
   };
 
   useEffect(() => {
     if (autoStart && src && videoRef.current) {
-      videoRef.current.src = src;
-      transcribeVideo();
+      const video = videoRef.current;
+
+      video.src = src;
+
+      const handleLoaded = () => {
+          const stream = video.captureStream();
+          const audioTracks = stream.getAudioTracks();
+          if (audioTracks.length > 0) {
+            audioTracks[0].onmute = () => console.warn("Audio track is muted!");
+            audioTracks[0].onunmute = () => console.log("Audio track is unmuted!");
+          }
+          transcribeVideo(stream);
+      };
+
+      video.addEventListener("loadedmetadata", handleLoaded);
+
+      return () => video.removeEventListener("loadedmetadata", handleLoaded);
     }
   }, [src, autoStart]);
 
+  useEffect(() => {
+    console.log("TRANSCRIPT UPDATED:", transcript);
+  }, [transcript]);
+
   return (
     <div style={{ background: "#000", color: "#fff", padding: "1rem" }}>
-      <video
-        ref={videoRef}
-        controls
-        src={src}
-        style={{ width: "100%" }}
-      />
+      <video ref={videoRef} controls src={src} style={{ width: "100%" }} />
       {!autoStart && (
         <button onClick={transcribeVideo} style={{ marginTop: "1rem" }}>
           Transcribe Video
@@ -143,7 +251,16 @@ const VideoTranscriber = ({ src, autoStart = false }) => {
         }}
       />
       <h3>Transcript:</h3>
-      <div>{transcript}</div>
+      <div
+        style={{
+          background: "red",
+          minHeight: "100px",
+          padding: "1rem",
+          whiteSpace: "pre-wrap",
+        }}
+      >
+        {transcript}
+      </div>
     </div>
   );
 };

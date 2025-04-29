@@ -43,7 +43,7 @@ export async function addIndustry(name) {
 
 export async function fetchIndustryById(id) {
   try {
-    const response = await fetch(`/api/industries/${id}`);
+    const response = await fetch(`${API}/${id}`);
 
     if (!response.ok) {
       const data = await response.json();

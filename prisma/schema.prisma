@@ -15,25 +15,25 @@ model User {
   role      Role           @default(CANDIDATE)
   isDeleted Boolean        @default(false)
   company   Company?       @relation(fields: [companyId], references: [id])
-  companyId String?
+  companyId Int?
+  avatarUrl String?
+  bio       String?
+  resumeUrl String?
   reports   Report[]
   comments  Comment[]
   reviews   Review[]
   videos    Video[]
-  //newly added: relation for wishlist
   wishlist  TopCandidate[] @relation("wishlistOwner")
   createdAt DateTime       @default(now())
-
-  //newly added: relationships for messages
   sentMessages     Message[] @relation("sentMessages")
   receivedMessages Message[] @relation("receivedMessages")
 }
 
 model Company {
-  id            String         @id @default(cuid())
+  id            Int    @id @default(autoincrement())
   name          String
   industry      Industry?      @relation(fields: [industryId], references: [id])
-  industryId    String?
+  industryId    Int?
   users         User[]
   videos        Video[]
   reports       Report[]
@@ -41,7 +41,7 @@ model Company {
 }
 
 model Industry {
-  id        String    @id @default(cuid())
+  id        Int    @id @default(autoincrement())
   name      String    @unique
   companies Company[]
 }
@@ -52,23 +52,19 @@ model Video {
   url       String
   isPublic  Boolean  @default(true) 
   company   Company? @relation(fields: [companyId], references: [id])
-  companyId String?
+  companyId Int?
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now())
-
   comments  Comment[]
 }
 
-
-
 model TopCandidate {
-  //newly added: ispublic, user, userid
   isPublic  Boolean  @default(false)
   id        String   @id @default(cuid())
   name      String
   company   Company  @relation(fields: [companyId], references: [id])
-  companyId String
+  companyId Int
   videoUrl  String
   user      User?    @relation("wishlistOwner", fields: [userId], references: [id])
   userId    String?
@@ -81,17 +77,16 @@ model Report {
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
   company   Company? @relation(fields: [companyId], references: [id])
-  companyId String?
+  companyId Int?
   createdAt DateTime @default(now())
 }
 
 model Message {
   id          Int      @id @default(autoincrement())
   senderId    String
-  recipientId String
+  recipientId String  
   content     String
   createdAt   DateTime @default(now())
-
   sender    User @relation("sentMessages", fields: [senderId], references: [id])
   recipient User @relation("receivedMessages", fields: [recipientId], references: [id])
 }

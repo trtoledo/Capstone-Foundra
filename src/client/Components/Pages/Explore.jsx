@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchCompanies } from "../../api/companies";
 import { fetchIndustries } from "../../api/industries";
@@ -6,76 +6,58 @@ import { useAuth } from "../Context/AuthContext";
 import "./Explore.css";
 
 const Explore = () => {
-  const { token, setToken, refresh, setRefresh } = useAuth();
-  const { id } = useParams();
+  const { refresh } = useAuth();
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
-  const [companyName, setCompanyName] = useState("");
   const [industries, setIndustries] = useState([]);
-  const [industryName, setIndustryName] = useState("");
-  const [industryId, setIndustryId] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const CompaniesData = await fetchCompanies();
-        const IndustriesData = await fetchIndustries();
-        setCompanies(CompaniesData);
-        setIndustries(IndustriesData);
+        const fetchedCompanies = await fetchCompanies();
+        const fetchedIndustries = await fetchIndustries();
+        setCompanies(fetchedCompanies);
+        setIndustries(fetchedIndustries);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
-  // useEffect(() => {
-  //   if (selectedCompanyId) {
-  //     const company = companies.find((c) => c.id === selectedCompanyId);
-  //     if (company) {
-  //       setCompanyName(company.name);
-  //       setIndustryId(company.industryId || "");
-  //     }
-  //   }
-  // }, [selectedCompanyId, companies]);
-
-  // useEffect(() => {
-  //   if (selectedIndustryId) {
-  //     const industry = industries.find((i) => i.id === selectedIndustryId);
-  //     if (industry) {
-  //       setIndustryName(industry.name);
-  //     }
-  //   }
-  // }, [selectedIndustryId, industries]);
+  const companiesByIndustry = industries.map((industry) => ({
+    ...industry,
+    companies: companies.filter(
+      (company) => company.industryId === industry.id),
+  }));
 
   return (
-    <>
-      <div className="explore-container">
-        <div className="section">
-          <h2>Companies</h2>
-          <div className="card-grid">
-            {companies.map((company) => (
-              <div key={company.id} className="card">
-                <h3>{company.name}</h3>
-                <p>Industry: {company.industry?.name || "Unassigned"}</p>
-              </div>
-            ))}
+    <div className="exploreContainer">
+      <div className="section">
+        <h2>Explore Companies by Industry</h2>
+        {companiesByIndustry.map((industry) => (
+          <div key={industry.id} className="industrySection">
+            <h3>{industry.name}</h3>
+            <div className="cardGrid">
+              {industry.companies.length > 0 ? (
+                industry.companies.map((company) => (
+                  <div
+                    key={company.id}
+                    className="card clickable"
+                    onClick={() => navigate(`/companies/${company.id}`)}
+                  >
+                    <h4>{company.name}</h4>
+                    <p>{company.description || "No description"}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="noCompanies">No companies in this industry.</p>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="section">
-          <h2>Industries</h2>
-          <div className="card-grid">
-            {industries.map((industry) => (
-              <div key={industry.id} className="card">
-                <h3>{industry.name}</h3>
-                <p>{industry.companies?.length || 0} companies</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
-      <button onClick={() => navigate('/')}>Home</button>
-    </>
+    </div>
   );
 };
 

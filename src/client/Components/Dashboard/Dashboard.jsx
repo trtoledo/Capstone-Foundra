@@ -61,16 +61,8 @@ const Dashboard = () => {
     navigate("/lost-hiring");
   };
 
-  const handleBenchmarking = () => {
-    navigate("/topCandidates");
-  };
-
   const handleSearchCandidates = () => {
     navigate("/candidates");
-  };
-
-  const handleTopCandidates = () => {
-    navigate("/topCandidates");
   };
 
   const handleIndustryInsights = () => {
@@ -86,11 +78,11 @@ const Dashboard = () => {
   };
 
   const handleAccountSettings = () => {
-    navigate("/settings");
+    navigate("/profile");
   };
 
   const handleGiveFeedback = () => {
-    navigate("/feedback");
+    navigate("/request-demo");
   };
 
   const renderAdminTiles = () => (
@@ -154,12 +146,6 @@ const Dashboard = () => {
         description="Browse companies by industry"
         onClick={handleIndustryInsights}
       />
-      <Card
-        icon={<FaStar />}
-        title="Top Candidates"
-        description="See top-rated users for benchmarking"
-        onClick={handleBenchmarking}
-      />
     </>
   );
 
@@ -170,12 +156,6 @@ const Dashboard = () => {
         title="Search Candidates"
         description="View all candidates or their videos"
         onClick={handleSearchCandidates}
-      />
-      <Card
-        icon={<FaTrophy />}
-        title="Top Candidates"
-        description="Highlight exceptional candidates"
-        onClick={handleTopCandidates}
       />
       <Card
         icon={<FaLifeRing />}

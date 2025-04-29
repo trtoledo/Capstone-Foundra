@@ -11,7 +11,7 @@ export async function fetchComments() {
     }
   };
 
-  export async function createComment(content) {
+  export async function createComment(content, videoId) {
     const token = localStorage.getItem("token");
   
     try {
@@ -21,7 +21,7 @@ export async function fetchComments() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, videoId }),
       });
   
       if (!res.ok) {

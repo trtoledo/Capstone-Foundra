@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+.companiesContainer {
+  margin: 100px auto 0;
+  padding: 2rem;
+  color: #daffed;
+}
+
+.search {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+}
+
+.search label {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.search input[type="text"] {
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.addCompanyForm {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.addCompanyForm h3 {
+  font-family: "Permanent Marker", cursive;
+  color: #b1fa63;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.addCompanyForm input[type="text"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+}
+
+.addCompanyForm select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #daffed;
+  font-size: 1rem;
+}
+
+.addCompanyForm select option {
+  background-color: #111;
+}
+
+.addCompanyForm button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #b1fa63;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem;
+}
+
+.addCompanyForm button:hover {
+  background-color: #c3ff7a;
+}
+
+.allCompanies {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.company {
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #444;
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.company:hover {
+  transform: scale(1.03);
+  background-color: #222;
+}
+
+.company h4 {
+  color: #daffed;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.company h5 {
+  color: #aaa;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.company p {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.company button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid #daffed;
+  background-color: transparent;
+  color: #daffed;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 0.9rem;
+  align-self: flex-start;
+}
+
+.company button:hover {
+  background-color: rgba(218, 255, 237, 0.1);
+}
