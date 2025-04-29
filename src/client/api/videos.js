@@ -71,8 +71,10 @@ export async function updateVideo(id, title, url) {
   }
 }
 
-export async function deleteVideo(id) {
+export async function deleteVideo(id, token) {
   try {
+    console.log(token);
+    
     const response = await fetch(`${API}/${id}`, {
       method: "DELETE",
       headers: {
@@ -80,12 +82,7 @@ export async function deleteVideo(id) {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP ${response.status}`);
-      }
-  
-      return await response.json();
+    return "Deleted";
   } catch (err) {
     console.error("Could not delete video");
     throw err;
