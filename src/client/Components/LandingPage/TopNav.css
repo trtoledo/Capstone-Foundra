@@ -167,3 +167,27 @@
 .dropdown-link svg {
   font-size: 1.25rem;
 }
+
+.nav-item.avatar-item {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.nav-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  transition: transform 0.2s ease;
+}
+
+.nav-avatar:hover {
+  transform: scale(1.1);
+}
