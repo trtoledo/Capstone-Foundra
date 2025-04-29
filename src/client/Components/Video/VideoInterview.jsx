@@ -12,6 +12,7 @@ const VideoInterview = ({ setVideos }) => {
   const [recordedUrl, setRecordedUrl] = useState("");
   const [newVideoId, setNewVideoId] = useState(null);
   const recorderRef = useRef(null);
+  const S3_BUCKET = 'foundra-bucket';
 
   useEffect(() => {
     (async () => {
@@ -53,7 +54,7 @@ const VideoInterview = ({ setVideos }) => {
     });
     if (!uploadRes.ok) throw new Error('S3 upload failed');
 
-    const publicUrl = `https://${process.env.REACT_APP_S3_BUCKET}.s3.amazonaws.com/${key}`;
+    const publicUrl = `https://${S3_BUCKET}.s3.amazonaws.com/${key}`;
     const createRes = await fetch(
       `http://localhost:3000/api/videos`,
       {
@@ -67,9 +68,10 @@ const VideoInterview = ({ setVideos }) => {
     );
     if (!createRes.ok) throw new Error('Failed to create video record');
     const created = await createRes.json();
-
-    setVideos((prevVideos) => [...prevVideos, created]);
-    setRecordedUrl(URL.createObjectURL(blob));
+    console.log(created);
+    
+    setVideos((prevVideos) => [created, ...prevVideos]);
+    // setRecordedUrl(URL.createObjectURL(blob));
     setNewVideoId(created.id);
   };
 
@@ -87,10 +89,13 @@ const VideoInterview = ({ setVideos }) => {
     recorder.ondataavailable = (e) => buffer.push(e.data);
     recorder.onstop = async () => {
       const blob = new Blob(buffer, { type: "video/webm" });
+      setRecordedUrl(URL.createObjectURL(blob));
       try {
         const created = await uploadRecording(blob);
-        setRecordedUrl(URL.createObjectURL(blob));
-        setNewVideoId(created.id);
+        
+        // console.log(created);
+        
+        // setNewVideoId(created.id);
       } catch (err) {
         console.error(err);
       }

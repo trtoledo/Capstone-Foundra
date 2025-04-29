@@ -138,6 +138,8 @@ router.put("/:id", isLoggedIn, async (req, res) => {
 //DELETE video —> only video owne/ admins
 router.delete("/:id", isLoggedIn, async (req, res) => {
   try {
+    console.log("hit route");
+    
     const video = await prisma.video.findUnique({ where: { id: req.params.id } });
     if (!video) return res.status(404).json({ error: "Video not found" });
 

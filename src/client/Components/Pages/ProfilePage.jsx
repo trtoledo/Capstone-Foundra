@@ -13,7 +13,7 @@ const ProfilePage = () => {
     avatarUrl: "",
     resumeUrl: "",
   });
-  const S3_BUCKET = 'foundra-bucket';
+  const S3_BUCKET = "foundra-bucket";
 
   useEffect(() => {
     if (user) {
@@ -39,7 +39,7 @@ const ProfilePage = () => {
     e.preventDefault();
 
     if (!newUserData.name || !newUserData.email) {
-      alert("name and email are required");
+      alert("Name and email are required");
       return;
     }
 
@@ -68,84 +68,79 @@ const ProfilePage = () => {
     }
   };
 
-  const handleAvatarUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const response = await fetch(
-      "http://localhost:3000/api/users/sign-s3-profile",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ filename: file.name }),
-      }
-    );
+  const uploadFileAndGetUrl = async (endpoint, file) => {
+    const response = await fetch(`http://localhost:3000${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ filename: file.name }),
+    });
 
     const { url, key } = await response.json();
+
     await fetch(url, {
       method: "PUT",
       headers: { "Content-Type": file.type },
       body: file,
     });
 
-    const updatedUser = await updateUser(
-      user.id,
-      newUserData.name,
-      newUserData.companyId,
-      newUserData.email,
-      newUserData.bio,
-      {
-        avatarUrl: `https://${S3_BUCKET}.s3.amazonaws.com/${key}`,
-      },
-      newUserData.resumeUrl,
-      token
-    );
+    return `https://${S3_BUCKET}.s3.amazonaws.com/${key}`;
+  };
 
-    setUser(updatedUser);
-    alert("Avatar updated successfully!");
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const avatarUrl = await uploadFileAndGetUrl("/api/users/sign-s3-profile", file);
+
+      const updatedUser = await updateUser(
+        user.id,
+        newUserData.name,
+        newUserData.companyId,
+        newUserData.email,
+        newUserData.bio,
+        avatarUrl,
+        newUserData.resumeUrl,
+        token
+      );
+
+      setUser(updatedUser);
+      setNewUserData((prev) => ({ ...prev, avatarUrl }));
+      alert("Avatar updated successfully!");
+    } catch (err) {
+      console.error("Error uploading avatar:", err);
+      alert("Failed to upload avatar");
+    }
   };
 
   const handleResumeUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const response = await fetch(
-      "http://localhost:3000/api/resumes/sign-s3-resume",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ filename: file.name }),
-      }
-    );
+    try {
+      const resumeUrl = await uploadFileAndGetUrl("/api/resumes/sign-s3-resume", file);
 
-    const { url, key } = await response.json();
-    await fetch(url, {
-      method: "PUT",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
+      const updatedUser = await updateUser(
+        user.id,
+        newUserData.name,
+        newUserData.companyId,
+        newUserData.email,
+        newUserData.bio,
+        newUserData.avatarUrl,
+        resumeUrl,
+        token
+      );
 
-    const updatedUser = await updateUser(
-      user.id,
-      newUserData.name,
-      newUserData.companyId,
-      newUserData.email,
-      newUserData.bio,
-      newUserData.avatarUrl,
-      {
-        resumeUrl: `https://${S3_BUCKET}.s3.amazonaws.com/${key}`,
-      },
-      token
-    );
-
-    setUser(updatedUser);
-    alert("Resume uploaded successfully!");
+      setUser(updatedUser);
+      setNewUserData((prev) => ({ ...prev, resumeUrl }));
+      alert("Resume uploaded successfully!");
+    } catch (err) {
+      console.error("Error uploading resume:", err);
+      alert("Failed to upload resume");
+    }
   };
 
   if (loading) return <p>Loading...</p>;

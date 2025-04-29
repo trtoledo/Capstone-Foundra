@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const cors = require('cors');
+const path = require('path');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const { client } = require('./db');
@@ -8,6 +9,8 @@ const { verify } = require('jsonwebtoken');
 
 const app = require('./app');
 const PORT = process.env.PORT || 3000;
+
+app.use(express.static(path.join(__dirname, '../../public')));
 
 const httpServer = createServer(app);
 
