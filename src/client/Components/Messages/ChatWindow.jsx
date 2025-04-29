@@ -21,18 +21,25 @@ const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
   return (
     <div className="chat-window">
       <div className="chat-header">
-        {selectedUser ? `Chatting with ${selectedUser.name}` : "Select a conversation"}
+        {selectedUser
+          ? `Chatting with ${selectedUser.name}`
+          : "Select a conversation"}
       </div>
 
       <div className="chat-messages">
         {messages.map((msg) => (
           <div
-            key={msg.id}
+            key={`${msg.id}-${msg.createdAt}`}
             className={`message ${msg.fromSelf ? "sent" : "received"}`}
           >
             <div className="message-content">{msg.content}</div>
             <div className="timestamp">
-              {new Date(msg.createdAt).toLocaleTimeString()}
+              {msg.createdAt && !isNaN(new Date(msg.createdAt))
+                ? new Date(msg.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "Sending..."}
             </div>
           </div>
         ))}
@@ -46,10 +53,7 @@ const ChatWindow = ({ messages, selectedUser, onSendMessage }) => {
           placeholder="Type your message..."
           className="chat-input"
         />
-        <button
-          onClick={handleSend}
-          className="send-button"
-        >
+        <button onClick={handleSend} className="send-button">
           Send
         </button>
       </div>

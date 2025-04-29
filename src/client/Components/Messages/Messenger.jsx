@@ -20,22 +20,23 @@ import {
 
 const Messenger = () => {
   const { user, token } = useAuth();
+
+  // --- STATE ---
   const [threads, setThreads] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [error, setError] = useState(null);
+
   const [socket, setSocket] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // --- SOCKET SETUP ---
   useEffect(() => {
-    const initializedSocket = initializeSocket();
-    setSocket(initializedSocket);
-
-    return () => {
-      initializedSocket.disconnect();
-    };
+    const sock = initializeSocket();
+    setSocket(sock);
+    return () => sock.disconnect();
   }, []);
 
   useEffect(() => {
@@ -56,8 +57,8 @@ const Messenger = () => {
         (newMessage.senderId === selectedUser.id ||
           newMessage.recipientId === selectedUser.id)
       ) {
-        setMessages((prevMessages) => [
-          ...prevMessages.filter((msg) => msg.id !== newMessage.id),
+        setMessages((prev) => [
+          ...prev.filter((m) => m.id !== newMessage.id),
           { ...newMessage, fromSelf: false },
         ]);
       }
@@ -65,54 +66,39 @@ const Messenger = () => {
     [selectedUser]
   );
 
+  // --- LOAD THREADS FOR INBOX ---
   useEffect(() => {
-    const loadThreads = async () => {
-      if (user) {
-        try {
-          const data = await fetchMessages(token);
-          setThreads(data);
-        } catch (err) {
-          setError("Failed to load message threads.");
-        }
-      } else {
-        setThreads([]);
-      }
-    };
-    loadThreads();
+    if (!user) return setThreads([]);
+    fetchMessages(token)
+      .then(setThreads)
+      .catch(() => setError("Failed to load message threads."));
   }, [user]);
 
+  // --- LOAD CONVERSATION WHEN USER SELECTS THREAD OR NEW USER ---
   useEffect(() => {
-    const loadMessages = async () => {
-      if (user && selectedUser) {
-        setLoadingMessages(true);
-        setError(null);
-        try {
-          const msgs = await fetchConversation(user.id, selectedUser.id, token);
-          console.log(msgs);
-          const formatted = msgs.map((m) => ({
+    if (!user || !selectedUser) return setMessages([]);
+    setLoadingMessages(true);
+    setError(null);
+
+    fetchConversation(user.id, selectedUser.id, token)
+      .then((msgs) =>
+        setMessages(
+          msgs.map((m) => ({
             ...m,
             fromSelf: m.senderId === user.id,
-          }));
-          
-          setMessages(formatted);
-        } catch (err) {
-          setError("Failed to load messages. test");
-        } finally {
-          setLoadingMessages(false);
-        }
-      } else {
-        setMessages([]);
-      }
-    };
-    loadMessages();
+          }))
+        )
+      )
+      .catch(() => setError("Failed to load messages."))
+      .finally(() => setLoadingMessages(false));
   }, [selectedUser, user]);
 
+  // --- SEND MESSAGE ---
   const handleSendMessage = useCallback(
     async (text) => {
       if (!text.trim() || !selectedUser || !user) return;
 
       const tempId = `temp-${Date.now()}`;
-
       const localMessage = {
         id: tempId,
         content: text,
@@ -123,82 +109,98 @@ const Messenger = () => {
         status: "sending",
       };
 
-      setMessages((prevMessages) => [...prevMessages, localMessage]);
-
-      sendSocketMessage({
-        recipientId: selectedUser.id,
-        content: text,
-        senderId: user.id,
-      });
+      setMessages((prev) => [...prev, localMessage]);
+      console.log("→ Sending socket message:", { to: selectedUser.id, text });
+      sendSocketMessage({ recipientId: selectedUser.id, content: text, senderId: user.id });
 
       try {
-        const savedMessage = await sendHttpMessage(selectedUser.id, text, token);
-        setMessages((prevMessages) =>
-          prevMessages.map((msg) =>
-            msg.id === tempId ? { ...savedMessage, fromSelf: true, status: "sent" } : msg
+        console.log("→ Calling HTTP send with token:", token);
+        const saved = await sendHttpMessage(selectedUser.id, text, token);
+        console.log("← HTTP send response:", saved);
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === tempId ? { ...saved, fromSelf: true, status: "sent" } : m
           )
         );
-      } catch (err) {
+      } catch {
+        console.error("✖ sendHttpMessage error:", err);
         setError("Failed to send message.");
-        setMessages((prevMessages) =>
-          prevMessages.map((msg) =>
-            msg.id === tempId ? { ...msg, status: "failed" } : msg
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === tempId ? { ...m, status: "failed" } : m
           )
         );
       }
     },
-    [selectedUser, user]
+    [selectedUser, user, token]
   );
 
+  // --- LOAD ALL USERS FOR “NEW CHAT” SEARCH ---
   useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        const users = await fetchAllUsers();
-        setAllUsers(users);
-      } catch (err) {
-        console.error("Failed to fetch users", err);
-      }
-    };
-    loadUsers();
+    fetchAllUsers()
+      .then(setAllUsers)
+      .catch((e) => console.error("Failed to fetch users", e));
   }, []);
 
+  // --- MEMOIZE THREADS LIST ---
   const memoizedThreads = useMemo(() => threads, [threads]);
+
+  // --- FILTER USERS WHEN TYPING ---
+  const filteredUsers = useMemo(
+    () =>
+      allUsers.filter((u) =>
+        u.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [allUsers, searchQuery]
+  );
 
   return (
     <div className="messenger-container">
       <div className="inbox-panel">
+        {/* --- NEW CHAT SEARCH --- */}
         <div className="user-search-panel">
           <input
             type="text"
-            placeholder="Search users..."
+            placeholder="Type to search users..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="user-search-input"
           />
-          <div className="user-list">
-            {allUsers
-              .filter((u) =>
-                u.name.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((userOption) => (
-                <div
-                  key={userOption.id}
-                  className="user-list-item"
-                  onClick={() => setSelectedUser(userOption)}
-                >
-                  {userOption.name}
-                </div>
-              ))}
-          </div>
+
+          {/* only show matching users once you start typing */}
+          {searchQuery.length > 0 && (
+            <div className="user-list">
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map((u) => (
+                  <div
+                    key={u.id}
+                    className="user-list-item"
+                    onClick={() => {
+                      setSelectedUser(u);
+                      setSearchQuery(""); // clear search
+                    }}
+                  >
+                    {u.name}
+                  </div>
+                ))
+              ) : (
+                <div className="empty-search">No users found</div>
+              )}
+            </div>
+          )}
         </div>
+
+        {/* --- EXISTING CONVERSATIONS --- */}
         <Inbox
           threads={memoizedThreads}
           selectedUser={selectedUser}
           onSelectThread={setSelectedUser}
         />
       </div>
+
       <div className="chat-panel">
         {error && <div className="error-message">{error}</div>}
+
         {selectedUser ? (
           loadingMessages ? (
             <div>Loading messages...</div>
@@ -211,7 +213,7 @@ const Messenger = () => {
           )
         ) : (
           <div className="empty-chat-message">
-            Select a conversation to start chatting
+            Select a conversation or search for a user to start chatting
           </div>
         )}
       </div>
