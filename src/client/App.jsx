@@ -19,6 +19,7 @@ import LostHiring from './Components/LandingPage/LostHiring.jsx';
 import WaitlistPage from './Components/Pages/WaitListPage.jsx';
 import GetFound from './Components/LandingPage/GetFound';
 import AboutUs from './Components/LandingPage/AboutUs';
+import RequestDemoPage from './components/Pages/RequestDemoPage';
 
 
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/waitlist" element={<WaitlistPage />} />
           <Route path="/get-found" element={<GetFound />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/request-demo" element={<RequestDemoPage />} />
 </Routes>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import "./LostHiring.css";
+import { Link } from 'react-router-dom';
+
 
 const industries = [
   { name: "Technology", image: "/assets/industryCards/technology.png" },
@@ -30,7 +32,11 @@ const LostHiring = () => {
             Traditional hiring techniques are not working in 2025. We believe that human talent exists and aligns deeply with your mission and brand... the problem is they are not being found. <br /><br /> Welcome to Foundra.
           </p>
           <div className="cta-button-group">
-            <button className="cta-button">Request a Demo</button>
+          <button className="cta-button">
+  {/* <Link to="/request-demo">Request a Demo</Link> */}
+  <a href="/request-demo" class="cta-button">Request Demo</a>
+
+</button>
             <button
               className="cta-button secondary"
               onClick={() => navigate("/waitlist")}
