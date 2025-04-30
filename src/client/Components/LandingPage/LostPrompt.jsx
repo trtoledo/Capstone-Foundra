@@ -8,8 +8,8 @@ const LostPrompt = ({ trigger }) => {
 
   useEffect(() => {
     if (trigger) {
-      const textTimeout = setTimeout(() => setVisible(true), 4000); 
-      const arrowTimeout = setTimeout(() => setDrawArrow(true), 5000); 
+      const textTimeout = setTimeout(() => setVisible(true), 4000);
+      const arrowTimeout = setTimeout(() => setDrawArrow(true), 5000);
       return () => {
         clearTimeout(textTimeout);
         clearTimeout(arrowTimeout);
@@ -21,26 +21,35 @@ const LostPrompt = ({ trigger }) => {
     <div
       ref={containerRef}
       className={`marker-container right-side ${visible ? 'visible' : ''}`}
-      style={{ marginBottom: '-150px', marginLeft: '550px', right: 0 }}
+      style={{
+        marginBottom: '-155px',
+        marginLeft: '470px',
+        marginRight: '200px',
+      }}
     >
+      {/* Right-pointing mirrored arrow */}
       <svg
-        className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
-        viewBox="0 0 400 100"
-        xmlns="http://www.w3.org/2000/svg"
+  className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
+  viewBox="0 0 300 100"
+  width="300"
+  height="100"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M240,90 C210,0 160,110 120,50"
+    stroke="#DAFFED"
+    strokeWidth="3"
+    fill="none"
+  />
+  <polygon points="120,45 105,50 120,55" fill="#DAFFED" />
+</svg>
+
+      {/* Text fades in independently */}
+      <p
+        className={`marker-text right ${visible ? 'fade-in' : ''}`}
+        style={{ textAlign: 'right' }}
       >
-        <path
-          d="M400,90 C300,0 150,110 40,50"
-          stroke="#DAFFED"
-          strokeWidth="3"
-          fill="none"
-        />
-        <polygon
-          points="40,45 25,50 40,55"
-          fill="#DAFFED"
-        />
-      </svg>
-      <p className="marker-text" style={{ textAlign: 'right', paddingRight: '.2rem' }}>
-        Are you looking for the perfect candidate?
+        Looking for a perfect candidate?
       </p>
     </div>
   );

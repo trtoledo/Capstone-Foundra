@@ -29,7 +29,7 @@ const LostHiring = () => {
         <div className="hero-left">
           <h1>A Modern Way to Find the Perfect Applicant</h1>
           <p>
-            Traditional hiring techniques are not working in 2025. We believe that human talent exists and aligns deeply with your mission and brand... the problem is they are not being found. <br /><br /> Welcome to Foundra.
+            Traditional hiring techniques are not working in 2025. We believe that human talent exists and they align deeply with your mission and brand... the problem is they have not been found. <br /><br /> Welcome to Foundra.
           </p>
           <div className="cta-button-group">
           <button className="cta-button">

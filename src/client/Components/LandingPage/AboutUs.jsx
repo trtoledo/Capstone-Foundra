@@ -3,7 +3,7 @@ import './AboutUs.css';
 
 const team = [
   {
-    name: 'Isabelle Ventouris',
+    name: 'Isabell Ventouris',
     title: 'Developer',
     frontImage: '/assets/team/isabell-box.png',
     backImage: '/assets/team/isabell-photo.jpg',

@@ -43,6 +43,19 @@
     z-index: 1; 
   }
 
+  .marker-text {
+    position: relative;
+    top: -25px; 
+    left: 25px; 
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.5rem;
+    /* color: #C8E9A0; */
+  }
   
+  .marker-text.right {
+    left: 200px;   
+    top: -25px;    
+    text-align: right;
+  }
   
   
