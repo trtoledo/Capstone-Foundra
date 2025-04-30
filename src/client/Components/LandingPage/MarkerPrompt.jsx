@@ -21,25 +21,34 @@ const MarkerPrompt = ({ trigger }) => {
     <div
       ref={containerRef}
       className={`marker-container ${visible ? 'visible' : ''}`}
-      style={{ marginBottom: '-95px', marginLeft: '-16px' }}
+      style={{ marginBottom: '-95px', marginLeft: '196px' }}
     >
-      <svg
-        className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
-        viewBox="0 0 400 100"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+     <svg
+  className={`marker-arrow ${drawArrow ? 'draw' : ''}`}
+  viewBox="0 0 300 100"
+  width="300"
+  height="100"
+  xmlns="http://www.w3.org/2000/svg"
+>
+
         <path
-          d="M0,90 C100,0 250,110 360,50"
+          d="M60,90 C90,0 140,110 180,50"
+
           stroke="#DAFFED"
           strokeWidth="3"
           fill="none"
         />
         <polygon
-          points="360,45 375,50 360,55" 
+          points="180,45 195,50 180,55"
           fill="#DAFFED"
         />
       </svg>
-      <p className="marker-text">Are you a perfect applicant? </p>
+      <p
+  className="marker-text"
+  style={{ marginTop: '25px', marginLeft: '-250px' }}
+>
+  Are you the perfect candidate?
+</p>
     </div>
   );
 };

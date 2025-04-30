@@ -82,11 +82,12 @@ export default function GetFound() {
         </div>
       </div>
 
-      {/* 3-column Grid Feature Section */}
       <div className="feature-columns-wrapper">
         <div className="feature-column">
           <h2 className="section-heading">Why It Works</h2>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Stand Out Instantly</div>
             <p className="feature-description">
               Resumes blur together. Your video brings your story to life and
@@ -94,6 +95,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Target Companies</div>
             <p className="feature-description">
               Choose the companies you want to work for. We'll help get your
@@ -101,6 +104,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">
               Better Than a Cover Letter
             </div>
@@ -114,6 +119,8 @@ export default function GetFound() {
         <div className="feature-column">
           <h2 className="section-heading">The Dashboard</h2>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Easy to Use</div>
             <p className="feature-description">
               See all your video submissions, track companies you've reached out
@@ -121,6 +128,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Unified</div>
             <p className="feature-description">
               Our modern interface makes it simple to monitor your engagement
@@ -128,6 +137,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Complete Picture</div>
             <p className="feature-description">
               View your impact with insights into views, interactions, and
@@ -139,6 +150,8 @@ export default function GetFound() {
         <div className="feature-column">
           <h2 className="section-heading">Privacy & Security</h2>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Privacy</div>
             <p className="feature-description">
               Control who sees your content. No video is public or searchable
@@ -146,6 +159,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Encryption</div>
             <p className="feature-description">
               All videos and profile data are securely stored and encrypted to
@@ -153,6 +168,8 @@ export default function GetFound() {
             </p>
           </div>
           <div className="feature-card">
+            <div className="corner-bl"></div>
+            <div className="corner-br"></div>
             <div className="feature-title-container">Permissions</div>
             <p className="feature-description">
               Set company-level visibility rules so only approved employers can
@@ -164,3 +181,4 @@ export default function GetFound() {
     </section>
   );
 }
+

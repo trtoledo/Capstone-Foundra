@@ -59,6 +59,7 @@ const Homepage = () => {
 
         <FeatureOverview />
         <HiringNewsCarousel />
+
       </div>
     </div>
   );

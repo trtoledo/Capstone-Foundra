@@ -53,7 +53,7 @@ export default function HiringNewsCarousel() {
   return (
     <div className="carousel-border-wrapper">
       <section className="carousel-wrapper">
-        <h2 className="carousel-title">{category} News & Trends</h2>
+        <h2 className="carousel-title">{category} News & Trends (updated daily)</h2>
 
         <div className="category-filter">
           <label htmlFor="category-select">Filter by Industry:</label>
